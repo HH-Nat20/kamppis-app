@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
 
-const SERVER_URL = "http://localhost:8080/health"; // Adjust based on your API route
-const DB_URL = "http://localhost:8080/db-health"; // Adjust if needed
+const BACKEND_URL = process.env.BACKEND_URL ?? 'http://localhost:8080';
+const SERVER_URL = `${BACKEND_URL}/health`;
+const DB_URL = `${BACKEND_URL}/db-health`;
 
 const App = () => {
     const [serverStatus, setServerStatus] = useState<'loading' | 'ok' | 'failed'>('loading');

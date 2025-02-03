@@ -1,0 +1,6 @@
+docker run --rm -p 8081:8081 -p 19000:19000 -p 19001:19001 -p 19002:19002 -p 19006:19006 \
+  -v "$(pwd)":/app \
+  -v /app/node_modules \
+  -e BACKEND_URL=http://localhost:8080 \
+  -e EXPO_DEVTOOLS_LISTEN_ADDRESS=0.0.0.0 \
+  kamppis-app
