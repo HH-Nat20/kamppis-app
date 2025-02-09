@@ -13,7 +13,11 @@ import { User } from "./types/user";
 const Tab = createBottomTabNavigator();
 const UpTab = createMaterialTopTabNavigator();
 
+
+
 function NestStack() {
+
+const [matches, setMatches] = useState<User[]>([]);
 
   return (
     <UpTab.Navigator>
@@ -21,12 +25,15 @@ function NestStack() {
       <UpTab.Screen name="Swipe" options={{swipeEnabled: false}}>
         {() => <SwipeScreen setMatches={setMatches} matches={matches} />}
       </UpTab.Screen>
+      <Tab.Screen name="Matches">
+        {() => <MatchesScreen matches={matches} />}
+      </Tab.Screen>
       <UpTab.Screen name="Search" component={SearchScreen} />
-      
+       
     </UpTab.Navigator>
   );
 };
-  const [matches, setMatches] = useState<User[]>([]);
+  
 
   function UpperTab() {
   return (
@@ -53,9 +60,7 @@ function NestStack() {
         options={{ headerShown: false }}
       />
       <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Matches">
-        {() => <MatchesScreen matches={matches} />}
-      </Tab.Screen>
+      
     </Tab.Navigator>
   );
 }

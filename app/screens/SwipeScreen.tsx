@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, Alert, Image, ActivityIndicator } from "react-native";
+import {
+  Text,
+  View,
+  Alert,
+  Image,
+  ActivityIndicator,
+} from "react-native";
 import Swiper from "react-native-deck-swiper";
-
 import styles from "../ui/styles";
 import { User } from "../types/user";
 

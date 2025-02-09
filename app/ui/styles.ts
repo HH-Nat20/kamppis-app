@@ -24,6 +24,9 @@ const styles = StyleSheet.create({
     color: "white",
     backgroundColor: "transparent",
   },
+  upperTab: {
+
+  },
 });
 
 export default styles;
