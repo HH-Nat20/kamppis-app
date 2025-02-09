@@ -20,5 +20,5 @@ RUN npm install
 EXPOSE 8081 19000 19001 19002 19006
 
 # Start the Expo development server
-# CMD ["npm", "start", "--", "--tunnel"]
-CMD ["npx", "expo", "start", "--tunnel"]
+CMD ["npm", "start", "--", "--tunnel"]
+#CMD ["npx", "expo", "start", "--tunnel"]
