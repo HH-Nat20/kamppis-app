@@ -1,11 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, Alert, Image } from "react-native";
+import { Text, View, Alert, Image, ActivityIndicator } from "react-native";
 import Swiper from "react-native-deck-swiper";
 
 import styles from "../ui/styles";
 import { User } from "../types/user";
 
-const SwipeScreen = () => {
+interface SwipeScreenProps {
+  setMatches: React.Dispatch<React.SetStateAction<User[]>>;
+  matches: User[];
+}
+
+const SwipeScreen: React.FC<SwipeScreenProps> = ({ setMatches, matches }) => {
+  const onSwipeRight = (cardIndex: number) => {
+    if (Math.random() < 0.25) {
+      // 25% chance of matching
+      const matchedUser = cards[cardIndex];
+      setMatches([...matches, matchedUser]);
+      console.log(
+        `Matched with ${matchedUser.firstName} ${matchedUser.lastName}`
+      );
+    }
+  };
+
   const [loading, setLoading] = useState<boolean>(true);
   const [cards, setCards] = useState<User[]>([
     {
@@ -46,7 +62,7 @@ const SwipeScreen = () => {
           fetchedCards.push(newUser);
         });
     }
-
+    setLoading(false);
     setCards(fetchedCards);
   };
 
@@ -74,11 +90,7 @@ const SwipeScreen = () => {
             `${cards[cardIndex].firstName} ${cards[cardIndex].lastName} was swiped left`
           );
         }}
-        onSwipedRight={(cardIndex: any) => {
-          console.log(
-            `${cards[cardIndex].firstName} ${cards[cardIndex].lastName} was swiped right`
-          );
-        }}
+        onSwipedRight={onSwipeRight}
         onSwipedAll={() => {
           console.log("everything swiped");
           Alert.alert("All cards have been swiped");
@@ -91,6 +103,7 @@ const SwipeScreen = () => {
         animateCardOpacity
         swipeBackCard
       />
+      {loading && <ActivityIndicator size="large" />}
     </View>
   );
 };
