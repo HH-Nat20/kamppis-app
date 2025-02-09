@@ -26,17 +26,10 @@ const SwipeScreen: React.FC<SwipeScreenProps> = ({ setMatches, matches }) => {
   const [cards, setCards] = useState<User[]>([
     {
       id: 1,
-      firstName: "John",
-      lastName: "Doe",
+      firstName: "Loading cards...",
+      lastName: "Card",
       dateOfBirth: [1990, 5, 14],
       email: "john.doe@example.com",
-    },
-    {
-      id: 2,
-      firstName: "Jane",
-      lastName: "Smith",
-      dateOfBirth: [1995, 8, 23],
-      email: "jane.smith@example.com",
     },
   ]);
 
@@ -97,7 +90,7 @@ const SwipeScreen: React.FC<SwipeScreenProps> = ({ setMatches, matches }) => {
         }}
         cardIndex={0}
         backgroundColor={"#010101"}
-        stackSize={3}
+        stackSize={10} // why?
         stackSeparation={15}
         animateOverlayLabelsOpacity
         animateCardOpacity
