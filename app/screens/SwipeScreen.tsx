@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Text,
-  View,
-  Alert,
-  Image,
-  ActivityIndicator,
-} from "react-native";
+import { Text, View, Alert, Image, ActivityIndicator } from "react-native";
 import Swiper from "react-native-deck-swiper";
 import styles from "../ui/styles";
 import { User } from "../types/user";
@@ -17,6 +11,9 @@ interface SwipeScreenProps {
 
 const SwipeScreen: React.FC<SwipeScreenProps> = ({ setMatches, matches }) => {
   const onSwipeRight = (cardIndex: number) => {
+    console.log(
+      `${cards[cardIndex].firstName} ${cards[cardIndex].lastName} was swiped right`
+    );
     if (Math.random() < 0.25) {
       // 25% chance of matching
       const matchedUser = cards[cardIndex];
@@ -77,7 +74,7 @@ const SwipeScreen: React.FC<SwipeScreenProps> = ({ setMatches, matches }) => {
             <View style={styles.card}>
               <Image
                 source={{ uri: card.picture }}
-                style={{ width: 300, height: 300 }}
+                style={styles.cardPicture}
               />
               <Text style={styles.text}>{card.firstName}</Text>
             </View>
