@@ -22,16 +22,18 @@ services:
     networks:
       - kamppis-network
     ports:
-      - "8081:8081"
-      - "19000:19000"
-      - "19001:19001"
-      - "19002:19002"
-      - "19006:19006"
+      - "8081:8081" # Metro Bundler
+      - "19000:19000" # Expo DevTools
+      - "19001:19001" # LAN Debugging
+      - "19002:19002" # Tunnel Debugging
+      - "19006:19006" # Expo Web (optional)
     volumes:
       - ../kamppis-app:/app
       - /app/node_modules # Avoid overwriting node_modules
     environment:
-      - BACKEND_URL=http://backend:8080
+      - BACKEND_URL=http://host.docker.internal:8080
       - EXPO_DEVTOOLS_LISTEN_ADDRESS=0.0.0.0
+      - CHOKIDAR_USEPOLLING=true # Fix for file watching inside Docker
+      - WATCHPACK_POLLING=true # Alternative fix for watching files
     stdin_open: true
     tty: true
