@@ -1,18 +1,26 @@
-version: '3.8'
+networks:
+  kamppis-network:
+    driver: bridge
 
 services:
   backend:
-    build: ./backend
+    build: ../kamppis-server
+    container_name: kamppis-backend
+    networks:
+      - kamppis-network
     ports:
       - "8080:8080"
     volumes:
-      - ./backend/src:/app/src
-      - ./backend/target:/app/target
+      - ../kamppis-server/src:/app/src
+      - ../kamppis-server/target:/app/target
     environment:
       - SPRING_DEVTOOLS_RESTART_ENABLED=true
 
   frontend:
-    build: ./frontend
+    build: ../kamppis-app
+    container_name: kamppis-frontend
+    networks:
+      - kamppis-network
     ports:
       - "8081:8081"
       - "19000:19000"
@@ -20,7 +28,7 @@ services:
       - "19002:19002"
       - "19006:19006"
     volumes:
-      - ./frontend:/app
+      - ../kamppis-app:/app
       - /app/node_modules # Avoid overwriting node_modules
     environment:
       - BACKEND_URL=http://backend:8080

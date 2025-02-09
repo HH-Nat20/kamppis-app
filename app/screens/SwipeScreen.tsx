@@ -1,11 +1,12 @@
 import React from "react";
+import { View, Text } from "react-native";
 
 const SwipeScreen = () => {
-    return (
-        <div>
-        <h1>SwipeScreen</h1>
-        </div>
-    );
-    }
+  return (
+    <View>
+      <Text>SwipeScreen</Text>
+    </View>
+  );
+};
 
 export default SwipeScreen;

@@ -2,7 +2,7 @@
 FROM node:20-bullseye
 
 # Set environment variables
-ENV BACKEND_URL=http://localhost:8080
+ENV BACKEND_URL=http://backend:8080
 
 # Set working directory
 WORKDIR /app
@@ -20,4 +20,5 @@ RUN npm install
 EXPOSE 8081 19000 19001 19002 19006
 
 # Start the Expo development server
-CMD ["npm", "start", "--", "--tunnel"]
+# CMD ["npm", "start", "--", "--tunnel"]
+CMD ["npm", "start"]
