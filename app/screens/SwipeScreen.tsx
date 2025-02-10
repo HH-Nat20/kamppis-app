@@ -18,17 +18,19 @@ const SwipeScreen: React.FC = () => {
 
   const fetchUser = async () => {
     try {
-      const response = await fetch("https://randomuser.me/api/");
+      const randNum = Math.floor(Math.random() * 500) + 1;
+      const response = await fetch(
+        "https://pokeapi.co/api/v2/pokemon/" + randNum
+      );
       const data = await response.json();
-      const user = data.results[0];
       return {
-        id: user.login.uuid, // Ensuring unique keys
-        firstName: user.name.first,
-        lastName: user.name.last,
-        dateOfBirth: [user.dob.date],
-        age: user.dob.age,
-        email: user.email,
-        picture: user.picture.large,
+        id: randNum, // Ensuring unique keys
+        firstName: data.name,
+        lastName: "",
+        dateOfBirth: [new Date().getFullYear(), 1, 1],
+        age: Math.floor(Math.random() * 100),
+        email: "pokemons.dont.have@emails.com",
+        picture: data.sprites.front_default,
       };
     } catch (error) {
       console.error("Error fetching user:", error);
