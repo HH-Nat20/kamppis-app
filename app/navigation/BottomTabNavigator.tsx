@@ -12,6 +12,14 @@ const BottomTabNavigator: React.FC = () => {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
+        tabBarStyle: {
+          backgroundColor: "rgba(47, 9, 69, 1)",
+          borderTopWidth: 0, // Removes the top border
+          elevation: 0, // Removes shadow on Android
+          shadowOpacity: 0, // Removes shadow on iOS
+        },
+        tabBarActiveTintColor: "rgb(195, 166, 214)", // Active tab color
+        tabBarInactiveTintColor: "rgb(114, 56, 150)", // Inactive tab color
         tabBarIcon: ({ color, size }) => {
           let iconName: keyof typeof Ionicons.glyphMap = "home";
 

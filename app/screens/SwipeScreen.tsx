@@ -68,10 +68,16 @@ const SwipeScreen: React.FC = () => {
   };
 
   return (
-    <LinearGradient
-      colors={["#912ED3", "#671C97", "41105F", "2F0945"]}
-      style={styles.container}
-    >
+    <View style={styles.container}>
+      <LinearGradient
+        colors={[
+          "rgba(145, 46, 211, 1)",
+          "rgba(103, 28, 151, 1)",
+          "rgba(65, 16, 95, 1)",
+          "rgba(47, 9, 69, 1)",
+        ]}
+        style={styles.background}
+      />
       {loading ? (
         <ActivityIndicator size="large" />
       ) : (
@@ -192,7 +198,7 @@ const SwipeScreen: React.FC = () => {
           }}
         />
       )}
-    </LinearGradient>
+    </View>
   );
 };
 

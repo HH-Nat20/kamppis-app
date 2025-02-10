@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, ActivityIndicator } from "react-native";
+import { View, Text, ActivityIndicator } from "react-native";
 import styles from "../ui/styles";
 
 import { LinearGradient } from "expo-linear-gradient";
@@ -31,10 +31,16 @@ const HomeScreen = () => {
   }, []);
 
   return (
-    <LinearGradient
-      colors={["#912ED3", "#671C97", "41105F", "2F0945"]}
-      style={styles.container}
-    >
+    <View style={styles.container}>
+      <LinearGradient
+        colors={[
+          "rgba(145, 46, 211, 1)",
+          "rgba(103, 28, 151, 1)",
+          "rgba(65, 16, 95, 1)",
+          "rgba(47, 9, 69, 1)",
+        ]}
+        style={styles.background}
+      />
       <Text style={styles.title}>App started</Text>
 
       <Text style={styles.subtitle}>Checking server status...</Text>
@@ -61,7 +67,7 @@ const HomeScreen = () => {
           {dbStatus === "ok" ? "OK" : "FAILED"}
         </Text>
       )}
-    </LinearGradient>
+    </View>
   );
 };
 
