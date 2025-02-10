@@ -11,7 +11,7 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.bminor87.kamppisapp",
+      "bundleIdentifier": "com.nat20.kamppisapp",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
