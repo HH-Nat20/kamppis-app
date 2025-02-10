@@ -1,20 +1,25 @@
-import React, { useState } from "react";
+import React from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "../screens/HomeScreen";
 import MatchesScreen from "../screens/MatchesScreen";
 import SwipeScreen from "../screens/SwipeScreen";
 import TopTabNavigator from "./TopTabNavigator";
-import { User } from "../types/user";
 
 const Tab = createBottomTabNavigator();
 
 const BottomTabNavigator: React.FC = () => {
-  const [matches, setMatches] = useState<User[]>([]);
-
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
+        tabBarStyle: {
+          backgroundColor: "rgba(47, 9, 69, 1)",
+          borderTopWidth: 0, // Removes the top border
+          elevation: 0, // Removes shadow on Android
+          shadowOpacity: 0, // Removes shadow on iOS
+        },
+        tabBarActiveTintColor: "rgb(195, 166, 214)", // Active tab color
+        tabBarInactiveTintColor: "rgb(114, 56, 150)", // Inactive tab color
         tabBarIcon: ({ color, size }) => {
           let iconName: keyof typeof Ionicons.glyphMap = "home";
 
@@ -36,12 +41,16 @@ const BottomTabNavigator: React.FC = () => {
         component={TopTabNavigator}
         options={{ headerShown: false }}
       />
-      <Tab.Screen name="Swipe" options={{ headerShown: false }}>
-        {() => <SwipeScreen setMatches={setMatches} matches={matches} />}
-      </Tab.Screen>
-      <Tab.Screen name="Chat" options={{ headerShown: false }}>
-        {() => <MatchesScreen matches={matches} />}
-      </Tab.Screen>
+      <Tab.Screen
+        name="Swipe"
+        options={{ headerShown: false }}
+        component={SwipeScreen}
+      />
+      <Tab.Screen
+        name="Chat"
+        options={{ headerShown: false }}
+        component={MatchesScreen}
+      />
     </Tab.Navigator>
   );
 };

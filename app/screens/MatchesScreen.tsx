@@ -1,19 +1,29 @@
 import React from "react";
 import { View, Text, FlatList } from "react-native";
-import { User } from "../types/user";
+
+import { useMatch } from "../contexts/MatchContext";
 
 import { StatusBar } from "expo-status-bar";
 
+import { LinearGradient } from "expo-linear-gradient";
+
 import styles from "../ui/styles";
 
-type MatchesScreenProps = {
-  matches: User[];
-};
+const MatchesScreen = () => {
+  const { matches } = useMatch();
 
-const MatchesScreen = ({ matches }: MatchesScreenProps) => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Matches</Text>
+      <LinearGradient
+        colors={[
+          "rgba(145, 46, 211, 1)",
+          "rgba(103, 28, 151, 1)",
+          "rgba(65, 16, 95, 1)",
+          "rgba(47, 9, 69, 1)",
+        ]}
+        style={styles.background}
+      />
       <FlatList
         data={matches}
         keyExtractor={(item) => item.id.toString()}

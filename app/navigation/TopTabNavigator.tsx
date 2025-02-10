@@ -10,7 +10,18 @@ const TopTabNavigator: React.FC = () => {
   const [matches, setMatches] = useState<User[]>([]);
 
   return (
-    <UpTab.Navigator>
+    <UpTab.Navigator
+      screenOptions={{
+        tabBarStyle: {
+          backgroundColor: "rgba(47, 9, 69, 1)",
+        },
+        tabBarActiveTintColor: "rgb(236, 218, 248)",
+        tabBarInactiveTintColor: "rgb(191, 135, 225)",
+        tabBarIndicatorStyle: {
+          backgroundColor: "rgb(195, 166, 214)", // The line under active tab
+        },
+      }}
+    >
       <UpTab.Screen name="Profile" component={ProfileScreen} />
       <UpTab.Screen name="Settings" component={SettingsScreen} />
     </UpTab.Navigator>
