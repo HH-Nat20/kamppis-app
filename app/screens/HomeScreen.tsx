@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
+import { Text, ActivityIndicator } from "react-native";
+import styles from "../ui/styles";
+
+import { LinearGradient } from "expo-linear-gradient";
 
 const BACKEND_URL = process.env.BACKEND_URL ?? "http://localhost:8080";
 const SERVER_URL = `${BACKEND_URL}/health`;
@@ -28,7 +31,10 @@ const HomeScreen = () => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      colors={["#912ED3", "#671C97", "41105F", "2F0945"]}
+      style={styles.container}
+    >
       <Text style={styles.title}>App started</Text>
 
       <Text style={styles.subtitle}>Checking server status...</Text>
@@ -55,23 +61,8 @@ const HomeScreen = () => {
           {dbStatus === "ok" ? "OK" : "FAILED"}
         </Text>
       )}
-    </View>
+    </LinearGradient>
   );
 };
-
-// Styles
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#fff",
-  },
-  title: { fontSize: 24, fontWeight: "bold", marginBottom: 20 },
-  subtitle: { fontSize: 18, marginTop: 10 },
-  status: { fontSize: 20, fontWeight: "bold", marginTop: 5 },
-  ok: { color: "green" },
-  failed: { color: "red" },
-});
 
 export default HomeScreen;
