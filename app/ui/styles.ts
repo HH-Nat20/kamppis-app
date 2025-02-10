@@ -40,11 +40,74 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 20,
   },
-  subtitle: { fontSize: 18, marginTop: 10 },
-  status: { fontSize: 20, fontWeight: "bold", marginTop: 5 },
-  ok: { color: "green" },
-  failed: { color: "red" },
-  upperTab: {},
+  subtitle: { 
+    fontSize: 18, marginTop: 10 
+  },
+  status: {
+    fontSize: 20, fontWeight: "bold", marginTop: 5 
+  },
+  ok: { 
+    color: "green" 
+  },
+  failed: { 
+    color: "red" 
+  },
+  saveButton: {
+    width: 150, 
+    height: 50, 
+    backgroundColor: "blue", 
+    borderRadius: 10,
+    position: "absolute",
+    top: 10,
+    right: 20,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  nextButton: {
+    width: 150, 
+    height: 50, 
+    backgroundColor: "#ccc", 
+    borderRadius: 10,
+    position: "absolute",
+    bottom: 10,
+    right: 20,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  info: {
+    position: "absolute",
+    top: 70,
+    left: 20,
+    fontSize: 20,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginTop: 10,
+  },
+  input: {
+    height: 40,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    marginTop: 5,
+  },
+  profileData: {
+    flex: 1,
+    padding: 10,
+    marginTop: 100,
+  },
+  pickerInput: {
+    borderRadius: 8,     
+    marginTop: 5,
+    height: 40,
+    justifyContent: "center",
+    paddingHorizontal: 10,
+  },
+  pickerItem: {
+    color: "black",
+  },
 });
 
 export default styles;
