@@ -38,7 +38,13 @@
       "typedRoutes": true
     },
     "extra": {
-      "BACKEND_URL": "http://backend:8080"
+      "BACKEND_URL": "http://backend:8080",
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "7987255a-a681-b17b-4692ce3d55f9"
+      }
     }
   }
 }
