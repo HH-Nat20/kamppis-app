@@ -5,12 +5,10 @@ import { LinearGradient } from "expo-linear-gradient";
 import styles from "../ui/styles";
 import { User } from "../types/user";
 
-interface SwipeScreenProps {
-  setMatches: React.Dispatch<React.SetStateAction<User[]>>;
-  matches: User[];
-}
+import { useMatch } from "../contexts/MatchContext";
 
-const SwipeScreen: React.FC<SwipeScreenProps> = ({ setMatches, matches }) => {
+const SwipeScreen: React.FC = () => {
+  const { addMatch } = useMatch();
   const [loading, setLoading] = useState<boolean>(true);
   const [cards, setCards] = useState<User[]>([]);
 
@@ -54,7 +52,7 @@ const SwipeScreen: React.FC<SwipeScreenProps> = ({ setMatches, matches }) => {
       `${matchedUser.firstName} ${matchedUser.lastName} was swiped right`
     );
     if (Math.random() < 0.25) {
-      setMatches((prevMatches) => [...prevMatches, matchedUser]);
+      addMatch(matchedUser);
       console.log(
         `Matched with ${matchedUser.firstName} ${matchedUser.lastName}`
       );

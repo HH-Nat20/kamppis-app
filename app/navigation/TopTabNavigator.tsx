@@ -14,12 +14,12 @@ const TopTabNavigator: React.FC = () => {
   return (
     <UpTab.Navigator>
       <UpTab.Screen name="Profile" component={ProfileScreen} />
-      <UpTab.Screen name="Swipe" options={{ swipeEnabled: false }}>
-        {() => <SwipeScreen setMatches={setMatches} matches={matches} />}
-      </UpTab.Screen>
-      <UpTab.Screen name="Matches">
-        {() => <MatchesScreen matches={matches} />}
-      </UpTab.Screen>
+      <UpTab.Screen
+        name="Swipe"
+        options={{ swipeEnabled: false }}
+        component={SwipeScreen}
+      />
+      <UpTab.Screen name="Matches" component={MatchesScreen} />
       <UpTab.Screen name="Search" component={SearchScreen} />
     </UpTab.Navigator>
   );

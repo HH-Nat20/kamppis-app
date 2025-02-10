@@ -1,16 +1,15 @@
 import React from "react";
 import { View, Text, FlatList } from "react-native";
-import { User } from "../types/user";
+
+import { useMatch } from "../contexts/MatchContext";
 
 import { StatusBar } from "expo-status-bar";
 
 import styles from "../ui/styles";
 
-type MatchesScreenProps = {
-  matches: User[];
-};
+const MatchesScreen = () => {
+  const { matches } = useMatch();
 
-const MatchesScreen = ({ matches }: MatchesScreenProps) => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Matches</Text>

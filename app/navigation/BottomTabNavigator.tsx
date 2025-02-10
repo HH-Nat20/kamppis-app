@@ -1,17 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "../screens/HomeScreen";
 import MatchesScreen from "../screens/MatchesScreen";
 import SwipeScreen from "../screens/SwipeScreen";
 import TopTabNavigator from "./TopTabNavigator";
-import { User } from "../types/user";
 
 const Tab = createBottomTabNavigator();
 
 const BottomTabNavigator: React.FC = () => {
-  const [matches, setMatches] = useState<User[]>([]);
-
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -36,12 +33,16 @@ const BottomTabNavigator: React.FC = () => {
         component={TopTabNavigator}
         options={{ headerShown: false }}
       />
-      <Tab.Screen name="Swipe" options={{ headerShown: false }}>
-        {() => <SwipeScreen setMatches={setMatches} matches={matches} />}
-      </Tab.Screen>
-      <Tab.Screen name="Chat" options={{ headerShown: false }}>
-        {() => <MatchesScreen matches={matches} />}
-      </Tab.Screen>
+      <Tab.Screen
+        name="Swipe"
+        options={{ headerShown: false }}
+        component={SwipeScreen}
+      />
+      <Tab.Screen
+        name="Chat"
+        options={{ headerShown: false }}
+        component={MatchesScreen}
+      />
     </Tab.Navigator>
   );
 };
