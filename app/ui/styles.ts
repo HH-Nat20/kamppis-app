@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: "#E8E8E8",
     justifyContent: "center",
-    backgroundColor: "white",
+    backgroundColor: "#E1E1E1",
   },
   cardPicture: {
     flex: 1,

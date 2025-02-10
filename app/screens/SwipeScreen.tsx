@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Text, View, Alert, Image, ActivityIndicator } from "react-native";
 import Swiper from "react-native-deck-swiper";
 import { LinearGradient } from "expo-linear-gradient";
@@ -8,6 +8,8 @@ import { User } from "../types/user";
 import { useMatch } from "../contexts/MatchContext";
 
 const SwipeScreen: React.FC = () => {
+  const swiperRef = useRef<Swiper<any>>(null);
+
   const { addMatch } = useMatch();
   const [loading, setLoading] = useState<boolean>(true);
   const [cards, setCards] = useState<User[]>([]);
@@ -46,6 +48,12 @@ const SwipeScreen: React.FC = () => {
     fetchInitialCards();
   }, []);
 
+  const onSwipeLeft = (cardIndex: number) => {
+    console.log(
+      `${cards[cardIndex].firstName} ${cards[cardIndex].lastName} was swiped left`
+    );
+  };
+
   const onSwipeRight = (cardIndex: number) => {
     const matchedUser = cards[cardIndex];
     console.log(
@@ -57,15 +65,6 @@ const SwipeScreen: React.FC = () => {
         `Matched with ${matchedUser.firstName} ${matchedUser.lastName}`
       );
     }
-    setCards((prevCards) =>
-      prevCards.filter((_, index) => index !== cardIndex)
-    );
-    addNewCard();
-  };
-
-  const addNewCard = async () => {
-    const newUser = await fetchUser();
-    if (newUser) setCards((prevCards) => [newUser, ...prevCards]);
   };
 
   return (
@@ -74,9 +73,10 @@ const SwipeScreen: React.FC = () => {
       style={styles.container}
     >
       {loading ? (
-        <ActivityIndicator size="large" color="#fff" />
+        <ActivityIndicator size="large" />
       ) : (
         <Swiper
+          ref={swiperRef}
           cards={cards}
           renderCard={(card: User | null) =>
             card ? (
@@ -89,20 +89,23 @@ const SwipeScreen: React.FC = () => {
               </View>
             ) : null
           }
-          onSwipedLeft={(cardIndex) => {
-            console.log(
-              `${cards[cardIndex].firstName} ${cards[cardIndex].lastName} was swiped left`
-            );
-            setCards((prevCards) =>
-              prevCards.filter((_, index) => index !== cardIndex)
-            );
-            addNewCard();
-          }}
+          onSwipedLeft={onSwipeLeft}
+          disableBottomSwipe={true}
+          disableTopSwipe={true} // for now
           onSwipedRight={onSwipeRight}
           onSwipedAll={() => {
             console.log("Everything swiped");
             Alert.alert("All cards have been swiped", "Fetching new users...");
-            fetchInitialCards();
+            setCards([]);
+            fetchInitialCards(); // Fetch new users without full re-render
+          }}
+          onTapCard={(cardIndex) => {
+            Alert.alert(
+              `${cards[cardIndex].firstName} ${cards[cardIndex].lastName} was tapped`
+            );
+            console.log(
+              `${cards[cardIndex].firstName} ${cards[cardIndex].lastName} was tapped`
+            );
           }}
           cardIndex={0}
           backgroundColor="transparent"
@@ -111,7 +114,82 @@ const SwipeScreen: React.FC = () => {
           animateOverlayLabelsOpacity
           animateCardOpacity
           swipeBackCard
-          infinite={true}
+          infinite={false} // change?
+          overlayLabels={{
+            bottom: {
+              element: <Text>BLEAH</Text>,
+              title: "BLEAH",
+              style: {
+                label: {
+                  backgroundColor: "black",
+                  borderColor: "black",
+                  color: "white",
+                  borderWidth: 1,
+                },
+                wrapper: {
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                },
+              },
+            },
+            left: {
+              element: <Text style={[styles.title, styles.failed]}>NOPE</Text>,
+              title: "NOPE",
+              style: {
+                label: {
+                  backgroundColor: "black",
+                  borderColor: "black",
+                  color: "red",
+                  borderWidth: 1,
+                  fontSize: 24,
+                },
+                wrapper: {
+                  flexDirection: "column",
+                  alignItems: "flex-end",
+                  justifyContent: "flex-start",
+                  marginTop: 30,
+                  marginLeft: -30,
+                },
+              },
+            },
+            right: {
+              element: <Text style={[styles.title, styles.ok]}>LIKE</Text>,
+              title: "LIKE",
+              style: {
+                label: {
+                  backgroundColor: "black",
+                  borderColor: "black",
+                  color: "green",
+                  borderWidth: 1,
+                },
+                wrapper: {
+                  flexDirection: "column",
+                  alignItems: "flex-start",
+                  justifyContent: "flex-start",
+                  marginTop: 30,
+                  marginLeft: 30,
+                },
+              },
+            },
+            top: {
+              element: <Text>SUPER</Text>,
+              title: "SUPER LIKE",
+              style: {
+                label: {
+                  backgroundColor: "black",
+                  borderColor: "black",
+                  color: "white",
+                  borderWidth: 1,
+                },
+                wrapper: {
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                },
+              },
+            },
+          }}
         />
       )}
     </LinearGradient>
