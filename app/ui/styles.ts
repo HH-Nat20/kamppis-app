@@ -30,6 +30,24 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     height: 300,
   },
+  cardTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
+    color: "#333333",
+    paddingBottom: 20,
+  },
+  cardContent: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingBottom: 20,
+  },
+  cardText: {
+    fontSize: 16,
+    textAlign: "center",
+    color: "#333333",
+  },
   text: {
     textAlign: "center",
     fontSize: 20,
@@ -52,6 +70,32 @@ const styles = StyleSheet.create({
   ok: { color: "green" },
   failed: { color: "red" },
   upperTab: {},
+  definitionBox: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "space-between",
+    alignItems: "center",
+    margin: 10,
+    borderRadius: 4,
+    borderWidth: 2,
+    borderColor: "#E8E8E8",
+  },
+  definition: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    margin: 10,
+  },
+  definitionText: {
+    fontSize: 16,
+    color: "#333333",
+  },
+  definitionValue: {
+    fontSize: 16,
+    color: "#333333",
+    fontWeight: "bold",
+  },
 });
 
 export default styles;

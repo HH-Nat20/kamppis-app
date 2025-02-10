@@ -1,11 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Text, View, Alert, Image, ActivityIndicator } from "react-native";
+import { View, Alert, ActivityIndicator } from "react-native";
 import Swiper from "react-native-deck-swiper";
 import { LinearGradient } from "expo-linear-gradient";
 import styles from "../ui/styles";
 import { User } from "../types/user";
-
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { useMatch } from "../contexts/MatchContext";
+
+import Card from "../components/Card";
 
 const SwipeScreen: React.FC = () => {
   const swiperRef = useRef<Swiper<any>>(null);
@@ -24,6 +26,7 @@ const SwipeScreen: React.FC = () => {
         firstName: user.name.first,
         lastName: user.name.last,
         dateOfBirth: [user.dob.date],
+        age: user.dob.age,
         email: user.email,
         picture: user.picture.large,
       };
@@ -85,18 +88,10 @@ const SwipeScreen: React.FC = () => {
           ref={swiperRef}
           cards={cards}
           renderCard={(card: User | null) =>
-            card ? (
-              <View style={styles.card} key={card.id}>
-                <Image
-                  source={{ uri: card.picture }}
-                  style={styles.cardPicture}
-                />
-                <Text style={styles.title}>{card.firstName}</Text>
-              </View>
-            ) : null
+            card ? <Card card={card} key={card.id} /> : null
           }
           onSwipedLeft={onSwipeLeft}
-          disableBottomSwipe={true}
+          disableBottomSwipe={false}
           disableTopSwipe={true} // for now
           onSwipedRight={onSwipeRight}
           onSwipedAll={() => {
@@ -106,9 +101,6 @@ const SwipeScreen: React.FC = () => {
             fetchInitialCards(); // Fetch new users without full re-render
           }}
           onTapCard={(cardIndex) => {
-            Alert.alert(
-              `${cards[cardIndex].firstName} ${cards[cardIndex].lastName} was tapped`
-            );
             console.log(
               `${cards[cardIndex].firstName} ${cards[cardIndex].lastName} was tapped`
             );
@@ -123,7 +115,7 @@ const SwipeScreen: React.FC = () => {
           infinite={false} // change?
           overlayLabels={{
             bottom: {
-              element: <Text>BLEAH</Text>,
+              element: <Ionicons name="help-outline" size={100} color="blue" />,
               title: "BLEAH",
               style: {
                 label: {
@@ -140,7 +132,7 @@ const SwipeScreen: React.FC = () => {
               },
             },
             left: {
-              element: <Text style={[styles.title, styles.failed]}>NOPE</Text>,
+              element: <Ionicons name="thumbs-down" size={100} color="red" />,
               title: "NOPE",
               style: {
                 label: {
@@ -160,7 +152,7 @@ const SwipeScreen: React.FC = () => {
               },
             },
             right: {
-              element: <Text style={[styles.title, styles.ok]}>LIKE</Text>,
+              element: <Ionicons name="thumbs-up" size={100} color="green" />,
               title: "LIKE",
               style: {
                 label: {
@@ -179,7 +171,7 @@ const SwipeScreen: React.FC = () => {
               },
             },
             top: {
-              element: <Text>SUPER</Text>,
+              element: <Ionicons name="heart" size={100} color="red" />,
               title: "SUPER LIKE",
               style: {
                 label: {

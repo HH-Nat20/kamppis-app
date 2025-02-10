@@ -4,6 +4,7 @@ export interface User {
   lastName: string;
   email: string;
   dateOfBirth: number[];
+  age?: number;
   userHabits?: string[]; // Perhaps number[] (habit ids) ?
   userInterests?: string[]; // Perhaps number[] (interest ids) ?
   picture?: string;
