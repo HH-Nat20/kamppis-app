@@ -6,6 +6,8 @@ import styles from "../ui/styles";
 
 import { User } from "../types/user";
 
+import { countAge, formatDate, getProfilePicture } from "../helpers/helpers";
+
 interface CardProps {
   card: User;
 }
@@ -20,11 +22,16 @@ const Card: React.FC<CardProps> = ({ card }) => {
       }}
       style={styles.title}
     >
-      <View style={styles.card} key={card.id}>
-        <Image source={{ uri: card.picture }} style={styles.cardPicture} />
+      <View style={styles.card} key={card.user?.id}>
+        <Image
+          source={{
+            uri: getProfilePicture(card.userPhotos),
+          }}
+          style={styles.cardPicture}
+        />
 
         <Text style={styles.cardTitle}>
-          {card.firstName}, {card.age}
+          {card.firstName} {card.lastName}, {countAge(card.dateOfBirth)}
         </Text>
 
         {tapped && (
@@ -38,13 +45,17 @@ const Card: React.FC<CardProps> = ({ card }) => {
               </View>
               <View style={styles.definition}>
                 <Text style={styles.definitionText}>Email: </Text>
-                <Text style={styles.definitionValue}>{card.email}</Text>
+                <Text style={styles.definitionValue}>{card.user?.email}</Text>
               </View>
               <View style={styles.definition}>
                 <Text style={styles.definitionText}>Date of Birth: </Text>
                 <Text style={styles.definitionValue}>
-                  {card.dateOfBirth[0].toString()}
+                  {formatDate(card.dateOfBirth)}
                 </Text>
+              </View>
+              <View style={styles.definition}>
+                <Text style={styles.definitionText}>Gender: </Text>
+                <Text style={styles.definitionValue}>{card.gender}</Text>
               </View>
             </View>
           </View>

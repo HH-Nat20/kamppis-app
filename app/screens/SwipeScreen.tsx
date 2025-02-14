@@ -16,36 +16,39 @@ const SwipeScreen: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [cards, setCards] = useState<User[]>([]);
 
-  const fetchUser = async () => {
-    try {
-      const randNum = Math.floor(Math.random() * 500) + 1;
-      const response = await fetch(
-        "https://pokeapi.co/api/v2/pokemon/" + randNum
-      );
-      const data = await response.json();
-      return {
-        id: randNum, // Ensuring unique keys
-        firstName: data.name,
-        lastName: "",
-        dateOfBirth: [new Date().getFullYear(), 1, 1],
-        age: Math.floor(Math.random() * 100),
-        email: "pokemons.dont.have@emails.com",
-        picture: data.sprites.front_default,
-      };
-    } catch (error) {
-      console.error("Error fetching user:", error);
-      return null;
-    }
-  };
-
   const fetchInitialCards = async () => {
+    // Temporary randomizer
+    const randInt = Math.floor(Math.random() * 5) + 1;
+
     setLoading(true);
-    const fetchedCards: User[] = [];
-    while (fetchedCards.length < 10) {
-      const newUser = await fetchUser();
-      if (newUser) fetchedCards.push(newUser);
+
+    try {
+      const response = await fetch(
+        `http://localhost:8080/api/user-profile/${randInt}/query`
+      ); // TODO: This fetches all users at once.. should be paginated
+      if (!response.ok) {
+        console.error(
+          "Error fetching users:",
+          response.status,
+          response.statusText
+        );
+        setLoading(false);
+        return;
+      }
+
+      const users: User[] = await response.json();
+
+      if (!Array.isArray(users) || users.length === 0) {
+        console.warn("No users received from API");
+        setLoading(false);
+        return;
+      }
+
+      setCards(users);
+    } catch (error) {
+      console.error("Error fetching users:", error);
     }
-    setCards(fetchedCards);
+
     setLoading(false);
   };
 
@@ -54,21 +57,18 @@ const SwipeScreen: React.FC = () => {
   }, []);
 
   const onSwipeLeft = (cardIndex: number) => {
-    console.log(
-      `${cards[cardIndex].firstName} ${cards[cardIndex].lastName} was swiped left`
-    );
+    const card = cards[cardIndex];
+    if (!card) return;
+    console.log(`${card.firstName} ${card.lastName} was swiped left`);
   };
 
   const onSwipeRight = (cardIndex: number) => {
-    const matchedUser = cards[cardIndex];
-    console.log(
-      `${matchedUser.firstName} ${matchedUser.lastName} was swiped right`
-    );
+    const card = cards[cardIndex];
+    if (!card) return;
+    console.log(`${card.firstName} ${card.lastName} was swiped right`);
     if (Math.random() < 0.25) {
-      addMatch(matchedUser);
-      console.log(
-        `Matched with ${matchedUser.firstName} ${matchedUser.lastName}`
-      );
+      addMatch(card);
+      console.log(`Matched with ${card.firstName} ${card.lastName}`);
     }
   };
 
@@ -90,17 +90,18 @@ const SwipeScreen: React.FC = () => {
           ref={swiperRef}
           cards={cards}
           renderCard={(card: User | null) =>
-            card ? <Card card={card} key={card.id} /> : null
+            card ? (
+              <Card card={card} key={card.user?.id ?? Math.random()} />
+            ) : null
           }
           onSwipedLeft={onSwipeLeft}
           disableBottomSwipe={false}
           disableTopSwipe={true} // for now
           onSwipedRight={onSwipeRight}
           onSwipedAll={() => {
-            console.log("Everything swiped");
             Alert.alert("All cards have been swiped", "Fetching new users...");
             setCards([]);
-            fetchInitialCards(); // Fetch new users without full re-render
+            fetchInitialCards();
           }}
           onTapCard={(cardIndex) => {
             console.log(
