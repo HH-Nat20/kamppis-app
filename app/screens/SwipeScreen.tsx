@@ -1,26 +1,31 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Text, View, ActivityIndicator } from "react-native";
+
 import Swiper from "react-native-deck-swiper";
 import { LinearGradient } from "expo-linear-gradient";
-import styles from "../ui/styles";
-import { User } from "../types/user";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { useMatch } from "../contexts/MatchContext";
+
+import Card from "../components/Card";
 
 import dao from "../ajax/dao";
 
-import Card from "../components/Card";
+import { User } from "../types/User";
+import { SwipeRequest } from "../types/requests/SwipeRequest";
+
+import styles from "../ui/styles";
 
 const SwipeScreen: React.FC = () => {
   const swiperRef = useRef<Swiper<any>>(null);
 
-  const { addMatch } = useMatch();
   const [loading, setLoading] = useState<boolean>(true);
   const [cards, setCards] = useState<User[]>([]);
+
+  const [loggedUserId, setLoggedUserId] = useState<number>(1); // Hardcoded for now
 
   const fetchInitialCards = async () => {
     // Temporary randomizer
     const randInt = Math.floor(Math.random() * 5) + 1;
+    setLoggedUserId(randInt);
 
     setLoading(true);
 
@@ -47,20 +52,19 @@ const SwipeScreen: React.FC = () => {
     fetchInitialCards();
   }, []);
 
-  const onSwipeLeft = (cardIndex: number) => {
+  const handleSwipe = (
+    cardIndex: number,
+    direction: "left" | "right" | "down"
+  ) => {
+    console.log(`Swiped ${direction} on card ${cardIndex}`);
     const card = cards[cardIndex];
     if (!card) return;
-    console.log(`${card.firstName} ${card.lastName} was swiped left`);
-  };
-
-  const onSwipeRight = (cardIndex: number) => {
-    const card = cards[cardIndex];
-    if (!card) return;
-    console.log(`${card.firstName} ${card.lastName} was swiped right`);
-    if (Math.random() < 0.25) {
-      addMatch(card);
-      console.log(`Matched with ${card.firstName} ${card.lastName}`);
-    }
+    const swipeRequest: SwipeRequest = {
+      swipingUserId: loggedUserId,
+      swipedUserId: card.id,
+      isRightSwipe: direction === "right",
+    };
+    dao.swipe(swipeRequest);
   };
 
   return (
@@ -92,10 +96,11 @@ const SwipeScreen: React.FC = () => {
               </View>
             )
           }
-          onSwipedLeft={onSwipeLeft}
+          onSwipedLeft={(cardIndex) => handleSwipe(cardIndex, "left")}
           disableBottomSwipe={false}
           disableTopSwipe={true} // for now
-          onSwipedRight={onSwipeRight}
+          onSwipedRight={(cardIndex) => handleSwipe(cardIndex, "right")}
+          onSwipedBottom={(cardIndex) => handleSwipe(cardIndex, "down")}
           onSwipedAll={() => {
             setCards([]);
             fetchInitialCards();

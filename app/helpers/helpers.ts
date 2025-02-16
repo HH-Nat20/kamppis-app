@@ -1,4 +1,4 @@
-import { Photo } from "../types/photo";
+import { Photo } from "../types/Photo";
 
 const countAge = (dateTuple?: [number, number, number]) => {
   if (!dateTuple || dateTuple.length !== 3) {

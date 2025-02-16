@@ -8,7 +8,7 @@ import {
   Dimensions,
 } from "react-native";
 import styles from "../ui/styles";
-import { User } from "../types/user";
+import { User } from "../types/User";
 import { countAge, formatDate, getProfilePicture } from "../helpers/helpers";
 
 interface CardProps {

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, FlatList } from "react-native";
+import { SafeAreaView, View, Text, FlatList } from "react-native";
 
 import { useMatch } from "../contexts/MatchContext";
 
@@ -13,7 +13,7 @@ const MatchesScreen = () => {
   const { matches } = useMatch();
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.text}>Matches</Text>
       <LinearGradient
         colors={[
@@ -34,7 +34,7 @@ const MatchesScreen = () => {
         )}
       />
       <StatusBar style="auto" />
-    </View>
+    </SafeAreaView>
   );
 };
 
