@@ -4,9 +4,7 @@ import styles from "../ui/styles";
 
 import { LinearGradient } from "expo-linear-gradient";
 
-const BACKEND_URL = process.env.BACKEND_URL ?? "http://localhost:8080";
-const SERVER_URL = `${BACKEND_URL}/health`;
-const DB_URL = `${BACKEND_URL}/db-health`;
+import dao from "../ajax/dao";
 
 const HomeScreen = () => {
   const [serverStatus, setServerStatus] = useState<"loading" | "ok" | "failed">(
@@ -16,18 +14,39 @@ const HomeScreen = () => {
     "loading"
   );
 
+  const checkServerStatus = async () => {
+    try {
+      const health = await dao.getServerHealth();
+      if (health.status === "ok") {
+        setServerStatus("ok");
+      } else {
+        setServerStatus("failed");
+      }
+    } catch (error) {
+      console.error("The server doesn't seem to be up", error);
+      setServerStatus("failed");
+    }
+  };
+
+  const checkDatabaseStatus = async () => {
+    try {
+      const health = await dao.getDatabaseHealth();
+      if (health.status === "ok") {
+        setDbStatus("ok");
+      } else {
+        setDbStatus("failed");
+      }
+    } catch (error) {
+      console.error("The database doesn't seem to be up", error);
+      setDbStatus("failed");
+    }
+  };
+
   useEffect(() => {
     // Check server status
-    fetch(SERVER_URL)
-      .then((res) =>
-        res.ok ? setServerStatus("ok") : setServerStatus("failed")
-      )
-      .catch(() => setServerStatus("failed"));
-
+    checkServerStatus();
     // Check database status
-    fetch(DB_URL)
-      .then((res) => (res.ok ? setDbStatus("ok") : setDbStatus("failed")))
-      .catch(() => setDbStatus("failed"));
+    checkDatabaseStatus();
   }, []);
 
   return (

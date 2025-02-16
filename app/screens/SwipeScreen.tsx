@@ -1,11 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Text, View, Alert, ActivityIndicator } from "react-native";
+import { Text, View, ActivityIndicator } from "react-native";
 import Swiper from "react-native-deck-swiper";
 import { LinearGradient } from "expo-linear-gradient";
 import styles from "../ui/styles";
 import { User } from "../types/user";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useMatch } from "../contexts/MatchContext";
+
+import dao from "../ajax/dao";
 
 import Card from "../components/Card";
 
@@ -23,20 +25,9 @@ const SwipeScreen: React.FC = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(
-        `http://localhost:8080/api/user-profile/${randInt}/query`
-      ); // TODO: This fetches all users at once.. should be paginated
-      if (!response.ok) {
-        console.error(
-          "Error fetching users:",
-          response.status,
-          response.statusText
-        );
-        setLoading(false);
-        return;
-      }
+      const users: User[] = await dao.getPossibleMatches(randInt);
 
-      const users: User[] = await response.json();
+      setLoading(false);
 
       if (!Array.isArray(users) || users.length === 0) {
         console.warn("No users received from API");

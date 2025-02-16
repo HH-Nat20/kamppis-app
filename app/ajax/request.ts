@@ -1,4 +1,4 @@
-export const baseUrl = "http://localhost:8080/api"; // TODO: Use environment variable
+export const baseUrl = "https://kamppis.hellmanstudios.fi/api"; // TODO: Use environment variable
 
 // CRUD operations for the API
 export const get = async (url: string) => {
