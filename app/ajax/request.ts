@@ -1,17 +1,7 @@
-import { Platform } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// Determine API base URL dynamically
 export const getBaseUrl = () => {
-  if (Platform.OS === "web") {
-    return "https://kamppis.hellmanstudios.fi/api"; // Use full URL for web testing
-  }
-
-  if (__DEV__) {
-    return "http://10.0.2.2:8080/api"; // Android Emulator (or use `192.168.x.x` for real devices)
-  }
-
-  return "https://kamppis.hellmanstudios.fi/api"; // Production API
+  return "https://kamppis.hellmanstudios.fi/api"; // TODO: Change logic using env variables later
 };
 
 export const baseUrl = getBaseUrl();
