@@ -47,7 +47,7 @@ export default function App() {
               <TextInput
                 style={styles.input}
                 placeholder="Enter your age"
-                keyboardType="numeric"
+                keyboardType="number-pad"
                 value={age}
                 onChangeText={setAge}
               />
