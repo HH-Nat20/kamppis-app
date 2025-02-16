@@ -1,8 +1,9 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    position: "relative",
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "transparent",
@@ -14,40 +15,60 @@ const styles = StyleSheet.create({
     top: 0,
     bottom: 0,
   },
-  card: {
+
+  // Card component styles
+  cardContainer: {
+    position: "relative",
     flex: 1,
+    top: -60,
+    left: -20,
+    zIndex: 1,
+  },
+  overlay: {
     position: "absolute",
-    width: "100%",
-    borderRadius: 4,
-    borderWidth: 2,
-    borderColor: "#E8E8E8",
-    justifyContent: "center",
-    backgroundColor: "#E1E1E1",
-  },
-  cardPicture: {
-    flex: 1,
-    width: "100%",
-    borderRadius: 4,
-    height: 300,
-  },
-  cardTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    textAlign: "center",
-    color: "#333333",
-    paddingBottom: 20,
-  },
-  cardContent: {
-    flex: 1,
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "rgba(0, 0, 0, 0.4)",
     justifyContent: "center",
     alignItems: "center",
-    paddingBottom: 20,
+    padding: 20,
   },
-  cardText: {
-    fontSize: 16,
+  cardTitle: {
+    fontSize: 26,
+    fontWeight: "bold",
+    color: "#fff",
     textAlign: "center",
-    color: "#333333",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    padding: 10,
+    borderRadius: 8,
   },
+  cardContent: {
+    marginTop: 20,
+    backgroundColor: "rgba(255, 255, 255, 0.8)",
+    padding: 15,
+    borderRadius: 8,
+  },
+  definitionBox: {
+    width: "100%",
+  },
+  definition: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingVertical: 5,
+  },
+  definitionText: {
+    fontSize: 16,
+    color: "#222",
+  },
+  definitionValue: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#111",
+  },
+
+  // SwipeScreen styles
   text: {
     textAlign: "center",
     fontSize: 20,
@@ -65,22 +86,25 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 20,
   },
-  subtitle: { 
-    fontSize: 18, marginTop: 10 
+  subtitle: {
+    fontSize: 18,
+    marginTop: 10,
   },
   status: {
-    fontSize: 20, fontWeight: "bold", marginTop: 5 
+    fontSize: 20,
+    fontWeight: "bold",
+    marginTop: 5,
   },
-  ok: { 
-    color: "green" 
+  ok: {
+    color: "green",
   },
-  failed: { 
-    color: "red" 
+  failed: {
+    color: "red",
   },
   saveButton: {
-    width: 150, 
-    height: 50, 
-    backgroundColor: "blue", 
+    width: 150,
+    height: 50,
+    backgroundColor: "blue",
     borderRadius: 10,
     position: "absolute",
     top: 10,
@@ -89,9 +113,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   nextButton: {
-    width: 150, 
-    height: 50, 
-    backgroundColor: "#ccc", 
+    width: 150,
+    height: 50,
+    backgroundColor: "#ccc",
     borderRadius: 10,
     position: "absolute",
     bottom: 10,
@@ -124,7 +148,7 @@ const styles = StyleSheet.create({
     marginTop: 100,
   },
   pickerInput: {
-    borderRadius: 8,     
+    borderRadius: 8,
     marginTop: 5,
     height: 40,
     justifyContent: "center",
@@ -132,32 +156,6 @@ const styles = StyleSheet.create({
   },
   pickerItem: {
     color: "black",
-  },
-  definitionBox: {
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "space-between",
-    alignItems: "center",
-    margin: 10,
-    borderRadius: 4,
-    borderWidth: 2,
-    borderColor: "#E8E8E8",
-  },
-  definition: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    margin: 10,
-  },
-  definitionText: {
-    fontSize: 16,
-    color: "#333333",
-  },
-  definitionValue: {
-    fontSize: 16,
-    color: "#333333",
-    fontWeight: "bold",
   },
 });
 

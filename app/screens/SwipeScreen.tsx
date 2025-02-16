@@ -84,7 +84,7 @@ const SwipeScreen: React.FC = () => {
             Object.keys(card).length ? (
               <Card card={card as User} key={(card as User).id} />
             ) : (
-              <View style={styles.card}>
+              <View style={styles.cardContainer}>
                 <Text style={styles.cardTitle}>No Matches Found</Text>
                 <Text style={styles.subtitle}>
                   Try adjusting your settings for better results
@@ -108,10 +108,8 @@ const SwipeScreen: React.FC = () => {
           cardIndex={0}
           backgroundColor="transparent"
           stackSize={10}
-          stackSeparation={15}
           animateOverlayLabelsOpacity
           animateCardOpacity
-          swipeBackCard
           infinite={false} // change?
           overlayLabels={{
             bottom: {
