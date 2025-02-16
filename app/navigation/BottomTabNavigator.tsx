@@ -1,6 +1,7 @@
 import React from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import HomeScreen from "../screens/HomeScreen";
 import MatchesScreen from "../screens/MatchesScreen";
 import SwipeScreen from "../screens/SwipeScreen";
@@ -9,6 +10,8 @@ import TopTabNavigator from "./TopTabNavigator";
 const Tab = createBottomTabNavigator();
 
 const BottomTabNavigator: React.FC = () => {
+  const insets = useSafeAreaInsets();
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -17,6 +20,9 @@ const BottomTabNavigator: React.FC = () => {
           borderTopWidth: 0, // Removes the top border
           elevation: 0, // Removes shadow on Android
           shadowOpacity: 0, // Removes shadow on iOS
+          paddingBottom: insets.bottom === 0 ? 5 : insets.bottom,
+          height: 60 + insets.bottom,
+          paddingTop: 5,
         },
         tabBarActiveTintColor: "rgb(195, 166, 214)", // Active tab color
         tabBarInactiveTintColor: "rgb(114, 56, 150)", // Inactive tab color

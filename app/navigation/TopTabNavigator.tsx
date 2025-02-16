@@ -1,14 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import ProfileScreen from "../screens/ProfileScreen";
 import SettingsScreen from "../screens/SettingsScreen";
-import { User } from "../types/user";
 
 const UpTab = createMaterialTopTabNavigator();
 
 const TopTabNavigator: React.FC = () => {
-  const [matches, setMatches] = useState<User[]>([]);
-
   return (
     <UpTab.Navigator
       screenOptions={{

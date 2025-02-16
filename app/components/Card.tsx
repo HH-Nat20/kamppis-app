@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  SafeAreaView,
   View,
   Text,
   ImageBackground,
@@ -21,48 +22,52 @@ const Card: React.FC<CardProps> = ({ card }) => {
   const { width, height } = Dimensions.get("window");
 
   return (
-    <Pressable
-      onPress={() => setTapped(!tapped)}
-      style={[styles.cardContainer, { width, height }]} // Apply dimensions dynamically
-    >
-      <ImageBackground
-        source={{ uri: getProfilePicture(card.userPhotos) }}
-        style={{ width, height }} // Ensure full-screen image
+    <SafeAreaView style={styles.safeArea}>
+      <Pressable
+        onPress={() => setTapped(!tapped)}
+        style={[styles.cardContainer, { width, height }]} // Apply dimensions dynamically
       >
-        <View style={styles.overlay}>
-          <Text style={styles.cardTitle}>
-            {card.firstName} {card.lastName}, {countAge(card.dateOfBirth)}
-          </Text>
+        <ImageBackground
+          source={{ uri: getProfilePicture(card.userPhotos) }}
+          style={{ width, height }}
+        >
+          <View style={styles.overlay}>
+            <Text style={styles.cardTitle}>
+              {card.firstName} {card.lastName}, {countAge(card.dateOfBirth)}
+            </Text>
 
-          {tapped && (
-            <View style={styles.cardContent}>
-              <View style={styles.definitionBox}>
-                <View style={styles.definition}>
-                  <Text style={styles.definitionText}>Full Name: </Text>
-                  <Text style={styles.definitionValue}>
-                    {card.firstName} {card.lastName}
-                  </Text>
-                </View>
-                <View style={styles.definition}>
-                  <Text style={styles.definitionText}>Email: </Text>
-                  <Text style={styles.definitionValue}>{card.user?.email}</Text>
-                </View>
-                <View style={styles.definition}>
-                  <Text style={styles.definitionText}>Date of Birth: </Text>
-                  <Text style={styles.definitionValue}>
-                    {formatDate(card.dateOfBirth)}
-                  </Text>
-                </View>
-                <View style={styles.definition}>
-                  <Text style={styles.definitionText}>Gender: </Text>
-                  <Text style={styles.definitionValue}>{card.gender}</Text>
+            {tapped && (
+              <View style={styles.cardContent}>
+                <View style={styles.definitionBox}>
+                  <View style={styles.definition}>
+                    <Text style={styles.definitionText}>Full Name: </Text>
+                    <Text style={styles.definitionValue}>
+                      {card.firstName} {card.lastName}
+                    </Text>
+                  </View>
+                  <View style={styles.definition}>
+                    <Text style={styles.definitionText}>Email: </Text>
+                    <Text style={styles.definitionValue}>
+                      {card.user?.email}
+                    </Text>
+                  </View>
+                  <View style={styles.definition}>
+                    <Text style={styles.definitionText}>Date of Birth: </Text>
+                    <Text style={styles.definitionValue}>
+                      {formatDate(card.dateOfBirth)}
+                    </Text>
+                  </View>
+                  <View style={styles.definition}>
+                    <Text style={styles.definitionText}>Gender: </Text>
+                    <Text style={styles.definitionValue}>{card.gender}</Text>
+                  </View>
                 </View>
               </View>
-            </View>
-          )}
-        </View>
-      </ImageBackground>
-    </Pressable>
+            )}
+          </View>
+        </ImageBackground>
+      </Pressable>
+    </SafeAreaView>
   );
 };
 

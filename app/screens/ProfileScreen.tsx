@@ -20,7 +20,6 @@ export default function App({}) {
   const [gender, setGender] = useState("male");
   const [lifestyle, setLifestyle] = useState("");
   const [interest, setInterest] = useState("");
-  
 
   return (
     <View style={styles.container}>
@@ -67,20 +66,20 @@ export default function App({}) {
         <TextInput
           style={styles.input}
           placeholder="Add my interests"
-          value={lifestyle}
-          onChangeText={setLifestyle}
+          value={interest}
+          onChangeText={setInterest}
         />
       </View>
       <TouchableOpacity
         style={styles.saveButton}
         onPress={() => setSaved(true)}
-      > 
+      >
         <Text style={{ color: "white", fontSize: 25 }}>Save</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.nextButton}
         onPress={() => setSaved(true)}
-      > 
+      >
         <Text style={{ color: "black", fontSize: 25 }}>Next</Text>
       </TouchableOpacity>
 
