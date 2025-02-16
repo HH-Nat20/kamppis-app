@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { View, Alert, ActivityIndicator } from "react-native";
+import { Text, View, Alert, ActivityIndicator } from "react-native";
 import Swiper from "react-native-deck-swiper";
 import { LinearGradient } from "expo-linear-gradient";
 import styles from "../ui/styles";
@@ -89,17 +89,23 @@ const SwipeScreen: React.FC = () => {
         <Swiper
           ref={swiperRef}
           cards={cards}
-          renderCard={(card: User | null) =>
-            card ? (
-              <Card card={card} key={card.user?.id ?? Math.random()} />
-            ) : null
+          renderCard={(card: User | {}) =>
+            Object.keys(card).length ? (
+              <Card card={card as User} key={(card as User).id} />
+            ) : (
+              <View style={styles.card}>
+                <Text style={styles.cardTitle}>No Matches Found</Text>
+                <Text style={styles.subtitle}>
+                  Try adjusting your settings for better results
+                </Text>
+              </View>
+            )
           }
           onSwipedLeft={onSwipeLeft}
           disableBottomSwipe={false}
           disableTopSwipe={true} // for now
           onSwipedRight={onSwipeRight}
           onSwipedAll={() => {
-            Alert.alert("All cards have been swiped", "Fetching new users...");
             setCards([]);
             fetchInitialCards();
           }}
