@@ -1,47 +1,64 @@
-export const baseUrl = "https://kamppis.hellmanstudios.fi/api"; // TODO: Use environment variable
+import { Platform } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// CRUD operations for the API
-export const get = async (url: string) => {
-  const response = await fetch(url, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("sessionToken")}`,
-    },
-  });
-  return response;
+// Determine API base URL dynamically
+export const getBaseUrl = () => {
+  if (Platform.OS === "web") {
+    return "https://kamppis.hellmanstudios.fi/api"; // Use full URL for web testing
+  }
+
+  if (__DEV__) {
+    return "http://10.0.2.2:8080/api"; // Android Emulator (or use `192.168.x.x` for real devices)
+  }
+
+  return "https://kamppis.hellmanstudios.fi/api"; // Production API
 };
 
-export const create = async (url: string, newObject: object) => {
-  const response = await fetch(url, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("sessionToken")}`,
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(newObject),
-  });
-  return response;
+export const baseUrl = getBaseUrl();
+
+// Function to get token from AsyncStorage
+const getSessionToken = async (): Promise<string | null> => {
+  try {
+    return await AsyncStorage.getItem("sessionToken");
+  } catch (error) {
+    console.error("Error retrieving session token:", error);
+    return null;
+  }
 };
 
-export const update = async (url: string, updatedObject: object) => {
-  const response = await fetch(url, {
-    method: "PUT",
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("sessionToken")}`,
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(updatedObject),
-  });
-  return response;
+// Helper function to send requests
+const sendRequest = async (
+  url: string,
+  method: "GET" | "POST" | "PUT" | "DELETE",
+  body?: object
+) => {
+  const token = await getSessionToken();
+
+  const headers: Record<string, string> = {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+  };
+
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
+  const options: RequestInit = {
+    method,
+    headers,
+    body: body ? JSON.stringify(body) : undefined,
+  };
+
+  return fetch(`${baseUrl}${url}`, options);
 };
 
-export const remove = async (url: string) => {
-  const response = await fetch(url, {
-    method: "DELETE",
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("sessionToken")}`,
-    },
-  });
-  return response;
-};
+// CRUD functions
+export const get = async (url: string) => sendRequest(url, "GET");
+
+export const create = async (url: string, newObject: object) =>
+  sendRequest(url, "POST", newObject);
+
+export const update = async (url: string, updatedObject: object) =>
+  sendRequest(url, "PUT", updatedObject);
+
+export const remove = async (url: string) => sendRequest(url, "DELETE");
