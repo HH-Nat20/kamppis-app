@@ -107,6 +107,7 @@ const SwipeScreen: React.FC = () => {
           }}
           cardIndex={0}
           backgroundColor="transparent"
+          stackScale={-3}
           stackSize={10}
           animateOverlayLabelsOpacity
           animateCardOpacity
