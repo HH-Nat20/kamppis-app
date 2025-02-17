@@ -6,8 +6,8 @@ export interface User {
   dateOfBirth: [number, number, number];
   gender?: "MALE" | "FEMALE" | "OTHER" | "NOT_IMPORTANT";
   user?: { email: string; id: number };
-  userHabits?: string[]; // Perhaps number[] (habit ids) ?
-  userInterests?: string[]; // Perhaps number[] (interest ids) ?
+  userHabits?: number[];
+  userInterests?: number[]; 
   bio?: string;
   minAgePreference?: number;
   maxAgePreference?: number;

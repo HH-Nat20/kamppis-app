@@ -9,3 +9,9 @@ export const getPossibleMatches = async (userId: number) => {
   const users: User[] = await response.json();
   return users;
 };
+
+export const getAllUserProfiles = async () => {
+  const response = await get(`/${ENDPOINT}`);
+  const users: User[] = await response.json();
+  return users;
+};

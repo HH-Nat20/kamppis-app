@@ -2,9 +2,9 @@ import React from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "../screens/HomeScreen";
-import MatchesScreen from "../screens/MatchesScreen";
 import SwipeScreen from "../screens/SwipeScreen";
 import TopTabNavigator from "./TopTabNavigator";
+import ChatStackNavigator from "./ChatStackNavigator"; // Import Chat Stack
 
 const Tab = createBottomTabNavigator();
 
@@ -14,15 +14,15 @@ const BottomTabNavigator: React.FC = () => {
       screenOptions={({ route }) => ({
         tabBarStyle: {
           backgroundColor: "rgba(47, 9, 69, 1)",
-          borderTopWidth: 0, // Removes the top border
-          elevation: 0, // Removes shadow on Android
-          shadowOpacity: 0, // Removes shadow on iOS
+          borderTopWidth: 0,
+          elevation: 0,
+          shadowOpacity: 0,
           paddingBottom: 5,
           height: 60,
           paddingTop: 5,
         },
-        tabBarActiveTintColor: "rgb(195, 166, 214)", // Active tab color
-        tabBarInactiveTintColor: "rgb(114, 56, 150)", // Inactive tab color
+        tabBarActiveTintColor: "rgb(195, 166, 214)",
+        tabBarInactiveTintColor: "rgb(114, 56, 150)",
         tabBarIcon: ({ color, size }) => {
           let iconName: keyof typeof Ionicons.glyphMap = "home";
 
@@ -46,13 +46,13 @@ const BottomTabNavigator: React.FC = () => {
       />
       <Tab.Screen
         name="Swipe"
-        options={{ headerShown: false }}
         component={SwipeScreen}
+        options={{ headerShown: false }}
       />
       <Tab.Screen
         name="Chat"
+        component={ChatStackNavigator} // Use the Stack Navigator here
         options={{ headerShown: false }}
-        component={MatchesScreen}
       />
     </Tab.Navigator>
   );

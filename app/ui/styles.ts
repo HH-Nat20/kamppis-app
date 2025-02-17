@@ -10,13 +10,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "transparent",
+    paddingHorizontal: 10,
+    paddingTop: 20,
   },
   background: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
+    ...StyleSheet.absoluteFillObject,
+    zIndex: -1,
+    //position: "absolute",
+    //left: 0,
+    //right: 0,
+    //top: 0,
+    //bottom: 0,
   },
 
   // Card component styles
@@ -159,6 +163,47 @@ const styles = StyleSheet.create({
   },
   pickerItem: {
     color: "black",
+  },
+
+  // MatchesScreen styles
+  header: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#fff",
+    textAlign: "center",
+    marginBottom: 10,
+    marginTop: 10,
+  },
+  columnWrapper: {
+    justifyContent: "space-between",
+    height: Dimensions.get("window").width / 2,
+  },
+  matchItem: {
+    flex: 1,
+    margin: 5,
+    borderRadius: 10,
+    overflow: "hidden",
+    position: "relative",
+    aspectRatio: 1,
+  },
+  image: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 10,
+  },
+  placeholder: {
+    backgroundColor: "#333",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  placeholderText: {
+    color: "#aaa",
+    fontSize: 14,
+  },
+  name: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
 

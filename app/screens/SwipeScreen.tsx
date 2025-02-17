@@ -30,7 +30,7 @@ const SwipeScreen: React.FC = () => {
     setLoading(true);
 
     try {
-      const users: User[] = await dao.getPossibleMatches(randInt);
+      const users: User[] = await dao.getAllUserProfiles(); // dao.getPossibleMatches(randInt);
 
       setLoading(false);
 
