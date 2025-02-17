@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "../screens/HomeScreen";
 import SwipeScreen from "../screens/SwipeScreen";
 import TopTabNavigator from "./TopTabNavigator";
-import ChatStackNavigator from "./ChatStackNavigator"; // Import Chat Stack
+import ChatStackNavigator from "./ChatStackNavigator";
 
 const Tab = createBottomTabNavigator();
 
@@ -51,7 +51,7 @@ const BottomTabNavigator: React.FC = () => {
       />
       <Tab.Screen
         name="Chat"
-        component={ChatStackNavigator} // Use the Stack Navigator here
+        component={ChatStackNavigator}
         options={{ headerShown: false }}
       />
     </Tab.Navigator>

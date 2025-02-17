@@ -1,6 +1,11 @@
+export interface MatchUser {
+  id: number;
+  email: string;
+  status: "OFFLINE" | "ONLINE";
+}
 export interface Match {
   id: number;
-  users: [{ id: number; email: string }, { id: number; email: string }];
+  users: MatchUser[];
   createdAt: number[];
   updatedAt: number[];
 }

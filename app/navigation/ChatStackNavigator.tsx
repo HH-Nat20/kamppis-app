@@ -6,7 +6,6 @@ import {
 import MatchesScreen from "../screens/MatchesScreen";
 import ChatScreen from "../screens/ChatScreen";
 
-// Define the param list for stack navigation
 export type ChatStackParamList = {
   Matches: undefined;
   ChatScreen: { userId: number };
