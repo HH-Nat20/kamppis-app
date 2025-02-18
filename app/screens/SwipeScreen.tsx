@@ -22,6 +22,29 @@ const SwipeScreen: React.FC = () => {
 
   const [loggedUserId, setLoggedUserId] = useState<number>(1); // Hardcoded for now
 
+  /**
+   *
+   * Temporary function to fetch swiping user's name
+   *
+   * @returns string
+   */
+  const getLoggedUserName = () => {
+    switch (loggedUserId) {
+      case 1:
+        return "Alice";
+      case 2:
+        return "Bob";
+      case 3:
+        return "Charlie";
+      case 4:
+        return "David";
+      case 5:
+        return "Eve";
+      default:
+        return "Unknown";
+    }
+  };
+
   const fetchInitialCards = async () => {
     // Temporary randomizer
     const randInt = Math.floor(Math.random() * 5) + 1;
@@ -30,8 +53,9 @@ const SwipeScreen: React.FC = () => {
     setLoading(true);
 
     try {
-      const users: User[] = await dao.getAllUserProfiles(); // dao.getPossibleMatches(randInt);
+      let users: User[] = await dao.getAllUserProfiles(); // dao.getPossibleMatches(randInt);
 
+      users = users.filter((user) => user.id !== randInt);
       setLoading(false);
 
       if (!Array.isArray(users) || users.length === 0) {
@@ -86,7 +110,17 @@ const SwipeScreen: React.FC = () => {
           cards={cards}
           renderCard={(card: User | {}) =>
             Object.keys(card).length ? (
-              <Card card={card as User} key={(card as User).id} />
+              <View>
+                {/* TODO: Remove everything except Card when no longer testing with hardcoded users */}
+                <View
+                  style={{ position: "absolute", top: 20, left: 20, zIndex: 2 }}
+                >
+                  <Text style={{ color: "#FFF", fontSize: 20 }}>
+                    Swiping as: {getLoggedUserName()}
+                  </Text>
+                </View>
+                <Card card={card as User} key={(card as User).id} />
+              </View>
             ) : (
               <View style={styles.cardContainer}>
                 <Text style={styles.cardTitle}>No Matches Found</Text>

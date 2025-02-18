@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   SafeAreaView,
   View,
@@ -6,6 +6,7 @@ import {
   FlatList,
   TouchableOpacity,
   Image,
+  ActivityIndicator,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -13,18 +14,15 @@ import { StatusBar } from "expo-status-bar";
 import { LinearGradient } from "expo-linear-gradient";
 
 import { useMatch } from "../contexts/MatchContext";
-
 import { getProfilePicture } from "../helpers/helpers";
 
 import styles from "../ui/styles";
 
-// Define navigation types for the Chat Stack
 type ChatStackParamList = {
   Matches: undefined;
   ChatScreen: { userId: number };
 };
 
-// Define a type for navigation
 type MatchesScreenNavigationProp = NativeStackNavigationProp<
   ChatStackParamList,
   "Matches"
@@ -33,6 +31,13 @@ type MatchesScreenNavigationProp = NativeStackNavigationProp<
 const MatchesScreen = () => {
   const { matches } = useMatch();
   const navigation = useNavigation<MatchesScreenNavigationProp>();
+
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    // Ensure loading is set to false after fetching
+    setLoading(false);
+  }, [matches]);
 
   const handleOpenChat = (userId: number) => {
     navigation.navigate("ChatScreen", { userId });
@@ -72,13 +77,23 @@ const MatchesScreen = () => {
         ]}
         style={styles.background}
       />
-      <FlatList
-        data={matches}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={renderItem}
-        numColumns={2}
-        columnWrapperStyle={styles.columnWrapper}
-      />
+
+      {loading ? (
+        <ActivityIndicator size="large" color="#fff" />
+      ) : matches.length === 0 ? (
+        <View style={styles.emptyContainer}>
+          <Text style={styles.emptyText}>No matches yet. Keep swiping!</Text>
+        </View>
+      ) : (
+        <FlatList
+          data={matches}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={renderItem}
+          numColumns={2}
+          columnWrapperStyle={styles.columnWrapper}
+        />
+      )}
+
       <StatusBar style="auto" />
     </SafeAreaView>
   );

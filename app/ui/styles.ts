@@ -205,6 +205,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+  },
+  emptyText: {
+    color: "#fff",
+    fontSize: 16,
+    textAlign: "center",
+  },
 });
 
 export default styles;

@@ -17,7 +17,7 @@ export const MatchProvider: React.FC<{ children: React.ReactNode }> = ({
   const [prevMatchesCount, setPrevMatchesCount] = useState(0);
   const userId = 2; // Replace with actual user ID from auth
 
-  // Fetch matches from the backend every 60 seconds
+  // Fetch matches from the backend every 5 seconds
   useEffect(() => {
     const fetchMatches = async () => {
       try {
@@ -29,12 +29,12 @@ export const MatchProvider: React.FC<{ children: React.ReactNode }> = ({
     };
 
     fetchMatches(); // Fetch on mount
-    const interval = setInterval(fetchMatches, 60000); // Fetch every 60 seconds
+    const interval = setInterval(fetchMatches, 5000); // just 5 sec for now
 
-    return () => clearInterval(interval); // Cleanup on unmount
+    return () => clearInterval(interval);
   }, []);
 
-  // ** Match Listener: Show Toast when a new match is added **
+  // Match Listener: Show Toast when a new match is added
   useEffect(() => {
     if (matches.length > prevMatchesCount) {
       const newMatch = matches[matches.length - 1];
