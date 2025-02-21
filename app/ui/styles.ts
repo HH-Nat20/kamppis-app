@@ -1,5 +1,10 @@
 import { StyleSheet, Dimensions } from "react-native";
 
+const { width } = Dimensions.get("window");
+const itemMargin = 10;
+const numColumns = 2;
+const itemWidth = (width - (numColumns + 1) * itemMargin) / numColumns;
+
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
@@ -176,15 +181,15 @@ const styles = StyleSheet.create({
   },
   columnWrapper: {
     justifyContent: "space-between",
-    height: Dimensions.get("window").width / 2,
+    marginHorizontal: itemMargin / 2,
   },
   matchItem: {
-    flex: 1,
-    margin: 5,
+    width: itemWidth,
+    height: itemWidth,
+    margin: itemMargin / 2,
     borderRadius: 10,
     overflow: "hidden",
     position: "relative",
-    aspectRatio: 1,
   },
   image: {
     width: "100%",

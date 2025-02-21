@@ -67,7 +67,7 @@ const MatchesScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.header}>Matches</Text>
+      <Text style={styles.header}>Matches for Diana</Text>
       <LinearGradient
         colors={[
           "rgba(145, 46, 211, 1)",
