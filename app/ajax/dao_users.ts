@@ -1,4 +1,5 @@
 import { User } from "../types/User";
+import { MatchUser } from "../types/Match";
 
 import { get, create, update, remove } from "./request";
 
@@ -6,7 +7,7 @@ const ENDPOINT = "users";
 
 export const getUser = async (id: number) => {
   const response = await get(`/${ENDPOINT}/${id}`);
-  const user: User = await response.json();
+  const user: MatchUser = await response.json();
   return user;
 };
 

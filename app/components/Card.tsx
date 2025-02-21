@@ -33,34 +33,38 @@ const Card: React.FC<CardProps> = ({ card }) => {
         >
           <View style={styles.overlay}>
             <Text style={styles.cardTitle}>
-              {card.firstName} {card.lastName}, {countAge(card.dateOfBirth)}
+              {card.firstName}, {card.age}
             </Text>
 
             {tapped && (
               <View style={styles.cardContent}>
                 <View style={styles.definitionBox}>
+
                   <View style={styles.definition}>
                     <Text style={styles.definitionText}>Full Name: </Text>
                     <Text style={styles.definitionValue}>
                       {card.firstName} {card.lastName}
                     </Text>
                   </View>
+
                   <View style={styles.definition}>
-                    <Text style={styles.definitionText}>Email: </Text>
+                    <Text style={styles.definitionText}>Age: </Text>
                     <Text style={styles.definitionValue}>
-                      {card.user?.email}
+                      {card.age}
                     </Text>
                   </View>
-                  <View style={styles.definition}>
-                    <Text style={styles.definitionText}>Date of Birth: </Text>
-                    <Text style={styles.definitionValue}>
-                      {formatDate(card.dateOfBirth)}
-                    </Text>
-                  </View>
+
                   <View style={styles.definition}>
                     <Text style={styles.definitionText}>Gender: </Text>
                     <Text style={styles.definitionValue}>{card.gender}</Text>
                   </View>
+
+                  <View style={styles.definition}>
+                    <Text style={styles.definitionValue}>
+                      {card.bio || "No bio available"}
+                    </Text>
+                  </View>
+
                 </View>
               </View>
             )}

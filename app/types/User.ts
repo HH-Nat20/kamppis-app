@@ -3,7 +3,8 @@ export interface User {
   id: number;
   firstName: string;
   lastName: string;
-  dateOfBirth: [number, number, number];
+  dateOfBirth?: [number, number, number];
+  age?: number;
   gender?: "MALE" | "FEMALE" | "OTHER" | "NOT_IMPORTANT";
   user?: { email: string; id: number };
   userHabits?: number[];

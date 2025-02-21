@@ -13,6 +13,7 @@ import { User } from "../types/User";
 import { SwipeRequest } from "../types/requests/SwipeRequest";
 
 import styles from "../ui/styles";
+import { MatchUser } from "../types/Match";
 
 const SwipeScreen: React.FC = () => {
   const swiperRef = useRef<Swiper<any>>(null);
@@ -21,6 +22,7 @@ const SwipeScreen: React.FC = () => {
   const [cards, setCards] = useState<User[]>([]);
 
   const [loggedUserId, setLoggedUserId] = useState<number>(1); // Hardcoded for now
+  const [loggedUserName, setLoggedUserName] = useState<string>("");
 
   /**
    *
@@ -28,32 +30,28 @@ const SwipeScreen: React.FC = () => {
    *
    * @returns string
    */
-  const getLoggedUserName = () => {
-    switch (loggedUserId) {
-      case 1:
-        return "Alice";
-      case 2:
-        return "Bob";
-      case 3:
-        return "Charlie";
-      case 4:
-        return "David";
-      case 5:
-        return "Eve";
-      default:
-        return "Unknown";
+  const getLoggedUserName = async (userId: number): Promise<string> => {
+    try {
+      const user: MatchUser = await dao.getUser(userId);
+      return `${user.email}`;
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      return "Unknown User";
     }
   };
 
   const fetchInitialCards = async () => {
     // Temporary randomizer
-    const randInt = Math.floor(Math.random() * 5) + 1;
+    const randInt = Math.floor(Math.random() * 26) + 1;
     setLoggedUserId(randInt);
+
+    const name = await getLoggedUserName(randInt);
+    setLoggedUserName(name);
 
     setLoading(true);
 
     try {
-      let users: User[] = await dao.getAllUserProfiles(); // dao.getPossibleMatches(randInt);
+      let users: User[] = await dao.getPossibleMatches(randInt);
 
       users = users.filter((user) => user.id !== randInt);
       setLoading(false);
@@ -116,7 +114,7 @@ const SwipeScreen: React.FC = () => {
                   style={{ position: "absolute", top: 20, left: 20, zIndex: 2 }}
                 >
                   <Text style={{ color: "#FFF", fontSize: 20 }}>
-                    Swiping as: {getLoggedUserName()}
+                    Swiping as: {loggedUserName}
                   </Text>
                 </View>
                 <Card card={card as User} key={(card as User).id} />
