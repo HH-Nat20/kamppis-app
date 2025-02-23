@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const getBaseUrl = () => {
   return "https://kamppis.hellmanstudios.fi/api"; // TODO: Change logic using env variables later
+  // return "http://10.0.2.2:8080/api";
 };
 
 export const baseUrl = getBaseUrl();

@@ -75,8 +75,14 @@ export default function ChatScreen({ route }: ChatScreenProps) {
   useEffect(() => {
     const client = new Stomp.Client({
       // brokerURL: "ws://localhost:8080/ws",
-      //brokerURL: "ws://10.0.2.2:8080/ws", // For Android Emulator
+      // brokerURL: "ws://10.0.2.2:8080/ws", // For Android Emulator
       brokerURL: "ws://95.217.239.74:8087/ws", // Deployed to hellmanstudios.fi
+
+      // ! THESE TWO LINES ARE NEEDED FOR STOMP OVER WEBSOCKETS IN ANDROID !
+      // https://stomp-js.github.io/workaround/stompjs/rx-stomp/react-native-additional-notes.html
+      forceBinaryWSFrames: true,
+      appendMissingNULLonIncoming: true,
+
       onConnect: (frame) => {
         console.log("Connected: " + frame);
 
