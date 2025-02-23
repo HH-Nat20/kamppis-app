@@ -15,7 +15,7 @@ export const MatchProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [matches, setMatches] = useState<User[]>([]);
   const [prevMatchesCount, setPrevMatchesCount] = useState(0);
-  const userId = 4; // Replace with actual user ID from auth
+  const userId = 1; // Replace with actual user ID from auth
 
   // Fetch matches from the backend every 5 seconds
   useEffect(() => {

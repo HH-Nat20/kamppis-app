@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, SafeAreaView } from "react-native";
+import { View, Text, SafeAreaView, FlatList } from "react-native";
 import { RouteProp } from "@react-navigation/native";
 import { ChatStackParamList } from "../navigation/ChatStackNavigator";
 
@@ -8,18 +8,58 @@ import dao from "../ajax/dao";
 import { Match, MatchUser } from "../types/Match";
 import { User } from "../types/User";
 
+import * as Stomp from "@stomp/stompjs";
+import { IMessage } from "@stomp/stompjs";
+import Chat from "@codsod/react-native-chat";
+
 type ChatScreenRouteProp = RouteProp<ChatStackParamList, "ChatScreen">;
 
 type ChatScreenProps = {
   route: ChatScreenRouteProp;
 };
 
+interface MessageDTO {
+  id: number;
+  senderEmail: string;
+  senderId: number;
+  matchId: number;
+  content: string;
+  createdAt: string;
+}
+
+interface ChatUser {
+  _id: number;
+  name: string;
+}
+
+interface ChatMessage {
+  _id: number;
+  text: string;
+  createdAt: Date;
+  user: ChatUser;
+}
+
+const mapMessageDTOToChatMessage = (dto: MessageDTO): ChatMessage => {
+  return {
+    _id: dto.id,
+    text: dto.content,
+    createdAt: new Date(dto.createdAt), // Convert string to Date
+    user: {
+      _id: dto.senderId,
+      name: dto.senderEmail.split("@")[0], // Extract a simple name from the email for now
+    },
+  };
+};
+
 const ChatScreen: React.FC<ChatScreenProps> = ({ route }) => {
-  const DUMMY_LOGGED_IN_USER = 2;
+  const DUMMY_LOGGED_IN_USER = 1;
   const { userId } = route.params;
   const [match, setMatch] = useState<Match>();
   const [recipent, setRecipent] = useState<MatchUser>();
   const [you, setYou] = useState<MatchUser>();
+
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [stompClient, setStompClient] = useState<Stomp.Client | null>(null);
 
   useEffect(() => {
     dao.getMatches(DUMMY_LOGGED_IN_USER).then((matches) => {
@@ -52,13 +92,98 @@ const ChatScreen: React.FC<ChatScreenProps> = ({ route }) => {
     });
   }, [userId]);
 
+  useEffect(() => {
+    const client = new Stomp.Client({
+      brokerURL: "ws://localhost:8080/ws",
+      onConnect: (frame) => {
+        console.log("Connected: " + frame);
+
+        // Subscribe to messages
+        subscribeToMatch(client);
+      },
+      onDisconnect: () => console.log("Disconnected"),
+      debug: (msg) => console.log(msg),
+    });
+    client.activate();
+    setStompClient(client);
+  }, [match]);
+
+  const subscribeToMatch = (client: Stomp.Client) => {
+    if (!client) {
+      console.warn("Stomp client not initialized");
+      return;
+    }
+
+    client.subscribe(
+      `/user/matches/${match?.id}/messages`,
+      (message: IMessage) => {
+        console.log("Received message as IMessage:", message.body);
+        const messageDTO: MessageDTO = JSON.parse(message.body);
+        const chatMessage: ChatMessage = mapMessageDTOToChatMessage(messageDTO);
+        setMessages((prevMessages) => [...prevMessages, chatMessage]);
+      },
+      { email: you?.email || "" } // Add user email to headers
+    );
+  };
+
+  const onSendMessage = (text: string) => {
+    if (stompClient && stompClient.connected && text) {
+      const sendingMessage = {
+        content: text,
+        senderEmail: you?.email, // Email only
+        matchId: match?.id, // Match ID for backend processing
+        createdAt: new Date().toISOString(),
+      };
+      // Clients send messages to ("/app/matches/{matchId}/messages")
+      stompClient.publish({
+        destination: `/app/matches/${match?.id}/messages`,
+        body: JSON.stringify(sendingMessage),
+        headers: { email: you?.email || "" }, // Add user email to headers
+      });
+    }
+    // setMessages((prevMessages: ChatMessage[]) => [
+    //   {
+    //     _id: prevMessages.length + 1000,
+    //     text,
+    //     createdAt: new Date(),
+    //     user: {
+    //       _id: 100,
+    //       name: "Vishu Chaturvedi",
+    //     },
+    //   },
+    //   ...prevMessages,
+    // ]);
+  };
+
   return (
-    <SafeAreaView
-      style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-    >
-      <Text style={{ fontSize: 24, fontWeight: "bold" }}>
-        Chat with User {recipent?.email}
-      </Text>
+    <SafeAreaView style={{ flex: 1 }}>
+      <Chat
+        messages={messages.toReversed()}
+        setMessages={(val) => onSendMessage(val)}
+        themeColor="orange"
+        themeTextColor="white"
+        showSenderAvatar={false}
+        showReceiverAvatar={true}
+        inputBorderColor="orange"
+        user={{
+          _id: 1,
+          name: "Vishal Chaturvedi",
+        }}
+        backgroundColor="white"
+        inputBackgroundColor="white"
+        placeholder="Enter Your Message"
+        placeholderColor="gray"
+        backgroundImage={
+          "https://fastly.picsum.photos/id/54/3264/2176.jpg?hmac=blh020fMeJ5Ru0p-fmXUaOAeYnxpOPHnhJojpzPLN3g"
+        }
+        // showEmoji={true}
+        // onPressEmoji={() => console.log("Emoji Button Pressed..")}
+        // showAttachment={true}
+        // onPressAttachment={() => console.log("Attachment Button Pressed..")}
+        timeContainerColor="red"
+        timeContainerTextColor="white"
+        // onEndReached={() => alert("You have reached the end of the page")}
+      />
     </SafeAreaView>
   );
 };
