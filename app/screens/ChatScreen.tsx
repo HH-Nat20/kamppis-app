@@ -136,7 +136,7 @@ export default function ChatScreen({ route }: ChatScreenProps) {
         showReceiverAvatar={true}
         inputBorderColor="orange"
         user={{
-          _id: userId,
+          _id: you?.id || 1,
           name: you?.email.split("@")[0] || "You",
         }}
         backgroundColor="white"
