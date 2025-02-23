@@ -29,7 +29,7 @@ export const MatchProvider: React.FC<{ children: React.ReactNode }> = ({
     };
 
     fetchMatches(); // Fetch on mount
-    const interval = setInterval(fetchMatches, 5000); // just 5 sec for now
+    const interval = setInterval(fetchMatches, 50000); // Increased to 50 sec for now
 
     return () => clearInterval(interval);
   }, []);

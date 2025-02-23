@@ -7,6 +7,7 @@ import dao from "../ajax/dao";
 
 import { Match, MatchUser } from "../types/Match";
 import { User } from "../types/User";
+import { MessageDTO, ChatMessage, ChatUser } from "../types/Chat";
 
 import * as Stomp from "@stomp/stompjs";
 import { IMessage } from "@stomp/stompjs";
@@ -17,27 +18,6 @@ type ChatScreenRouteProp = RouteProp<ChatStackParamList, "ChatScreen">;
 type ChatScreenProps = {
   route: ChatScreenRouteProp;
 };
-
-interface MessageDTO {
-  id: number;
-  senderEmail: string;
-  senderId: number;
-  matchId: number;
-  content: string;
-  createdAt: string;
-}
-
-interface ChatUser {
-  _id: number;
-  name: string;
-}
-
-interface ChatMessage {
-  _id: number;
-  text: string;
-  createdAt: Date;
-  user: ChatUser;
-}
 
 const mapMessageDTOToChatMessage = (dto: MessageDTO): ChatMessage => {
   return {
@@ -51,7 +31,7 @@ const mapMessageDTOToChatMessage = (dto: MessageDTO): ChatMessage => {
   };
 };
 
-const ChatScreen: React.FC<ChatScreenProps> = ({ route }) => {
+export default function ChatScreen({ route }: ChatScreenProps) {
   const DUMMY_LOGGED_IN_USER = 1;
   const { userId } = route.params;
   const [match, setMatch] = useState<Match>();
@@ -94,7 +74,9 @@ const ChatScreen: React.FC<ChatScreenProps> = ({ route }) => {
 
   useEffect(() => {
     const client = new Stomp.Client({
-      brokerURL: "ws://localhost:8080/ws",
+      // brokerURL: "ws://localhost:8080/ws",
+      //brokerURL: "ws://10.0.2.2:8080/ws", // For Android Emulator
+      brokerURL: "ws://95.217.239.74:8087/ws", // Deployed to hellmanstudios.fi
       onConnect: (frame) => {
         console.log("Connected: " + frame);
 
@@ -141,18 +123,6 @@ const ChatScreen: React.FC<ChatScreenProps> = ({ route }) => {
         headers: { email: you?.email || "" }, // Add user email to headers
       });
     }
-    // setMessages((prevMessages: ChatMessage[]) => [
-    //   {
-    //     _id: prevMessages.length + 1000,
-    //     text,
-    //     createdAt: new Date(),
-    //     user: {
-    //       _id: 100,
-    //       name: "Vishu Chaturvedi",
-    //     },
-    //   },
-    //   ...prevMessages,
-    // ]);
   };
 
   return (
@@ -166,8 +136,8 @@ const ChatScreen: React.FC<ChatScreenProps> = ({ route }) => {
         showReceiverAvatar={true}
         inputBorderColor="orange"
         user={{
-          _id: 1,
-          name: "Vishal Chaturvedi",
+          _id: userId,
+          name: you?.email.split("@")[0] || "You",
         }}
         backgroundColor="white"
         inputBackgroundColor="white"
@@ -186,6 +156,4 @@ const ChatScreen: React.FC<ChatScreenProps> = ({ route }) => {
       />
     </SafeAreaView>
   );
-};
-
-export default ChatScreen;
+}
