@@ -69,6 +69,9 @@ export default function ChatScreen({ route }: ChatScreenProps) {
       console.log("Matches:", userMatches);
       console.log("Recipent:", recipent);
       console.log("You:", you);
+
+      // Clear messages when switching to a new match
+      setMessages([]);
     });
   }, [userId]);
 
@@ -108,7 +111,14 @@ export default function ChatScreen({ route }: ChatScreenProps) {
         console.log("Received message as IMessage:", message.body);
         const messageDTO: MessageDTO = JSON.parse(message.body);
         const chatMessage: ChatMessage = mapMessageDTOToChatMessage(messageDTO);
-        setMessages((prevMessages) => [...prevMessages, chatMessage]);
+        
+        // Prevent duplicate messages based on the message ID
+        setMessages((prevMessages) => {
+          if (prevMessages.find((msg) => msg._id === chatMessage._id)) {
+            return prevMessages; // Don't add duplicate messages
+          }
+          return [...prevMessages, chatMessage]; // Add new message
+        });
       },
       { email: you?.email || "" } // Add user email to headers
     );
