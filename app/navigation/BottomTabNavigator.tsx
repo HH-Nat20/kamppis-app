@@ -1,10 +1,10 @@
 import React from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import HomeScreen from "../screens/HomeScreen";
 import SwipeScreen from "../screens/SwipeScreen";
 import TopTabNavigator from "./TopTabNavigator";
 import ChatStackNavigator from "./ChatStackNavigator";
+import HomeStackNavigator from "./HomeStackNavigator";
 
 const Tab = createBottomTabNavigator();
 
@@ -28,7 +28,9 @@ const BottomTabNavigator: React.FC = () => {
 
           if (route.name === "Profile") iconName = "person-outline";
           else if (route.name === "Swipe") iconName = "heart-half-outline";
+          else if (route.name === "Matches") iconName = "people-outline";
           else if (route.name === "Chat") iconName = "chatbubbles-outline";
+          else if (route.name === "Login") iconName = "log-in-outline";
 
           return <Ionicons name={iconName} size={size} color={color} />;
         },
@@ -36,7 +38,7 @@ const BottomTabNavigator: React.FC = () => {
     >
       <Tab.Screen
         name="Home"
-        component={HomeScreen}
+        component={HomeStackNavigator}
         options={{ headerShown: false }}
       />
       <Tab.Screen

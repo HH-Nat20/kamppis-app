@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, SafeAreaView, FlatList } from "react-native";
+import { SafeAreaView } from "react-native";
 import { RouteProp } from "@react-navigation/native";
 import { ChatStackParamList } from "../navigation/ChatStackNavigator";
 
 import dao from "../ajax/dao";
 
 import { Match, MatchUser } from "../types/Match";
-import { User } from "../types/User";
-import { MessageDTO, ChatMessage, ChatUser } from "../types/Chat";
+import { MessageDTO, ChatMessage } from "../types/Chat";
 
 import * as Stomp from "@stomp/stompjs";
 import { IMessage } from "@stomp/stompjs";
 import Chat from "@codsod/react-native-chat";
+import { useUser } from "../contexts/UserContext";
 
 type ChatScreenRouteProp = RouteProp<ChatStackParamList, "ChatScreen">;
 
@@ -32,7 +32,10 @@ const mapMessageDTOToChatMessage = (dto: MessageDTO): ChatMessage => {
 };
 
 export default function ChatScreen({ route }: ChatScreenProps) {
-  const DUMMY_LOGGED_IN_USER = 1;
+  const { user } = useUser();
+  const [DUMMY_LOGGED_IN_USER, setDUMMY_LOGGED_IN_USER] = useState<number>(
+    user?.id || 1
+  );
   const { userId } = route.params;
   const [match, setMatch] = useState<Match>();
   const [recipent, setRecipent] = useState<MatchUser>();
@@ -40,6 +43,10 @@ export default function ChatScreen({ route }: ChatScreenProps) {
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [stompClient, setStompClient] = useState<Stomp.Client | null>(null);
+
+  useEffect(() => {
+    setDUMMY_LOGGED_IN_USER(user?.id || 1);
+  }, [user]);
 
   useEffect(() => {
     dao.getMatches(DUMMY_LOGGED_IN_USER).then((matches) => {
@@ -111,7 +118,7 @@ export default function ChatScreen({ route }: ChatScreenProps) {
         console.log("Received message as IMessage:", message.body);
         const messageDTO: MessageDTO = JSON.parse(message.body);
         const chatMessage: ChatMessage = mapMessageDTOToChatMessage(messageDTO);
-        
+
         // Prevent duplicate messages based on the message ID
         setMessages((prevMessages) => {
           if (prevMessages.find((msg) => msg._id === chatMessage._id)) {

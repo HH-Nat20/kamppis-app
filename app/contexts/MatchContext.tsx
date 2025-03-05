@@ -3,6 +3,7 @@ import Toast from "react-native-toast-message";
 import { User } from "../types/User";
 
 import dao from "../ajax/dao";
+import { useUser } from "./UserContext";
 
 interface MatchContextProps {
   matches: User[];
@@ -15,13 +16,14 @@ export const MatchProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [matches, setMatches] = useState<User[]>([]);
   const [prevMatchesCount, setPrevMatchesCount] = useState(0);
-  const userId = 1; // Replace with actual user ID from auth
+  const { user } = useUser();
 
-  // Fetch matches from the backend every 5 seconds
+  // Fetch matches from the backend every 50 seconds
   useEffect(() => {
     const fetchMatches = async () => {
+      if (!user?.id) return;
       try {
-        const matches = await dao.getMatchedProfiles(userId);
+        const matches = await dao.getMatchedProfiles(user.id);
         setMatches(matches);
       } catch (error) {
         console.error("Error fetching matches:", error);
@@ -32,7 +34,7 @@ export const MatchProvider: React.FC<{ children: React.ReactNode }> = ({
     const interval = setInterval(fetchMatches, 50000); // Increased to 50 sec for now
 
     return () => clearInterval(interval);
-  }, []);
+  }, [user]);
 
   // Match Listener: Show Toast when a new match is added
   useEffect(() => {

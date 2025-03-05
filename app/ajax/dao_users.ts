@@ -31,6 +31,6 @@ export const removeUser = async (id: number) => {
 
 export const getUsers = async () => {
   const response = await get(`/${ENDPOINT}`);
-  const users: User[] = await response.json();
+  const users: MatchUser[] = await response.json();
   return users;
 };

@@ -14,6 +14,7 @@ import { SwipeRequest } from "../types/requests/SwipeRequest";
 
 import styles from "../ui/styles";
 import { MatchUser } from "../types/Match";
+import { useUser } from "../contexts/UserContext";
 
 const SwipeScreen: React.FC = () => {
   const swiperRef = useRef<Swiper<any>>(null);
@@ -21,39 +22,21 @@ const SwipeScreen: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [cards, setCards] = useState<User[]>([]);
 
-  const [loggedUserId, setLoggedUserId] = useState<number>(1); // Hardcoded for now
-  const [loggedUserName, setLoggedUserName] = useState<string>("");
-
-  /**
-   *
-   * Temporary function to fetch swiping user's name
-   *
-   * @returns string
-   */
-  const getLoggedUserName = async (userId: number): Promise<string> => {
-    try {
-      const user: MatchUser = await dao.getUser(userId);
-      return `${user.email}`;
-    } catch (error) {
-      console.error("Error fetching user:", error);
-      return "Unknown User";
-    }
-  };
+  const { user } = useUser();
 
   const fetchInitialCards = async () => {
-    // Temporary randomizer
-    const randInt = Math.floor(Math.random() * 26) + 1;
-    setLoggedUserId(randInt);
-
-    const name = await getLoggedUserName(randInt);
-    setLoggedUserName(name);
-
     setLoading(true);
 
-    try {
-      let users: User[] = await dao.getPossibleMatches(randInt);
+    if (!user?.id) {
+      console.warn("No logged-in user found");
+      setLoading(false);
+      return;
+    }
 
-      users = users.filter((user) => user.id !== randInt);
+    try {
+      let users: User[] = await dao.getPossibleMatches(user.id);
+
+      users = users.filter((u) => u.id !== user.id);
       setLoading(false);
 
       if (!Array.isArray(users) || users.length === 0) {
@@ -72,7 +55,7 @@ const SwipeScreen: React.FC = () => {
 
   useEffect(() => {
     fetchInitialCards();
-  }, []);
+  }, [user]);
 
   const handleSwipe = (
     cardIndex: number,
@@ -81,8 +64,9 @@ const SwipeScreen: React.FC = () => {
     console.log(`Swiped ${direction} on card ${cardIndex}`);
     const card = cards[cardIndex];
     if (!card) return;
+    if (!user) return;
     const swipeRequest: SwipeRequest = {
-      swipingUserId: loggedUserId,
+      swipingUserId: user.id,
       swipedUserId: card.id,
       isRightSwipe: direction === "right",
     };
@@ -114,7 +98,7 @@ const SwipeScreen: React.FC = () => {
                   style={{ position: "absolute", top: 20, left: 20, zIndex: 2 }}
                 >
                   <Text style={{ color: "#FFF", fontSize: 20 }}>
-                    Swiping as: {loggedUserName}
+                    Swiping as: {user?.email}
                   </Text>
                 </View>
                 <Card card={card as User} key={(card as User).id} />

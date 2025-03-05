@@ -17,6 +17,7 @@ import { useMatch } from "../contexts/MatchContext";
 import { getProfilePicture } from "../helpers/helpers";
 
 import styles from "../ui/styles";
+import { useUser } from "../contexts/UserContext";
 
 type ChatStackParamList = {
   Matches: undefined;
@@ -30,6 +31,7 @@ type MatchesScreenNavigationProp = NativeStackNavigationProp<
 
 const MatchesScreen = () => {
   const { matches } = useMatch();
+  const { user } = useUser();
   const navigation = useNavigation<MatchesScreenNavigationProp>();
 
   const [loading, setLoading] = useState<boolean>(true);
@@ -37,7 +39,7 @@ const MatchesScreen = () => {
   useEffect(() => {
     // Ensure loading is set to false after fetching
     setLoading(false);
-  }, [matches]);
+  }, [matches, user]);
 
   const handleOpenChat = (userId: number) => {
     navigation.navigate("ChatScreen", { userId });
@@ -67,7 +69,7 @@ const MatchesScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.header}>Matches for Alice</Text>
+      <Text style={styles.header}>Matches for {user?.email}</Text>
       <LinearGradient
         colors={[
           "rgba(145, 46, 211, 1)",

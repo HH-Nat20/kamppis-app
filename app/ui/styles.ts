@@ -162,7 +162,8 @@ const styles = StyleSheet.create({
   pickerInput: {
     borderRadius: 8,
     marginTop: 5,
-    height: 40,
+    height: 60,
+    width: "100%",
     justifyContent: "center",
     paddingHorizontal: 10,
   },
@@ -220,6 +221,11 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
     textAlign: "center",
+  },
+  separator: {
+    marginVertical: 8,
+    borderBottomColor: "#737373",
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
 });
 
