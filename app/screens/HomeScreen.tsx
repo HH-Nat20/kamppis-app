@@ -1,18 +1,35 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, ActivityIndicator } from "react-native";
+import { View, Text, ActivityIndicator, Button } from "react-native";
 import styles from "../ui/styles";
 
 import { LinearGradient } from "expo-linear-gradient";
 
 import dao from "../ajax/dao";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { HomeStackParamList } from "../navigation/HomeStackNavigator";
+import { useNavigation } from "@react-navigation/native";
+import { useUser } from "../contexts/UserContext";
+
+type HomeScreenNavigationProp = NativeStackNavigationProp<
+  HomeStackParamList,
+  "Home"
+>;
+
+const Separator = () => <View style={styles.separator} />;
 
 const HomeScreen = () => {
+  const navigation = useNavigation<HomeScreenNavigationProp>();
   const [serverStatus, setServerStatus] = useState<"loading" | "ok" | "failed">(
     "loading"
   );
   const [dbStatus, setDbStatus] = useState<"loading" | "ok" | "failed">(
     "loading"
   );
+  const { user } = useUser();
+
+  const handleOpenLogin = () => {
+    navigation.navigate("Login");
+  };
 
   const checkServerStatus = async () => {
     try {
@@ -86,6 +103,9 @@ const HomeScreen = () => {
           {dbStatus === "ok" ? "OK" : "FAILED"}
         </Text>
       )}
+      <Separator />
+      <Text style={styles.info}>Logged in as: {user?.email}</Text>
+      <Button title="Login as different user" onPress={handleOpenLogin} />
     </View>
   );
 };
