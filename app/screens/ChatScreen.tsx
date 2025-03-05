@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native";
-import { RouteProp } from "@react-navigation/native";
+import { RouteProp, useNavigation } from "@react-navigation/native";
 import { ChatStackParamList } from "../navigation/ChatStackNavigator";
 
 import dao from "../ajax/dao";
@@ -12,6 +12,7 @@ import * as Stomp from "@stomp/stompjs";
 import { IMessage } from "@stomp/stompjs";
 import Chat from "@codsod/react-native-chat";
 import { useUser } from "../contexts/UserContext";
+import { StackNavigationProp } from "@react-navigation/stack";
 
 type ChatScreenRouteProp = RouteProp<ChatStackParamList, "ChatScreen">;
 
@@ -33,9 +34,20 @@ const mapMessageDTOToChatMessage = (dto: MessageDTO): ChatMessage => {
 
 export default function ChatScreen({ route }: ChatScreenProps) {
   const { user } = useUser();
+
+  const navigation = useNavigation<StackNavigationProp<ChatStackParamList>>();
+
+  useEffect(() => {
+    if (user?.id !== DUMMY_LOGGED_IN_USER) {
+      console.warn("User changed, redirecting to Matches screen");
+      navigation.navigate("Matches"); // Redirect to Matches screen
+    }
+  }, [user]);
+
   const [DUMMY_LOGGED_IN_USER, setDUMMY_LOGGED_IN_USER] = useState<number>(
     user?.id || 1
   );
+
   const { userId } = route.params;
   const [match, setMatch] = useState<Match>();
   const [recipent, setRecipent] = useState<MatchUser>();
