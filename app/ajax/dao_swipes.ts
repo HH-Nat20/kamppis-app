@@ -8,5 +8,5 @@ export const swipe = async (swipeRequest: SwipeRequest) => {
   const response = await create(`/${ENDPOINT}`, swipeRequest);
   const responseBody = await response.json();
   console.log("Swiped:", responseBody);
-  return response;
+  return responseBody;
 };

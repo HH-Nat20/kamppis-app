@@ -7,6 +7,7 @@ import { useUser } from "./UserContext";
 
 interface MatchContextProps {
   matches: User[];
+  refreshMatches: () => void;
 }
 
 const MatchContext = createContext<MatchContextProps | undefined>(undefined);
@@ -19,21 +20,19 @@ export const MatchProvider: React.FC<{ children: React.ReactNode }> = ({
   const { user } = useUser();
 
   // Fetch matches from the backend every 50 seconds
+
+  const fetchMatches = async () => {
+    if (!user?.id) return;
+    try {
+      const matches = await dao.getMatchedProfiles(user.id);
+      setMatches(matches);
+    } catch (error) {
+      console.error("Error fetching matches:", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchMatches = async () => {
-      if (!user?.id) return;
-      try {
-        const matches = await dao.getMatchedProfiles(user.id);
-        setMatches(matches);
-      } catch (error) {
-        console.error("Error fetching matches:", error);
-      }
-    };
-
     fetchMatches(); // Fetch on mount
-    const interval = setInterval(fetchMatches, 50000); // Increased to 50 sec for now
-
-    return () => clearInterval(interval);
   }, [user]);
 
   // Match Listener: Show Toast when a new match is added
@@ -50,7 +49,7 @@ export const MatchProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [matches]);
 
   return (
-    <MatchContext.Provider value={{ matches }}>
+    <MatchContext.Provider value={{ matches, refreshMatches: fetchMatches }}>
       {children}
     </MatchContext.Provider>
   );

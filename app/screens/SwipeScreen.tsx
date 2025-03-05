@@ -10,11 +10,12 @@ import Card from "../components/Card";
 import dao from "../ajax/dao";
 
 import { User } from "../types/User";
-import { SwipeRequest } from "../types/requests/SwipeRequest";
+import { SwipeRequest, SwipeResponse } from "../types/requests/SwipeRequest";
 
 import styles from "../ui/styles";
-import { MatchUser } from "../types/Match";
 import { useUser } from "../contexts/UserContext";
+import Toast from "react-native-toast-message";
+import { useMatch } from "../contexts/MatchContext";
 
 const SwipeScreen: React.FC = () => {
   const swiperRef = useRef<Swiper<any>>(null);
@@ -23,6 +24,8 @@ const SwipeScreen: React.FC = () => {
   const [cards, setCards] = useState<User[]>([]);
 
   const { user } = useUser();
+
+  const { refreshMatches } = useMatch();
 
   const fetchInitialCards = async () => {
     setLoading(true);
@@ -63,20 +66,33 @@ const SwipeScreen: React.FC = () => {
     fetchInitialCards();
   }, [user]);
 
-  const handleSwipe = (
+  const handleSwipe = async (
     cardIndex: number,
     direction: "left" | "right" | "down"
   ) => {
     console.log(`Swiped ${direction} on card ${cardIndex}`);
     const card = cards[cardIndex];
-    if (!card) return;
-    if (!user) return;
+    if (!card || !user) return;
+
     const swipeRequest: SwipeRequest = {
       swipingUserId: user.id,
       swipedUserId: card.id,
       isRightSwipe: direction === "right",
     };
-    dao.swipe(swipeRequest);
+    try {
+      const swipeResponse: SwipeResponse = await dao.swipe(swipeRequest);
+
+      if (swipeResponse.isMatch) {
+        Toast.show({
+          type: "success",
+          text1: "New Match!",
+          text2: "It's a match! 🎉",
+        });
+        refreshMatches(); // Update matches after a successful match
+      }
+    } catch (error) {
+      console.error("Error swiping:", error);
+    }
   };
 
   return (
