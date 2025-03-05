@@ -1,7 +1,6 @@
 import React from "react";
 import {
   createStackNavigator,
-  StackNavigationProp,
 } from "@react-navigation/stack";
 import MatchesScreen from "../screens/MatchesScreen";
 import ChatScreen from "../screens/ChatScreen";

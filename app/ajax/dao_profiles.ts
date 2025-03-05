@@ -12,7 +12,12 @@ const ENDPOINT = "user-profiles";
  */
 export const getPossibleMatches = async (userId: number) => {
   const response = await get(`/${ENDPOINT}/${userId}/query`);
-  const users: User[] = await response.json();
+  if (response.status == 204) {
+    return [];
+  }
+  const responseBody = await response.json();
+  console.log(`Found ${responseBody.length} profiles: `, responseBody);
+  const users: User[] = responseBody;
   return users;
 };
 

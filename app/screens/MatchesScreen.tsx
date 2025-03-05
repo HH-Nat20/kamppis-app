@@ -39,7 +39,7 @@ const MatchesScreen = () => {
   useEffect(() => {
     // Ensure loading is set to false after fetching
     setLoading(false);
-  }, [matches, user]);
+  }, [matches]);
 
   const handleOpenChat = (userId: number) => {
     navigation.navigate("ChatScreen", { userId });

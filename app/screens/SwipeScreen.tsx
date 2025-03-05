@@ -36,10 +36,16 @@ const SwipeScreen: React.FC = () => {
     try {
       let users: User[] = await dao.getPossibleMatches(user.id);
 
+      if (users.length === 0) {
+        setCards([]);
+        setLoading(false);
+        return;
+      }
+
       users = users.filter((u) => u.id !== user.id);
       setLoading(false);
 
-      if (!Array.isArray(users) || users.length === 0) {
+      if (!Array.isArray(users)) {
         console.warn("No users received from API");
         setLoading(false);
         return;
@@ -91,7 +97,7 @@ const SwipeScreen: React.FC = () => {
           ref={swiperRef}
           cards={cards}
           renderCard={(card: User | {}) =>
-            Object.keys(card).length ? (
+            card && Object.keys(card).length ? (
               <View>
                 {/* TODO: Remove everything except Card when no longer testing with hardcoded users */}
                 <View
