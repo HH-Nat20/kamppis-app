@@ -20,13 +20,11 @@ import styles from "../ui/styles";
 import { useUser } from "../contexts/UserContext";
 
 type ChatStackParamList = {
-  Matches: undefined;
   ChatScreen: { userId: number };
 };
 
 type MatchesScreenNavigationProp = NativeStackNavigationProp<
-  ChatStackParamList,
-  "Matches"
+  ChatStackParamList
 >;
 
 const MatchesScreen = () => {

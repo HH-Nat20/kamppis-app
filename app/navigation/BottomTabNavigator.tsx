@@ -1,10 +1,10 @@
 import React from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import SwipeScreen from "../screens/SwipeScreen";
 import TopTabNavigator from "./TopTabNavigator";
 import ChatStackNavigator from "./ChatStackNavigator";
 import HomeStackNavigator from "./HomeStackNavigator";
+import SwipeStackNavigator from "./SwipeStackNavigator";
 
 const Tab = createBottomTabNavigator();
 
@@ -48,7 +48,7 @@ const BottomTabNavigator: React.FC = () => {
       />
       <Tab.Screen
         name="Swipe"
-        component={SwipeScreen}
+        component={SwipeStackNavigator}
         options={{ headerShown: false }}
       />
       <Tab.Screen

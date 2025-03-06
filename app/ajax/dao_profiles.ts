@@ -22,6 +22,19 @@ export const getPossibleMatches = async (userId: number) => {
 };
 
 /**
+ * Fetch a user profile by ID
+ *
+ * @param {number} userId
+ * @returns {Promise<User>}
+ */
+export const getUserProfile = async (userId: number) => {
+  const response = await get(`/${ENDPOINT}/${userId}`);
+  const user: User = await response.json();
+  console.log(`Found user profile: `, user);
+  return user;
+}
+
+/**
  * For testing purposes, fetch all user profiles
  *
  * @returns {Promise<User[]>}

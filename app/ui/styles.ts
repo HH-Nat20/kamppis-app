@@ -227,6 +227,14 @@ const styles = StyleSheet.create({
     borderBottomColor: "#737373",
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
+  goBackButton: {
+    position: "absolute",
+    top: 20,
+    left: 20,
+    backgroundColor: "rgba(255, 255, 255, 0.5)",
+    padding: 10,
+    borderRadius: 8,
+  }
 });
 
 export default styles;
