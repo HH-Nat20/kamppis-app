@@ -1,18 +1,21 @@
 import { Photo } from "./Photo";
+import { Lifestyle } from "./Enums/LifestyleEnum";
+import { Cleanliness } from "./Enums/CLeanlinessEnum";
+import { Gender } from "./Enums/GenderEnum";
 export interface User {
   id: number;
   firstName: string;
   lastName: string;
-  dateOfBirth?: [number, number, number];
-  age?: number;
-  gender?: "MALE" | "FEMALE" | "OTHER" | "NOT_IMPORTANT";
-  user?: { email: string; id: number };
-  userHabits?: number[];
-  userInterests?: number[]; 
+  age: number;
+  gender: Gender;
+  userId: number;
+  maxRent: "LOW" | "MEDIUM" | "HIGH";
+  lifestyle: Lifestyle[];
+  cleanliness: Cleanliness;
   bio?: string;
   minAgePreference?: number;
   maxAgePreference?: number;
-  preferredGender?: "MALE" | "FEMALE" | "OTHER" | "NOT_IMPORTANT";
-  locations?: string[];
+  preferredGender?: Gender;
+  preferredLocations?: string[];
   userPhotos?: Photo[];
 }
