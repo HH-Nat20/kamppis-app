@@ -59,7 +59,7 @@ export default function DetailsScreen({ route }: DetailsScreenProps) {
 
   return (
     <TouchableWithoutFeedback onPress={() => setTooltip(null)}> 
-      <View style={styles.container}>
+      <ScrollView style={styles.scrollContainer}>
         {loading && <ActivityIndicator size="large" color={colors.white} />}
 
         <Pressable style={styles.goBackButton} onPress={() => navigation.goBack()}>
@@ -88,7 +88,7 @@ export default function DetailsScreen({ route }: DetailsScreenProps) {
           />
         </View>
 
-        <ScrollView style={styles.profileInfo}>
+        <View style={styles.profileInfo}>
           <View style={styles.tagArea}>
             {user?.cleanliness && (
               <Pressable onPress={() => toggleTooltip(user.cleanliness)}>
@@ -143,9 +143,10 @@ export default function DetailsScreen({ route }: DetailsScreenProps) {
                 </Text>
               ))}
           </View>
-        </ScrollView>
+        </View>
+
         <StatusBar barStyle="light-content" />
-      </View>
+      </ScrollView>
     </TouchableWithoutFeedback>
   );
 }

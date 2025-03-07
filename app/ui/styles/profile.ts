@@ -13,20 +13,13 @@ const profile = StyleSheet.create({
     zIndex: 1,
   },
   portraitSwiper: {
-    position: "absolute",
-    top: 0,
-    left: 0,
     width: "100%",
     height: 300,
-    flex: 1,
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-    backgroundColor: "transparent",
+    backgroundColor: "#DF0000", // TODO: Change to transparent
   },
   portraitContainer: {
-    flex: 1,
     width: "100%",
-    backgroundColor: "transparent",
+    backgroundColor: "#00FFFF", // TODO: Change to transparent
     padding: 0,
   },
   portrait: {
@@ -38,9 +31,7 @@ const profile = StyleSheet.create({
     borderRadius: 8,
   },
   profileInfo: {
-    position: "relative",
-    top: 320,
-    flex: 1,
+    marginTop: 40,
     width: "100%",
     padding: 20,
     backgroundColor: colors.background,

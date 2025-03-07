@@ -19,6 +19,7 @@ const base = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background,
     color: colors.text,
+    paddingBottom: 20,
   },
   background: {
     ...StyleSheet.absoluteFillObject,
