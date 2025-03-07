@@ -1,10 +1,15 @@
 import React from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import ProfileInfoScreen from "../screens/ProfileScreen";
-import SettingsScreen from "../screens/SettingsScreen";
+import ProfilePersonalScreen from "../screens/ProfilePersonalScreen";
+import ProfilePreferencesScreen from "../screens/ProfilePreferencesScreen";
 
 import colors from "../ui/colors";
 import { ProfileFormContext } from "../contexts/ProfileFormContext";
+
+export type ProfileTabParamList = {
+  "Personal Info": undefined;
+  "Match Preferences": undefined;
+};
 
 const UpTab = createMaterialTopTabNavigator();
 
@@ -12,6 +17,7 @@ const TopTabNavigator: React.FC = () => {
   return (
     <ProfileFormContext>
       <UpTab.Navigator
+        initialRouteName="Personal Info"
         screenOptions={{
           tabBarStyle: {
             backgroundColor: colors.background,
@@ -23,8 +29,11 @@ const TopTabNavigator: React.FC = () => {
           },
         }}
       >
-        <UpTab.Screen name="Personal Info" component={ProfileInfoScreen} />
-        <UpTab.Screen name="Match Preferences" component={SettingsScreen} />
+        <UpTab.Screen name="Personal Info" component={ProfilePersonalScreen} />
+        <UpTab.Screen
+          name="Match Preferences"
+          component={ProfilePreferencesScreen}
+        />
       </UpTab.Navigator>
     </ProfileFormContext>
   );

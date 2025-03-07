@@ -13,11 +13,11 @@ import {
   ScrollView,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-import { Lifestyle, LifestyleDescriptions } from "../types/Enums/LifestyleEnum";
+import { Lifestyle, LifestyleDescriptions } from "../types/enums/LifestyleEnum";
 import {
   Cleanliness,
   CleanlinessDescriptions,
-} from "../types/Enums/CLeanlinessEnum";
+} from "../types/enums/CLeanlinessEnum";
 
 export default function App({}) {
   const [saved, setSaved] = React.useState(Boolean);

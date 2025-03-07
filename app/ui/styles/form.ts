@@ -20,9 +20,8 @@ const form = StyleSheet.create({
   saveButton: {
     width: 150,
     height: 50,
-    backgroundColor: colors.primary,
+    backgroundColor: colors.success,
     borderRadius: 10,
-    position: "absolute",
     top: 10,
     right: 20,
     alignItems: "center",
@@ -34,9 +33,8 @@ const form = StyleSheet.create({
     height: 50,
     backgroundColor: colors.primary,
     borderRadius: 10,
-    position: "absolute",
-    bottom: 10,
-    right: 20,
+    top: 10,
+    left: 20,
     alignItems: "center",
     justifyContent: "center",
     color: colors.textLight,
@@ -62,6 +60,20 @@ const form = StyleSheet.create({
   selected: {
     color: colors.info,
     fontSize: 14,
+  },
+  radioButton: {
+    width: "48%", // Each takes almost half of the row
+    padding: 10,
+    borderRadius: 5,
+    marginBottom: 5,
+    alignItems: "center",
+  },
+  selectedRadio: { backgroundColor: "#ddd" },
+  radioGroup: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    gap: 10,
   },
 });
 

@@ -12,12 +12,19 @@ import { useUser } from "../contexts/UserContext";
 import { User } from "../types/User";
 import dao from "../ajax/dao";
 import { Controller, useFormContext } from "react-hook-form";
-import { Gender } from "../types/Enums/GenderEnum";
-import { Lifestyle } from "../types/Enums/LifestyleEnum";
+import { Gender } from "../types/enums/GenderEnum";
+import { Lifestyle } from "../types/enums/LifestyleEnum";
 import { useNavigation } from "@react-navigation/native";
+import { MaterialTopTabNavigationProp } from "@react-navigation/material-top-tabs";
+import { ProfileTabParamList } from "../navigation/TopTabNavigator";
 
-export default function ProfileInfoScreen() {
-  const navigation = useNavigation();
+type ProfilePersonalScreenNavigationProp = MaterialTopTabNavigationProp<
+  ProfileTabParamList,
+  "Personal Info"
+>;
+
+export default function ProfilePersonalScreen() {
+  const navigation = useNavigation<ProfilePersonalScreenNavigationProp>();
   const { user } = useUser();
   const [myProfile, setMyProfile] = useState<User>();
   const [loading, setLoading] = useState<boolean>(true);
@@ -105,8 +112,9 @@ export default function ProfileInfoScreen() {
             name="age"
             render={({ field: { onChange, value } }) => (
               <TextInput
-                style={styles.input}
-                value={String(value)}
+                editable={false} // Age is not editable
+                style={{ ...styles.input, color: "gray" }}
+                value={String(value) + " years. (not editable here)"}
                 keyboardType="numeric"
                 onChangeText={(text) => onChange(parseInt(text) || 0)}
               />
@@ -114,52 +122,56 @@ export default function ProfileInfoScreen() {
           />
           <View style={styles.separator} />
 
-          <Text style={styles.text}>Gender:</Text>
-          {Object.values(Gender).map((g) => (
-            <Controller
-              key={g}
-              control={control}
-              name="gender"
-              render={({ field: { onChange, value } }) => (
-                <TouchableOpacity
-                  style={[
-                    styles.radioButton,
-                    value === g && styles.selectedRadio,
-                  ]}
-                  onPress={() => onChange(g)}
-                >
-                  <Text style={styles.text}>{g}</Text>
-                </TouchableOpacity>
-              )}
-            />
-          ))}
+          <Text style={styles.text}>Gender (select one):</Text>
+          <View style={styles.radioGroup}>
+            {Object.values(Gender).map((g) => (
+              <Controller
+                key={g}
+                control={control}
+                name="gender"
+                render={({ field: { onChange, value } }) => (
+                  <TouchableOpacity
+                    style={[
+                      styles.radioButton,
+                      value === g && styles.selectedRadio,
+                    ]}
+                    onPress={() => onChange(g)}
+                  >
+                    <Text style={styles.tag}>{g}</Text>
+                  </TouchableOpacity>
+                )}
+              />
+            ))}
+          </View>
           <View style={styles.separator} />
 
-          <Text style={styles.text}>Lifestyle:</Text>
-          {Object.values(Lifestyle).map((l) => (
-            <Controller
-              key={l}
-              control={control}
-              name="lifestyle"
-              render={({ field: { onChange, value } }) => (
-                <TouchableOpacity
-                  style={[
-                    styles.radioButton,
-                    value.includes(l) && styles.selectedRadio,
-                  ]}
-                  onPress={() => {
-                    if (value.includes(l)) {
-                      onChange(value.filter((v) => v !== l));
-                    } else {
-                      onChange([...value, l]);
-                    }
-                  }}
-                >
-                  <Text style={styles.text}>{l}</Text>
-                </TouchableOpacity>
-              )}
-            />
-          ))}
+          <Text style={styles.text}>Lifestyle (select one or more):</Text>
+          <View style={styles.radioGroup}>
+            {Object.values(Lifestyle).map((l) => (
+              <Controller
+                key={l}
+                control={control}
+                name="lifestyle"
+                render={({ field: { onChange, value } }) => (
+                  <TouchableOpacity
+                    style={[
+                      styles.radioButton,
+                      value.includes(l) && styles.selectedRadio,
+                    ]}
+                    onPress={() => {
+                      if (value.includes(l)) {
+                        onChange(value.filter((v) => v !== l));
+                      } else {
+                        onChange([...value, l]);
+                      }
+                    }}
+                  >
+                    <Text style={styles.text}>{l}</Text>
+                  </TouchableOpacity>
+                )}
+              />
+            ))}
+          </View>
           <View style={styles.separator} />
 
           <Text style={styles.text}>Bio:</Text>
@@ -178,12 +190,26 @@ export default function ProfileInfoScreen() {
           />
 
           <View style={styles.separator} />
-          <View style={{ height: 50 }}>
+          <View
+            style={{
+              height: 50,
+              flexDirection: "row", // Align buttons in a row
+              justifyContent: "space-between", // Space between buttons
+              alignItems: "center", // Align them vertically in the center
+              padding: 10,
+            }}
+          >
             <TouchableOpacity
               style={styles.saveButton}
               onPress={handleSubmit(onSubmit)}
             >
               <Text style={styles.buttonText}>Save</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.nextButton}
+              onPress={() => navigation.navigate("Match Preferences")}
+            >
+            <Text style={styles.buttonText}>Next</Text>
             </TouchableOpacity>
           </View>
         </View>

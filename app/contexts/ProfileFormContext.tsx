@@ -1,7 +1,7 @@
 import React from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { User } from "../types/User";
-import { Gender } from "../types/Enums/GenderEnum";
+import { Gender } from "../types/enums/GenderEnum";
 
 export const ProfileFormContext = ({
   children,

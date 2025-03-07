@@ -37,11 +37,11 @@ export default function LoginScreen() {
         onValueChange={(itemValue) => setSelectedUserId(itemValue)}
       >
         {users.map((user) => (
-          <Picker.Item 
-            key={user.id.toString()} 
-            label={user.email} 
-            value={user.id.toString()} 
-            style={styles.pickerItem} 
+          <Picker.Item
+            key={user.id.toString()}
+            label={user.email}
+            value={user.id.toString()}
+            style={styles.pickerItem}
           />
         ))}
       </Picker>
@@ -52,18 +52,23 @@ export default function LoginScreen() {
             console.warn("No user selected");
             return;
           }
-          const selectedUser = users.find((user) => user.id.toString() === selectedUserId);
+          const selectedUser = users.find(
+            (user) => user.id.toString() === selectedUserId
+          );
           if (!selectedUser) {
             console.error("Selected user not found");
             return;
           }
           console.log("Login as", selectedUser);
           setUser(selectedUser);
-          navigation.navigate("Home"); // Navigate to Home after login
+
+          navigation.reset({
+            // Reset navigation stack
+            index: 0,
+            routes: [{ name: "Home" }],
+          }); // Navigate to Home after login
         }}
       />
     </View>
   );
 }
-
-

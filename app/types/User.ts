@@ -1,7 +1,7 @@
 import { Photo } from "./Photo";
-import { Lifestyle } from "./Enums/LifestyleEnum";
-import { Cleanliness } from "./Enums/CLeanlinessEnum";
-import { Gender } from "./Enums/GenderEnum";
+import { Lifestyle } from "./enums/LifestyleEnum";
+import { Cleanliness } from "./enums/CLeanlinessEnum";
+import { Gender } from "./enums/GenderEnum";
 export interface User {
   id: number;
   firstName: string;

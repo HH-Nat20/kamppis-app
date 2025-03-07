@@ -60,15 +60,7 @@ const base = StyleSheet.create({
     fontSize: 20,
     color: colors.text,
   },
-  radioButton: {
-    padding: 10,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 5,
-    marginBottom: 5,
-    alignItems: "center",
-  },
-  selectedRadio: { backgroundColor: "#ddd" },
+
 });
 
 export default base;

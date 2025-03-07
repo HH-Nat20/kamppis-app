@@ -19,8 +19,8 @@ import colors, { renderTagBgColor } from "../ui/colors";
 import dao from "../ajax/dao";
 
 import { User } from "../types/User";
-import { LifestyleDescriptions} from "../types/Enums/LifestyleEnum";
-import { CleanlinessDescriptions } from "../types/Enums/CLeanlinessEnum";
+import { LifestyleDescriptions } from "../types/enums/LifestyleEnum";
+import { CleanlinessDescriptions } from "../types/enums/CLeanlinessEnum";
 
 import { RouteProp, useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -58,11 +58,14 @@ export default function DetailsScreen({ route }: DetailsScreenProps) {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={() => setTooltip(null)}> 
+    <TouchableWithoutFeedback onPress={() => setTooltip(null)}>
       <ScrollView style={styles.scrollContainer}>
         {loading && <ActivityIndicator size="large" color={colors.white} />}
 
-        <Pressable style={styles.goBackButton} onPress={() => navigation.goBack()}>
+        <Pressable
+          style={styles.goBackButton}
+          onPress={() => navigation.goBack()}
+        >
           <Entypo name="arrow-left" size={24} color={colors.white} />
         </Pressable>
 
@@ -92,10 +95,14 @@ export default function DetailsScreen({ route }: DetailsScreenProps) {
           <View style={styles.tagArea}>
             {user?.cleanliness && (
               <Pressable onPress={() => toggleTooltip(user.cleanliness)}>
-                <Text style={styles.cleanlinessTag}>{user.cleanliness.replaceAll("_", " ")}</Text>
+                <Text style={styles.cleanlinessTag}>
+                  {user.cleanliness.replaceAll("_", " ")}
+                </Text>
                 {tooltip === user.cleanliness && (
                   <View style={styles.tooltip}>
-                    <Text style={styles.tooltipText}>{CleanlinessDescriptions[user.cleanliness]}</Text>
+                    <Text style={styles.tooltipText}>
+                      {CleanlinessDescriptions[user.cleanliness]}
+                    </Text>
                   </View>
                 )}
               </Pressable>
@@ -104,12 +111,19 @@ export default function DetailsScreen({ route }: DetailsScreenProps) {
             {user?.lifestyle &&
               user.lifestyle.map((tag, index) => (
                 <Pressable key={index} onPress={() => toggleTooltip(tag)}>
-                  <Text style={{ ...styles.tag, backgroundColor: renderTagBgColor(tag) }}>
+                  <Text
+                    style={{
+                      ...styles.tag,
+                      backgroundColor: renderTagBgColor(tag),
+                    }}
+                  >
                     {tag.replaceAll("_", " ")}
                   </Text>
                   {tooltip === tag && (
                     <View style={styles.tooltip}>
-                      <Text style={styles.tooltipText}>{LifestyleDescriptions[tag]}</Text>
+                      <Text style={styles.tooltipText}>
+                        {LifestyleDescriptions[tag]}
+                      </Text>
                     </View>
                   )}
                 </Pressable>
