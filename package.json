@@ -18,6 +18,7 @@
     "@codsod/react-native-chat": "^1.0.14",
     "@expo/ngrok": "^4.1.0",
     "@expo/vector-icons": "^14.0.2",
+    "@hookform/resolvers": "^4.1.3",
     "@react-native-async-storage/async-storage": "^2.1.1",
     "@react-native-community/netinfo": "^11.4.1",
     "@react-native-picker/picker": "^2.11.0",
@@ -43,6 +44,7 @@
     "expo-web-browser": "~14.0.2",
     "react": "18.3.1",
     "react-dom": "18.3.1",
+    "react-hook-form": "^7.54.2",
     "react-native": "0.76.6",
     "react-native-deck-swiper": "^2.0.17",
     "react-native-gesture-handler": "~2.20.2",
@@ -53,7 +55,8 @@
     "react-native-toast-message": "^2.2.1",
     "react-native-web": "~0.19.13",
     "react-native-websocket": "^1.0.2",
-    "react-native-webview": "13.12.5"
+    "react-native-webview": "13.12.5",
+    "yup": "^1.6.1"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
