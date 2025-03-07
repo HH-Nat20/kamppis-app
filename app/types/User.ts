@@ -6,7 +6,8 @@ export interface User {
   id: number;
   firstName: string;
   lastName: string;
-  age: number;
+  dateOfBirth: Date;
+  age?: number;
   gender: Gender;
   userId: number;
   maxRent: "LOW" | "MEDIUM" | "HIGH";

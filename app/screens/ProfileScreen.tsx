@@ -11,26 +11,17 @@ import React, { useEffect, useState } from "react";
 import { useUser } from "../contexts/UserContext";
 import { User } from "../types/User";
 import dao from "../ajax/dao";
-import { useForm, Controller } from "react-hook-form";
-import { Gender, GenderLabels } from "../types/Enums/GenderEnum";
+import { Controller, useFormContext } from "react-hook-form";
+import { Gender } from "../types/Enums/GenderEnum";
 import { Lifestyle } from "../types/Enums/LifestyleEnum";
+import { useNavigation } from "@react-navigation/native";
 
-export default function ProfileScreen() {
+export default function ProfileInfoScreen() {
+  const navigation = useNavigation();
   const { user } = useUser();
   const [myProfile, setMyProfile] = useState<User>();
   const [loading, setLoading] = useState<boolean>(true);
-  const { control, handleSubmit, setValue, reset } = useForm<User>({
-    defaultValues: {
-      //  Use empty and default values for new users
-      firstName: "",
-      lastName: "",
-      age: 18,
-      gender: Gender.OTHER,
-      maxRent: "MEDIUM",
-      lifestyle: [],
-      bio: "",
-    },
-  });
+  const { control, handleSubmit, reset } = useFormContext<User>();
 
   const fetchProfile = async () => {
     if (!user) {
@@ -74,7 +65,7 @@ export default function ProfileScreen() {
 
   return (
     <ScrollView style={styles.scrollContainer}>
-      <Text style={styles.title}>Profile</Text>
+      <Text style={styles.title}>Tell us about yourself</Text>
       {loading ? (
         <ActivityIndicator size="large" color="#fff" />
       ) : (
