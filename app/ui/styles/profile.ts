@@ -15,11 +15,11 @@ const profile = StyleSheet.create({
   portraitSwiper: {
     width: "100%",
     height: 300,
-    backgroundColor: "#DF0000", // TODO: Change to transparent
+    backgroundColor: "transparent",
   },
   portraitContainer: {
     width: "100%",
-    backgroundColor: "#00FFFF", // TODO: Change to transparent
+    backgroundColor: "transparent",
     padding: 0,
   },
   portrait: {

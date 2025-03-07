@@ -13,9 +13,7 @@
       "ios": {
         "simulator": true
       },
-      "android": {
-        "simulator": true
-      }
+      "android": {}
     },
     "production": {
       "autoIncrement": true

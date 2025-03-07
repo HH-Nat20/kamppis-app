@@ -33,3 +33,29 @@ This is the GUI Application for the Kämppis mobile app.
    ```bash
       docker-compose down -v
    ```
+
+## To Build the App for Android, use the following instructions
+
+1. Install eas-cli
+
+   ```bash
+      npm install -g eas-cli
+   ```
+   
+2. Make sure you have expo installed as well
+
+   ```bash
+      npm install -g expo-cli
+   ```
+
+3. Login with your expo credentials (if you haven't registered, do so in https://expo.dev/signup)
+
+   ```bash
+      expo Login
+   ```
+   
+4. Build the app using eas-cli and wait for the proccess to finish.
+
+   ```bash
+      eas build --platform android --profile preview
+   ```

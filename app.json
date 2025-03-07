@@ -20,7 +20,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#000000"
-      }
+      },
+      "package": "com.nat20.kamppisapp"
     },
     "androidStatusBar": {
       "backgroundColor": "#000000",
