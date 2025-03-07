@@ -18,7 +18,7 @@ export default function LoginScreen() {
   const navigation = useNavigation<HomeScreenNavigationProp>();
   const [loading, setLoading] = useState<boolean>(true);
   const [users, setUsers] = useState<MatchUser[]>([]);
-  const [selectedUser, setSelectedUser] = useState<MatchUser | null>(null);
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
   const { setUser } = useUser();
 
   useEffect(() => {
@@ -32,24 +32,29 @@ export default function LoginScreen() {
     <View style={styles.container}>
       <Text style={styles.info}>Select a user to login</Text>
       <Picker
-        selectedValue={selectedUser}
+        selectedValue={selectedUserId}
         style={styles.pickerInput}
-        onValueChange={(itemValue) => setSelectedUser(itemValue)}
+        onValueChange={(itemValue) => setSelectedUserId(itemValue)}
       >
         {users.map((user) => (
-          <Picker.Item
-            key={user.id}
-            label={user.email}
-            value={user}
-            style={styles.pickerItem}
+          <Picker.Item 
+            key={user.id.toString()} 
+            label={user.email} 
+            value={user.id.toString()} 
+            style={styles.pickerItem} 
           />
         ))}
       </Picker>
       <Button
         title="Login"
         onPress={() => {
-          if (!selectedUser) {
+          if (!selectedUserId) {
             console.warn("No user selected");
+            return;
+          }
+          const selectedUser = users.find((user) => user.id.toString() === selectedUserId);
+          if (!selectedUser) {
+            console.error("Selected user not found");
             return;
           }
           console.log("Login as", selectedUser);
@@ -60,3 +65,5 @@ export default function LoginScreen() {
     </View>
   );
 }
+
+

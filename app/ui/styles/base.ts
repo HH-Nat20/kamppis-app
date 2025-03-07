@@ -11,7 +11,7 @@ const base = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: colors.background,
-    paddingHorizontal: 10,
+    //paddingHorizontal: 10,
     paddingTop: 20,
     color: colors.text,
   },
@@ -19,6 +19,7 @@ const base = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background,
     color: colors.text,
+    paddingBottom: 20,
   },
   background: {
     ...StyleSheet.absoluteFillObject,
