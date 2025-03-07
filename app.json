@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "owner": "nat20",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/kamppis-app-icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -18,17 +18,17 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#000000"
+        "foregroundImage": "./assets/images/kamppis-app-icon.png",
+        "backgroundColor": "#020D36"
       },
       "package": "com.nat20.kamppisapp"
     },
     "androidStatusBar": {
-      "backgroundColor": "#000000",
+      "backgroundColor": "#020D36",
       "barStyle": "light-content",
       "translucent": false
     },
-    "backgroundColor": "#000000",
+    "backgroundColor": "#020D36",
     "web": {
       "bundler": "metro",
       "output": "static",
@@ -39,10 +39,10 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "./assets/images/kamppis-app-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#000000"
+          "backgroundColor": "#020D36"
         }
       ]
     ],
@@ -50,7 +50,7 @@
       "typedRoutes": true
     },
     "extra": {
-      "BACKEND_URL": "http://backend:8080",
+      "BACKEND_URL": "https://kamppis.hellmanstudios.fi",
       "router": {
         "origin": false
       },
