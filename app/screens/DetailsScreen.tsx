@@ -1,7 +1,15 @@
-import React, {useState, useEffect, useRef} from "react";
-import { StatusBar } from "expo-status-bar";
-import { Text, View, Pressable, ActivityIndicator, Image } from "react-native";
-import Entypo from '@expo/vector-icons/Entypo';
+import React, { useState, useEffect, useRef } from "react";
+import {
+  StatusBar,
+  Text,
+  View,
+  ScrollView,
+  Pressable,
+  ActivityIndicator,
+  Image,
+  TouchableWithoutFeedback,
+} from "react-native";
+import Entypo from "@expo/vector-icons/Entypo";
 
 import Swiper from "react-native-deck-swiper";
 
@@ -11,6 +19,8 @@ import colors, { renderTagBgColor } from "../ui/colors";
 import dao from "../ajax/dao";
 
 import { User } from "../types/User";
+import { LifestyleDescriptions} from "../types/Enums/LifestyleEnum";
+import { CleanlinessDescriptions } from "../types/Enums/CLeanlinessEnum";
 
 import { RouteProp, useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -26,87 +36,116 @@ type DetailsScreenProps = {
 
 export default function DetailsScreen({ route }: DetailsScreenProps) {
   const swiperRef = useRef<Swiper<any>>(null);
-
   const navigation = useNavigation<NavigationProp>();
   const { userId } = route.params;
 
   const [user, setUser] = useState<User | null>(null);
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [tooltip, setTooltip] = useState<string | null>(null);
 
   useEffect(() => {
-      dao.getUserProfile(userId).then((user) => {
-        console.log("Here are some photos", user.userPhotos);
+    dao.getUserProfile(userId).then((user) => {
+      console.log("Here are some photos", user.userPhotos);
       setUser(user);
       setPhotos(user.userPhotos || []);
       setLoading(false);
-      });
+    });
   }, [userId]);
 
+  const toggleTooltip = (tag: string) => {
+    setTooltip(tooltip === tag ? null : tag);
+  };
+
   return (
-    <View style={styles.container}>
- 
-      {loading && <ActivityIndicator size="large" color={colors.white} />}
+    <TouchableWithoutFeedback onPress={() => setTooltip(null)}> 
+      <View style={styles.container}>
+        {loading && <ActivityIndicator size="large" color={colors.white} />}
 
-      <Pressable style={styles.goBackButton} onPress={() => navigation.goBack()}>
-        <Entypo name="arrow-left" size={24} color={colors.white} />
-      </Pressable>
-      
-      <View style={styles.portraitSwiper}>
-        <Swiper
-          ref={swiperRef}
-          cards={photos}
-          renderCard={(photo: Photo, index: number) => (
-            <View key={photo?.id || index} style={styles.portraitContainer}>
+        <Pressable style={styles.goBackButton} onPress={() => navigation.goBack()}>
+          <Entypo name="arrow-left" size={24} color={colors.white} />
+        </Pressable>
+
+        <View style={styles.portraitSwiper}>
+          <Swiper
+            ref={swiperRef}
+            cards={photos}
+            renderCard={(photo: Photo, index: number) => (
+              <View key={photo?.id || index} style={styles.portraitContainer}>
                 <Image source={{ uri: photo?.name }} style={styles.portrait} />
+              </View>
+            )}
+            cardIndex={0}
+            backgroundColor={colors.background}
+            stackSize={1}
+            stackSeparation={15}
+            stackScale={5}
+            infinite={true}
+            animateOverlayLabelsOpacity
+            animateCardOpacity
+            verticalSwipe={false}
+            horizontalSwipe={true}
+          />
+        </View>
+
+        <ScrollView style={styles.profileInfo}>
+          <View style={styles.tagArea}>
+            {user?.cleanliness && (
+              <Pressable onPress={() => toggleTooltip(user.cleanliness)}>
+                <Text style={styles.cleanlinessTag}>{user.cleanliness.replaceAll("_", " ")}</Text>
+                {tooltip === user.cleanliness && (
+                  <View style={styles.tooltip}>
+                    <Text style={styles.tooltipText}>{CleanlinessDescriptions[user.cleanliness]}</Text>
+                  </View>
+                )}
+              </Pressable>
+            )}
+
+            {user?.lifestyle &&
+              user.lifestyle.map((tag, index) => (
+                <Pressable key={index} onPress={() => toggleTooltip(tag)}>
+                  <Text style={{ ...styles.tag, backgroundColor: renderTagBgColor(tag) }}>
+                    {tag.replaceAll("_", " ")}
+                  </Text>
+                  {tooltip === tag && (
+                    <View style={styles.tooltip}>
+                      <Text style={styles.tooltipText}>{LifestyleDescriptions[tag]}</Text>
+                    </View>
+                  )}
+                </Pressable>
+              ))}
+          </View>
+
+          <Text style={styles.title}>
+            {user?.firstName} {user?.lastName}, {user?.age}
+          </Text>
+
+          <Text style={styles.bioText}>{user?.bio}</Text>
+
+          <View style={styles.definitionBox}>
+            <View style={styles.definition}>
+              <Text style={styles.definition}>Gender</Text>
+              <Text style={styles.definitionValue}>{user?.gender}</Text>
             </View>
-          )}        
-          cardIndex={0}
-          backgroundColor={colors.background}
-          stackSize={1}
-          stackSeparation={15}
-          stackScale={5}
-          infinite={true}
-          animateOverlayLabelsOpacity
-          animateCardOpacity
-          verticalSwipe={false}
-          horizontalSwipe={true}
-        />
-
-      </View>
-      
-      <View style={styles.profileInfo}>
-        <View style={styles.tagArea}>
-          {user?.cleanliness && <Text style={styles.cleanlinessTag}>{user?.cleanliness}</Text>}
-          {user?.lifestyle && user.lifestyle.map((tag, index) => (
-            <Text key={index} style={{...styles.tag, backgroundColor: renderTagBgColor(tag)}}>{tag.replaceAll("_", " ")}</Text>
-          ))}
-        </View>
-
-        <Text style={styles.title}>{user?.firstName} {user?.lastName}, {user?.age}</Text>
-
-        <Text style={styles.bioText}>{user?.bio}</Text>
-
-        <View style={styles.definitionBox}>
-          <View style={styles.definition}>
-            <Text style={styles.definition}>Gender</Text>
-            <Text style={styles.definitionValue}>{user?.gender}</Text>
+            <View style={styles.definition}>
+              <Text style={styles.definition}>Max Rent:</Text>
+              <Text style={styles.definitionValue}>{user?.maxRent}</Text>
+            </View>
           </View>
-          <View style={styles.definition}>
-            <Text style={styles.definition}>Max Rent:</Text>
-            <Text style={styles.definitionValue}>{user?.maxRent}</Text>
+
+          <Text style={styles.subtitle}>Locations:</Text>
+
+          <View style={styles.tagArea}>
+            {user?.preferredLocations &&
+              user.preferredLocations.map((tag, index) => (
+                <Text key={index} style={styles.tag}>
+                  {tag}
+                </Text>
+              ))}
           </View>
-        </View>
-
-        <Text style={styles.subtitle}>Locations:</Text>
-
-        <View style={styles.tagArea}>
-          {user?.preferredLocations && user.preferredLocations.map((tag, index) => (
-            <Text key={index} style={styles.tag}>{tag}</Text>
-          ))}
-        </View>
+        </ScrollView>
+        <StatusBar barStyle="light-content" />
       </View>
-      <StatusBar style="auto" />
-    </View>
+    </TouchableWithoutFeedback>
   );
 }

@@ -49,7 +49,24 @@ const profile = StyleSheet.create({
   bioText: {
     fontSize: 16,
     color: colors.text,
-  }
+  },
+
+  tooltip: {
+    position: "absolute",
+    top: 30,
+    left: "50%",
+    transform: [{ translateX: -50 }],
+    backgroundColor: "rgba(0, 0, 0, 0.8)",
+    padding: 10,
+    borderRadius: 5,
+    zIndex: 10,
+  },
+  tooltipText: {
+    color: "white",
+    fontSize: 12,
+    textAlign: "center",
+    maxWidth: 200,
+  },
 });
 
 export default profile;
