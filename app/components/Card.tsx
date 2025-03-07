@@ -50,8 +50,8 @@ const Card: React.FC<CardProps> = ({ card }) => {
           style={{ width, height }}
         >
           <View style={styles.overlay}>
-            <Text style={styles.cardTitle}>
-              {card.firstName}, {card.age} <AntDesign onPress={() => handleOpenDetails(card.id)} name="infocirlceo" size={24} color="white" />
+            <Text style={styles.cardTitle} onPress={() => handleOpenDetails(card.id)}>
+              {card.firstName}, {card.age} <AntDesign name="infocirlceo" size={24} color="white" />
             </Text>
             <View style={styles.tagArea}>
               {card.lifestyle.map((tag, index) => (
@@ -60,39 +60,6 @@ const Card: React.FC<CardProps> = ({ card }) => {
                 </Text>
               ))}
             </View>
-
-            {tapped && (
-              <View style={styles.cardContent}>
-                <View style={styles.definitionBox}>
-
-                  <View style={styles.definition}>
-                    <Text style={styles.definitionText}>Full Name: </Text>
-                    <Text style={styles.definitionValue}>
-                      {card.firstName} {card.lastName}
-                    </Text>
-                  </View>
-
-                  <View style={styles.definition}>
-                    <Text style={styles.definitionText}>Age: </Text>
-                    <Text style={styles.definitionValue}>
-                      {card.age}
-                    </Text>
-                  </View>
-
-                  <View style={styles.definition}>
-                    <Text style={styles.definitionText}>Gender: </Text>
-                    <Text style={styles.definitionValue}>{card.gender}</Text>
-                  </View>
-
-                  <View style={styles.definition}>
-                    <Text style={styles.definitionValue}>
-                      {card.bio || "No bio available"}
-                    </Text>
-                  </View>
-
-                </View>
-              </View>
-            )}
           </View>
         </ImageBackground>
       </Pressable>

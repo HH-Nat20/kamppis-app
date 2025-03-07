@@ -4,17 +4,51 @@ import colors from "../colors";
 const profile = StyleSheet.create({
   goBackButton: {
     position: "absolute",
-    top: 20,
+    top: 10,
     left: 20,
     backgroundColor: colors.primary,
     padding: 10,
     borderRadius: 8,
     color: colors.textLight,
+    zIndex: 1,
+  },
+  portraitSwiper: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: 300,
+    flex: 1,
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    backgroundColor: "transparent",
+  },
+  portraitContainer: {
+    flex: 1,
+    width: "100%",
+    backgroundColor: "transparent",
+    padding: 0,
   },
   portrait: {
     width: "100%",
     height: 300,
     resizeMode: "cover",
+    borderColor: colors.primary,
+    borderWidth: 5,
+    borderRadius: 8,
+  },
+  profileInfo: {
+    position: "relative",
+    top: 320,
+    flex: 1,
+    width: "100%",
+    padding: 20,
+    backgroundColor: colors.background,
+    color: colors.text,
+  },
+  bioText: {
+    fontSize: 16,
+    color: colors.text,
   }
 });
 

@@ -36,35 +36,55 @@ const card = StyleSheet.create({
     borderRadius: 8,
   },
   definitionBox: {
-    width: "100%",
+    width: "80%",
+    borderWidth: 2,
+    borderColor: colors.border,
+    borderRadius: 8,
+    padding: 5,
+    paddingTop: 10,
+    margin: 20,
   },
   definition: {
+    color: colors.text,
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingVertical: 5,
+    paddingLeft: 5,
+    paddingRight: 5,
+    paddingTop: 0,
+    paddingBottom: 5
   },
   definitionText: {
-    fontSize: 16,
-    color: "#222",
+    fontSize: 12,
+    color: colors.info,
   },
   definitionValue: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#111",
+    fontSize: 12,
+    color: colors.success,
   },
 
   tagArea: {
     flexDirection: "row",
     flexWrap: "wrap",
     marginTop: 10,
+    marginBottom: 20
   },
   tag: {
-    backgroundColor: "#f2f2f2",
+    backgroundColor: colors.secondary,
     color: "#f1f1f1",
     padding: 5,
     borderRadius: 5,
     margin: 5,
   },
+  cleanlinessTag: {
+    backgroundColor: colors.primary,
+    color: "#f1f1f1",
+    padding: 5,
+    borderRadius: 5,
+    marginTop: 5,
+    marginBottom: 5,
+    marginLeft: 0,
+    marginRight: 15,
+  }
 });
 
 export default card;
