@@ -58,11 +58,12 @@ const form = StyleSheet.create({
   },
   pickerItem: {
     color: colors.textLight,
+    backgroundColor: colors.background,
   },
   selected: {
     color: colors.info,
     fontSize: 14,
-  }
+  },
 });
 
 export default form;

@@ -1,6 +1,6 @@
 import { User } from "../types/User";
 
-import { get } from "./request";
+import { get, update } from "./request";
 
 const ENDPOINT = "user-profiles";
 
@@ -32,7 +32,7 @@ export const getUserProfile = async (userId: number) => {
   const user: User = await response.json();
   console.log(`Found user profile: `, user);
   return user;
-}
+};
 
 /**
  * For testing purposes, fetch all user profiles
@@ -43,4 +43,17 @@ export const getAllUserProfiles = async () => {
   const response = await get(`/${ENDPOINT}`);
   const users: User[] = await response.json();
   return users;
+};
+
+/**
+ * Update a user profile
+ *
+ * @param {number} userId
+ * @returns {Promise<User>}
+ */
+export const updateUserProfile = async (userId: number, userProfile: User) => {
+  const response = await update(`/${ENDPOINT}/${userId}`, userProfile);
+  const user: User = await response.json();
+  console.log(`Updated profile: `, user);
+  return user;
 };
