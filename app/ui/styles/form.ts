@@ -1,48 +1,54 @@
 import { StyleSheet } from "react-native";
+import colors from "../colors";
 
 const form = StyleSheet.create({
-  info: {
-    position: "absolute",
-    top: 70,
-    left: 20,
-    fontSize: 20,
-  },
   label: {
     fontSize: 16,
     fontWeight: "bold",
     marginTop: 10,
+    color: colors.textLight,
   },
   input: {
     height: 40,
-    borderColor: "#ccc",
+    borderColor: colors.border,
     borderWidth: 1,
     borderRadius: 8,
     paddingHorizontal: 10,
     marginTop: 5,
+    color: colors.textLight,
   },
   saveButton: {
     width: 150,
     height: 50,
-    backgroundColor: "blue",
+    backgroundColor: colors.primary,
     borderRadius: 10,
     position: "absolute",
     top: 10,
     right: 20,
     alignItems: "center",
     justifyContent: "center",
+    color: colors.textLight,
   },
   nextButton: {
     width: 150,
     height: 50,
-    backgroundColor: "#ccc",
+    backgroundColor: colors.primary,
     borderRadius: 10,
     position: "absolute",
     bottom: 10,
     right: 20,
     alignItems: "center",
     justifyContent: "center",
+    color: colors.textLight,
+  },
+  buttonText: {
+    color: colors.textLight,
+    fontSize: 24,
   },
   pickerInput: {
+    borderColor: colors.border,
+    borderWidth: 1,
+    color: colors.text,
     borderRadius: 8,
     marginTop: 5,
     height: 60,
@@ -51,8 +57,12 @@ const form = StyleSheet.create({
     paddingHorizontal: 10,
   },
   pickerItem: {
-    color: "black",
+    color: colors.textLight,
   },
+  selected: {
+    color: colors.info,
+    fontSize: 14,
+  }
 });
 
 export default form;

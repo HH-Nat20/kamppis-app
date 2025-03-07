@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import styles from "../ui/styles";
+import colors from "../ui/colors";
+
 import {
   StyleSheet,
   Text,
@@ -29,13 +31,14 @@ export default function App({}) {
   const [city, setCity] = useState("");
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: "white" }}>
+    <ScrollView style={styles.scrollContainer}>
       <Text style={styles.info}>Profile</Text>
       <View style={styles.profileData}>
         <Text style={styles.label}>Age:</Text>
         <TextInput
           style={styles.input}
           placeholder="Enter your age"
+          placeholderTextColor={colors.inactive}
           keyboardType="numeric"
           value={age}
           onChangeText={setAge}
@@ -46,13 +49,12 @@ export default function App({}) {
           style={styles.pickerInput}
           onValueChange={(itemValue) => setGender(itemValue)}
         >
-          <Picker.Item label="Male" value="male" color="black" />
-          <Picker.Item label="Female" value="female" color="black" />
-          <Picker.Item label="Other" value="other" color="black" />
+          <Picker.Item label="Male" value="male"/>
+          <Picker.Item label="Female" value="female" />
+          <Picker.Item label="Other" value="other"/>
           <Picker.Item
             label="Prefer not to say"
             value="not_important"
-            color="black"
           />
         </Picker>
         <Text style={styles.label}>Lifestyle:</Text>
@@ -69,7 +71,7 @@ export default function App({}) {
             />
           ))}
         </Picker>
-        <Text>Selected: {lifestyle}</Text>
+        <Text style={styles.selected}>Selected: {lifestyle.replaceAll("_", " ")}</Text>
         <Text style={styles.label}>Cleanliness:</Text>
         <Picker
           style={styles.pickerInput}
@@ -86,21 +88,22 @@ export default function App({}) {
             />
           ))}
         </Picker>
-        <Text>Selected: {cleanliness}</Text>
+        <Text style={styles.selected}>Selected: {cleanliness.replaceAll("_", " ")}</Text>
         <Text style={styles.label}>Preferred location:</Text>
         <Picker
           selectedValue={city}
           style={styles.pickerInput}
           onValueChange={(itemValue) => setCity(itemValue)}
         >
-          <Picker.Item label="Espoo" value="espoo" color="black" />
-          <Picker.Item label="Helsinki" value="helsinki" color="black" />
-          <Picker.Item label="Vantaa" value="vantaa" color="black" />
+          <Picker.Item label="Espoo" value="espoo" />
+          <Picker.Item label="Helsinki" value="helsinki" />
+          <Picker.Item label="Vantaa" value="vantaa" />
         </Picker>
         <Text style={styles.label}>Maximum rent:</Text>
         <TextInput
           style={styles.input}
           placeholder="Maximum rent you can afford"
+          placeholderTextColor={colors.inactive}
           keyboardType="numeric"
           value={maxRent}
           onChangeText={setMaxRent}
@@ -110,13 +113,13 @@ export default function App({}) {
         style={styles.saveButton}
         onPress={() => setSaved(true)}
       >
-        <Text style={{ color: "white", fontSize: 25 }}>Save</Text>
+        <Text style={styles.buttonText}>Save</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.nextButton}
         onPress={() => setSaved(true)}
       >
-        <Text style={{ color: "black", fontSize: 25 }}>Next</Text>
+        <Text style={styles.buttonText}>Next</Text>
       </TouchableOpacity>
 
       <StatusBar style="auto" />

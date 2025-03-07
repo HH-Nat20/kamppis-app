@@ -17,6 +17,8 @@ import { useMatch } from "../contexts/MatchContext";
 import { getProfilePicture } from "../helpers/helpers";
 
 import styles from "../ui/styles";
+import { bgGradient } from "../ui/colors";
+
 import { useUser } from "../contexts/UserContext";
 
 type ChatStackParamList = {
@@ -69,12 +71,7 @@ const MatchesScreen = () => {
     <SafeAreaView style={styles.container}>
       <Text style={styles.header}>Matches for {user?.email}</Text>
       <LinearGradient
-        colors={[
-          "rgba(145, 46, 211, 1)",
-          "rgba(103, 28, 151, 1)",
-          "rgba(65, 16, 95, 1)",
-          "rgba(47, 9, 69, 1)",
-        ]}
+        colors={bgGradient}
         style={styles.background}
       />
 

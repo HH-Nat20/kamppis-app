@@ -6,6 +6,8 @@ import ChatStackNavigator from "./ChatStackNavigator";
 import HomeStackNavigator from "./HomeStackNavigator";
 import SwipeStackNavigator from "./SwipeStackNavigator";
 
+import colors from "../ui/colors";
+
 const Tab = createBottomTabNavigator();
 
 const BottomTabNavigator: React.FC = () => {
@@ -13,7 +15,7 @@ const BottomTabNavigator: React.FC = () => {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarStyle: {
-          backgroundColor: "rgba(47, 9, 69, 1)",
+          backgroundColor: colors.background,
           borderTopWidth: 0,
           elevation: 0,
           shadowOpacity: 0,
@@ -21,8 +23,8 @@ const BottomTabNavigator: React.FC = () => {
           height: 60,
           paddingTop: 5,
         },
-        tabBarActiveTintColor: "rgb(195, 166, 214)",
-        tabBarInactiveTintColor: "rgb(114, 56, 150)",
+        tabBarActiveTintColor: colors.active,
+        tabBarInactiveTintColor: colors.inactive,
         tabBarIcon: ({ color, size }) => {
           let iconName: keyof typeof Ionicons.glyphMap = "home";
 
