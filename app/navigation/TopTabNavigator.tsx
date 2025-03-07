@@ -3,6 +3,8 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import ProfileScreen from "../screens/ProfileScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 
+import colors from "../ui/colors";
+
 const UpTab = createMaterialTopTabNavigator();
 
 const TopTabNavigator: React.FC = () => {
@@ -10,12 +12,12 @@ const TopTabNavigator: React.FC = () => {
     <UpTab.Navigator
       screenOptions={{
         tabBarStyle: {
-          backgroundColor: "rgba(47, 9, 69, 1)",
+          backgroundColor: colors.background,
         },
-        tabBarActiveTintColor: "rgb(236, 218, 248)",
-        tabBarInactiveTintColor: "rgb(191, 135, 225)",
+        tabBarActiveTintColor: colors.active,
+        tabBarInactiveTintColor: colors.inactive,
         tabBarIndicatorStyle: {
-          backgroundColor: "rgb(195, 166, 214)", // The line under active tab
+          backgroundColor: colors.border, // The line under active tab
         },
       }}
     >

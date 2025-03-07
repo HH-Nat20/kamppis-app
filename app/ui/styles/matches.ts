@@ -1,4 +1,5 @@
 import { StyleSheet, Dimensions } from "react-native";
+import colors from "../colors";
 
 const { width } = Dimensions.get("window");
 const itemMargin = 10;
@@ -9,7 +10,7 @@ const matches = StyleSheet.create({
   header: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#fff",
+    color: colors.textLight,
     textAlign: "center",
     marginBottom: 10,
     marginTop: 10,
@@ -32,16 +33,16 @@ const matches = StyleSheet.create({
     borderRadius: 10,
   },
   placeholder: {
-    backgroundColor: "#333",
+    backgroundColor: colors.background,
     justifyContent: "center",
     alignItems: "center",
   },
   placeholderText: {
-    color: "#aaa",
+    color: colors.textDark,
     fontSize: 14,
   },
   name: {
-    color: "#fff",
+    color: colors.textLight,
     fontSize: 16,
     fontWeight: "bold",
   },
@@ -52,13 +53,13 @@ const matches = StyleSheet.create({
     padding: 20,
   },
   emptyText: {
-    color: "#fff",
+    color: colors.textLight,
     fontSize: 16,
     textAlign: "center",
   },
   separator: {
     marginVertical: 8,
-    borderBottomColor: "#737373",
+    borderBottomColor: colors.border,
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
 });

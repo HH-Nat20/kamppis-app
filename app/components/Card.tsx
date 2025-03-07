@@ -8,6 +8,7 @@ import {
   Dimensions,
 } from "react-native";
 import styles from "../ui/styles";
+import { renderTagBgColor } from "../ui/colors";
 import { User } from "../types/User";
 import { countAge, formatDate, getProfilePicture } from "../helpers/helpers";
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -25,23 +26,6 @@ type DetailStackParamList = {
 type DetailScreenNavigationProp = NativeStackNavigationProp<
   DetailStackParamList
 >;
-
-const renderBgColor = (tag: string) => {
-  switch (tag) {
-    case "STUDENT":
-      return "#43AA8B";
-    case "WORKING":
-      return "#254441";
-    case "PARTY_GOER":
-      return "#DB504A";
-    case "EARLY_BIRD":
-      return "#0496FF";
-    case "NIGHT_OWL":
-      return "#FF6F59";
-    default:
-      return "#0F4C5C";
-  }
-}
 
 const Card: React.FC<CardProps> = ({ card }) => {
   const [tapped, setTapped] = useState<boolean>(false);
@@ -71,7 +55,7 @@ const Card: React.FC<CardProps> = ({ card }) => {
             </Text>
             <View style={styles.tagArea}>
               {card.lifestyle.map((tag, index) => (
-                <Text key={index} style={{...styles.tag, backgroundColor: renderBgColor(tag)}}>
+                <Text key={index} style={{...styles.tag, backgroundColor: renderTagBgColor(tag)}}>
                   {tag.replaceAll("_", " ")}
                 </Text>
               ))}

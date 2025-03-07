@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, ActivityIndicator, Button } from "react-native";
 import styles from "../ui/styles";
+import { bgGradient } from "../ui/colors";
 
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -69,12 +70,7 @@ const HomeScreen = () => {
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={[
-          "rgba(145, 46, 211, 1)",
-          "rgba(103, 28, 151, 1)",
-          "rgba(65, 16, 95, 1)",
-          "rgba(47, 9, 69, 1)",
-        ]}
+        colors={bgGradient}
         style={styles.background}
       />
       <Text style={styles.title}>App started</Text>
