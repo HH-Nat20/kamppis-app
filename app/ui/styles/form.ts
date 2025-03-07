@@ -57,7 +57,7 @@ const form = StyleSheet.create({
     paddingHorizontal: 10,
   },
   pickerItem: {
-    color: colors.textLight,
+    color: colors.black,
   },
   selected: {
     color: colors.info,

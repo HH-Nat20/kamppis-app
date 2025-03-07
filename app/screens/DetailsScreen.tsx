@@ -35,7 +35,7 @@ export default function DetailsScreen({ route }: DetailsScreenProps) {
     <View style={styles.container}>
  
       <Pressable style={styles.goBackButton} onPress={() => navigation.goBack()}>
-        <Entypo name="arrow-left" size={24} color="black" />
+        <Entypo name="arrow-left" size={24} color="white" />
       </Pressable>
 
       <Text style={styles.text}>Details come here for user {user?.firstName}</Text>
