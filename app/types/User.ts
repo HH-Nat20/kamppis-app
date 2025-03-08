@@ -2,6 +2,7 @@ import { Photo } from "./Photo";
 import { Lifestyle } from "./enums/LifestyleEnum";
 import { Cleanliness } from "./enums/CLeanlinessEnum";
 import { Gender } from "./enums/GenderEnum";
+import { Location } from "./enums/LocationEnum";
 export interface User {
   id: number;
   firstName: string;
@@ -17,6 +18,6 @@ export interface User {
   minAgePreference?: number;
   maxAgePreference?: number;
   preferredGender?: Gender;
-  preferredLocations?: string[];
+  preferredLocations: Location[];
   userPhotos?: Photo[];
 }
