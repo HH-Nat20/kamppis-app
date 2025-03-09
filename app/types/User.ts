@@ -17,7 +17,7 @@ export interface User {
   bio?: string;
   minAgePreference?: number;
   maxAgePreference?: number;
-  preferredGender?: Gender;
+  preferredGenders: Gender[];
   preferredLocations: Location[];
   userPhotos?: Photo[];
 }
