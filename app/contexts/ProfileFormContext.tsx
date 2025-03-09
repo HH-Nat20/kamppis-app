@@ -5,6 +5,7 @@ import { Gender } from "../types/enums/GenderEnum";
 import { useUser } from "./UserContext";
 import dao from "../ajax/dao";
 import { ActivityIndicator } from "react-native";
+import { useMatchableProfiles } from "./MatchableProfilesContext";
 
 interface ProfileFormContextProps {
   loading: boolean;
@@ -22,6 +23,7 @@ export const ProfileFormProvider = ({
 }) => {
   const { user } = useUser();
   const [loading, setLoading] = useState<boolean>(true);
+  const { refreshMatchableProfiles } = useMatchableProfiles();
 
   const methods = useForm<User>({
     defaultValues: {
@@ -71,11 +73,13 @@ export const ProfileFormProvider = ({
         const updatedProfile = await dao.updateUserProfile(user.id, data);
         reset(updatedProfile); // Sync form with updated profile
         alert("Profile updated successfully!");
+        refreshMatchableProfiles(); // Refresh matchable profiles after updating profile
       } else {
         // TODO: implement create profile dao method
         // const newProfile = await dao.createUserProfile(data);
         // reset(newProfile);
         alert("Profile created successfully!");
+        refreshMatchableProfiles(); // Refresh matchable profiles after creating profile
       }
     } catch (error) {
       console.error("Error updating profile:", error);

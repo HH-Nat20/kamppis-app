@@ -16,55 +16,14 @@ import styles from "../ui/styles";
 import { useUser } from "../contexts/UserContext";
 import Toast from "react-native-toast-message";
 import { useMatch } from "../contexts/MatchContext";
+import { useMatchableProfiles } from "../contexts/MatchableProfilesContext";
 
 const SwipeScreen: React.FC = () => {
   const swiperRef = useRef<Swiper<any>>(null);
 
-  const [loading, setLoading] = useState<boolean>(true);
-  const [cards, setCards] = useState<User[]>([]);
-
+  const { cards, loading, refreshMatchableProfiles } = useMatchableProfiles();
   const { user } = useUser();
-
   const { refreshMatches } = useMatch();
-
-  const fetchInitialCards = async () => {
-    setLoading(true);
-
-    if (!user?.id) {
-      console.warn("No logged-in user found");
-      setLoading(false);
-      return;
-    }
-
-    try {
-      let users: User[] = await dao.getPossibleMatches(user.id);
-
-      if (users.length === 0) {
-        setCards([]);
-        setLoading(false);
-        return;
-      }
-
-      users = users.filter((u) => u.id !== user.id);
-      setLoading(false);
-
-      if (!Array.isArray(users)) {
-        console.warn("No users received from API");
-        setLoading(false);
-        return;
-      }
-
-      setCards(users);
-    } catch (error) {
-      console.error("Error fetching users:", error);
-    }
-
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    fetchInitialCards();
-  }, [user]);
 
   const handleSwipe = async (
     cardIndex: number,
@@ -140,8 +99,7 @@ const SwipeScreen: React.FC = () => {
           onSwipedRight={(cardIndex) => handleSwipe(cardIndex, "right")}
           onSwipedBottom={(cardIndex) => handleSwipe(cardIndex, "down")}
           onSwipedAll={() => {
-            setCards([]);
-            fetchInitialCards();
+            refreshMatchableProfiles();
           }}
           onTapCard={(cardIndex) => {
             console.log(
