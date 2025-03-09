@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { SafeAreaView } from "react-native";
+import { SafeAreaView, Text } from "react-native";
 import { RouteProp, useNavigation } from "@react-navigation/native";
 import { ChatStackParamList } from "../navigation/ChatStackNavigator";
 
@@ -13,6 +13,8 @@ import { IMessage } from "@stomp/stompjs";
 import Chat from "@codsod/react-native-chat";
 import { useUser } from "../contexts/UserContext";
 import { StackNavigationProp } from "@react-navigation/stack";
+import styles from "../ui/styles";
+import colors from "../ui/colors";
 
 type ChatScreenRouteProp = RouteProp<ChatStackParamList, "ChatScreen">;
 
@@ -179,7 +181,7 @@ export default function ChatScreen({ route }: ChatScreenProps) {
         placeholder="Enter Your Message"
         placeholderColor="gray"
         backgroundImage={
-          "https://fastly.picsum.photos/id/54/3264/2176.jpg?hmac=blh020fMeJ5Ru0p-fmXUaOAeYnxpOPHnhJojpzPLN3g"
+          "https://images.pexels.com/photos/18955755/pexels-photo-18955755/free-photo-of-balconies-in-a-house-building.jpeg"
         }
         // showEmoji={true}
         // onPressEmoji={() => console.log("Emoji Button Pressed..")}
