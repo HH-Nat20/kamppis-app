@@ -11,7 +11,7 @@ export interface User {
   age?: number;
   gender: Gender;
   userId: number;
-  maxRent: "LOW" | "MEDIUM" | "HIGH";
+  maxRent: "LOW" | "MID" | "HIGH";
   lifestyle: Lifestyle[];
   cleanliness: Cleanliness;
   bio?: string;

@@ -86,7 +86,7 @@ const SwipeScreen: React.FC = () => {
               </View>
             ) : (
               <View style={styles.cardContainer}>
-                <Text style={styles.cardTitle}>No Matches Found</Text>
+                <Text style={styles.cardTitle}>No Profiles Found</Text>
                 <Text style={styles.subtitle}>
                   Try adjusting your settings for better results
                 </Text>

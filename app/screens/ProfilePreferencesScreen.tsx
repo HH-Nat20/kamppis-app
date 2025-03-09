@@ -121,26 +121,26 @@ export default function ProfilePreferencesScreen() {
           control={control}
           name="maxRent"
           render={({ field: { onChange, value } }) => {
-            // Convert string value ("LOW", "MEDIUM", "HIGH") back to a number for the slider
-            const getNumericValue = (rent: "LOW" | "MEDIUM" | "HIGH") => {
+            // Convert string value ("LOW", "MID", "HIGH") back to a number for the slider
+            const getNumericValue = (rent: "LOW" | "MID" | "HIGH") => {
               switch (rent) {
                 case "LOW":
                   return 400;
-                case "MEDIUM":
-                  return 700;
+                case "MID":
+                  return 600;
                 case "HIGH":
-                  return 1000;
+                  return 800;
                 default:
                   return 500;
               }
             };
 
-            // Convert numeric value back to "LOW", "MEDIUM", or "HIGH"
+            // Convert numeric value back to "LOW", "MID", or "HIGH"
             const getRentCategory = (
               num: number
-            ): "LOW" | "MEDIUM" | "HIGH" => {
+            ): "LOW" | "MID" | "HIGH" => {
               if (num <= 400) return "LOW";
-              if (num <= 700) return "MEDIUM";
+              if (num <= 600) return "MID";
               return "HIGH";
             };
 
@@ -150,7 +150,7 @@ export default function ProfilePreferencesScreen() {
                   max={1000}
                   min={200}
                   increment={50}
-                  values={[getNumericValue(value as "LOW" | "MEDIUM" | "HIGH")]}
+                  values={[getNumericValue(value as "LOW" | "MID" | "HIGH")]}
                   onChange={(values: number[]) =>
                     onChange(getRentCategory(values[0]))
                   }
