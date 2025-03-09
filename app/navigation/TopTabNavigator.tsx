@@ -4,7 +4,7 @@ import ProfilePersonalScreen from "../screens/ProfilePersonalScreen";
 import ProfilePreferencesScreen from "../screens/ProfilePreferencesScreen";
 
 import colors from "../ui/colors";
-import { ProfileFormContext } from "../contexts/ProfileFormContext";
+import { ProfileFormProvider } from "../contexts/ProfileFormContext";
 
 export type ProfileTabParamList = {
   "Personal Info": undefined;
@@ -15,9 +15,8 @@ const UpTab = createMaterialTopTabNavigator();
 
 const TopTabNavigator: React.FC = () => {
   return (
-    <ProfileFormContext>
+    <ProfileFormProvider>
       <UpTab.Navigator
-        initialRouteName="Personal Info"
         screenOptions={{
           tabBarStyle: {
             backgroundColor: colors.background,
@@ -35,7 +34,7 @@ const TopTabNavigator: React.FC = () => {
           component={ProfilePreferencesScreen}
         />
       </UpTab.Navigator>
-    </ProfileFormContext>
+    </ProfileFormProvider>
   );
 };
 
