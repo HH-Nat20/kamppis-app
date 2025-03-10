@@ -9,7 +9,7 @@ export interface User {
   lastName: string;
   dateOfBirth: Date;
   age?: number;
-  gender: Gender;
+  gender: Gender; 
   userId: number;
   maxRent: "LOW" | "MID" | "HIGH";
   lifestyle: Lifestyle[];

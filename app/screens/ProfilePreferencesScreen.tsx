@@ -20,7 +20,11 @@ export default function ProfilePreferencesScreen() {
   const navigation = useNavigation<ProfilePreferencesScreenNavigationProp>();
   const { control, handleSubmit } = useFormContext<User>();
 
-  const { onSubmit } = useProfileForm();
+  const {
+    onSubmit,
+    onError,
+    formState: { errors },
+  } = useProfileForm();
 
   return (
     <ScrollView style={styles.scrollContainer}>
@@ -41,6 +45,9 @@ export default function ProfilePreferencesScreen() {
             />
           )}
         />
+        {errors.minAgePreference && (
+          <Text style={styles.failed}>{errors.minAgePreference.message}</Text>
+        )}
         <View style={styles.separator} />
 
         <Text style={styles.text}>Match maximum age:</Text>
@@ -56,6 +63,9 @@ export default function ProfilePreferencesScreen() {
             />
           )}
         />
+        {errors.maxAgePreference && (
+          <Text style={styles.failed}>{errors.maxAgePreference.message}</Text>
+        )}
         <View style={styles.separator} />
 
         <Text style={styles.text}>Match preferred gender(s):</Text>
@@ -85,6 +95,9 @@ export default function ProfilePreferencesScreen() {
             />
           ))}
         </View>
+        {errors.preferredGenders && (
+          <Text style={styles.failed}>{errors.preferredGenders.message}</Text>
+        )}
         <View style={styles.separator} />
 
         <Text style={styles.text}>Preferred location(s):</Text>
@@ -114,6 +127,9 @@ export default function ProfilePreferencesScreen() {
             />
           ))}
         </View>
+        {errors.preferredLocations && (
+          <Text style={styles.failed}>{errors.preferredLocations.message}</Text>
+        )}
         <View style={styles.separator} />
 
         <Text style={styles.text}>Maximum rent:</Text>
@@ -136,9 +152,7 @@ export default function ProfilePreferencesScreen() {
             };
 
             // Convert numeric value back to "LOW", "MID", or "HIGH"
-            const getRentCategory = (
-              num: number
-            ): "LOW" | "MID" | "HIGH" => {
+            const getRentCategory = (num: number): "LOW" | "MID" | "HIGH" => {
               if (num <= 400) return "LOW";
               if (num <= 600) return "MID";
               return "HIGH";
@@ -161,6 +175,9 @@ export default function ProfilePreferencesScreen() {
             );
           }}
         />
+        {errors.maxRent && (
+          <Text style={styles.failed}>{errors.maxRent.message}</Text>
+        )}
         <View style={styles.separator} />
 
         <View style={styles.separator} />
@@ -175,7 +192,7 @@ export default function ProfilePreferencesScreen() {
         >
           <TouchableOpacity
             style={styles.saveButton}
-            onPress={handleSubmit(onSubmit)}
+            onPress={handleSubmit(onSubmit, onError)}
           >
             <Text style={styles.buttonText}>Save</Text>
           </TouchableOpacity>

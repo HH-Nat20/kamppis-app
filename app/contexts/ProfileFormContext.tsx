@@ -1,15 +1,20 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { useForm, FormProvider } from "react-hook-form";
+import { useForm, FormProvider, FieldErrors } from "react-hook-form";
 import { User } from "../types/User";
 import { Gender } from "../types/enums/GenderEnum";
 import { useUser } from "./UserContext";
 import dao from "../ajax/dao";
 import { ActivityIndicator } from "react-native";
 import { useMatchableProfiles } from "./MatchableProfilesContext";
+import { profileSchema, UserFormSchema } from "../validation/profileSchema";
+import { yupResolver } from "@hookform/resolvers/yup";
+import Toast from "react-native-toast-message";
 
 interface ProfileFormContextProps {
   loading: boolean;
   onSubmit: (data: User) => Promise<void>;
+  onError?: (errors: any) => void;
+  formState: { errors: FieldErrors<User> };
 }
 
 const ProfileFormContext = createContext<ProfileFormContextProps | undefined>(
@@ -25,7 +30,8 @@ export const ProfileFormProvider = ({
   const [loading, setLoading] = useState<boolean>(true);
   const { refreshMatchableProfiles } = useMatchableProfiles();
 
-  const methods = useForm<User>({
+  const methods = useForm<UserFormSchema>({
+    resolver: yupResolver(profileSchema),
     defaultValues: {
       firstName: "",
       lastName: "",
@@ -41,7 +47,11 @@ export const ProfileFormProvider = ({
     },
   });
 
-  const { reset, handleSubmit } = methods;
+  const {
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = methods;
 
   // Fetch profile info when user changes
   useEffect(() => {
@@ -68,29 +78,58 @@ export const ProfileFormProvider = ({
   // Submit handler (updates existing profile or creates a new one)
   const onSubmit = async (data: User) => {
     try {
+      if (Object.keys(errors).length > 0) {
+        Toast.show({
+          type: "info",
+          text1: "Invalid Input",
+          text2: "Please fix the errors before submitting.",
+        });
+        return;
+      }
       setLoading(true);
       if (user) {
         const updatedProfile = await dao.updateUserProfile(user.id, data);
         reset(updatedProfile); // Sync form with updated profile
-        alert("Profile updated successfully!");
+        Toast.show({
+          type: "success",
+          text1: "Profile Updated",
+          text2: "Your changes have been saved.",
+        });
         refreshMatchableProfiles(); // Refresh matchable profiles after updating profile
       } else {
         // TODO: implement create profile dao method
         // const newProfile = await dao.createUserProfile(data);
         // reset(newProfile);
-        alert("Profile created successfully!");
+        Toast.show({
+          type: "success",
+          text1: "Profile Created",
+          text2: "Your Profile has been created!.",
+        });
         refreshMatchableProfiles(); // Refresh matchable profiles after creating profile
       }
     } catch (error) {
       console.error("Error updating profile:", error);
-      alert("Error updating profile. Please try again.");
+      Toast.show({
+        type: "error",
+        text1: "Update Failed",
+        text2: "Something went wrong. Please try again.",
+      });
     } finally {
       setLoading(false);
     }
   };
 
+  // Error handler for form validation failures
+  const onError = (errors: any) => {
+    Toast.show({
+      type: "error",
+      text1: "Invalid Input",
+      text2: "Please fix the errors before submitting.",
+    });
+  };
+
   return (
-    <ProfileFormContext.Provider value={{ loading, onSubmit }}>
+    <ProfileFormContext.Provider value={{ loading, onSubmit, onError, formState: { errors } }}>
       <FormProvider {...methods}>
         {loading ? <ActivityIndicator size="large" color="#fff" /> : children}
       </FormProvider>

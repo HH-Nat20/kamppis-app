@@ -26,7 +26,11 @@ export default function ProfilePersonalScreen() {
   const navigation = useNavigation<ProfilePersonalScreenNavigationProp>();
 
   const { control, handleSubmit } = useFormContext<User>();
-  const { onSubmit } = useProfileForm();
+  const {
+    onSubmit,
+    onError,
+    formState: { errors },
+  } = useProfileForm();
 
   return (
     <ScrollView style={styles.scrollContainer}>
@@ -46,6 +50,9 @@ export default function ProfilePersonalScreen() {
             />
           )}
         />
+        {errors.firstName && (
+          <Text style={styles.failed}>{errors.firstName.message}</Text>
+        )}
 
         <Text style={styles.text}>Last Name:</Text>
         <Controller
@@ -60,6 +67,9 @@ export default function ProfilePersonalScreen() {
             />
           )}
         />
+        {errors.lastName && (
+          <Text style={styles.failed}>{errors.lastName.message}</Text>
+        )}
 
         <Text style={styles.text}>Age:</Text>
         <Controller
@@ -75,6 +85,7 @@ export default function ProfilePersonalScreen() {
             />
           )}
         />
+        {errors.age && <Text style={styles.failed}>{errors.age.message}</Text>}
         <View style={styles.separator} />
 
         <Text style={styles.text}>Gender (select one):</Text>
@@ -98,6 +109,9 @@ export default function ProfilePersonalScreen() {
             />
           ))}
         </View>
+        {errors.gender && (
+          <Text style={styles.failed}>{errors.gender.message}</Text>
+        )}
         <View style={styles.separator} />
 
         <Text style={styles.text}>Lifestyle (select one or more):</Text>
@@ -127,6 +141,9 @@ export default function ProfilePersonalScreen() {
             />
           ))}
         </View>
+        {errors.lifestyle && (
+          <Text style={styles.failed}>{errors.lifestyle.message}</Text>
+        )}
         <View style={styles.separator} />
 
         <Text style={styles.text}>Cleanliness (select one):</Text>
@@ -150,6 +167,9 @@ export default function ProfilePersonalScreen() {
             />
           ))}
         </View>
+        {errors.cleanliness && (
+          <Text style={styles.failed}>{errors.cleanliness.message}</Text>
+        )}
         <View style={styles.separator} />
 
         <Text style={styles.text}>Bio:</Text>
@@ -166,9 +186,10 @@ export default function ProfilePersonalScreen() {
             />
           )}
         />
+        {errors.bio && <Text style={styles.failed}>{errors.bio.message}</Text>}
+        <View style={styles.separator} />
 
         {/* Save and Next buttons */}
-        <View style={styles.separator} />
         <View
           style={{
             height: 50,
@@ -180,7 +201,7 @@ export default function ProfilePersonalScreen() {
         >
           <TouchableOpacity
             style={styles.saveButton}
-            onPress={handleSubmit(onSubmit)}
+            onPress={handleSubmit(onSubmit, onError)}
           >
             <Text style={styles.buttonText}>Save</Text>
           </TouchableOpacity>
