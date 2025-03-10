@@ -29,15 +29,16 @@ const SwipeScreen: React.FC = () => {
     cardIndex: number,
     direction: "left" | "right" | "down"
   ) => {
+    if (!cards[cardIndex] || !user) return;
     console.log(`Swiped ${direction} on card ${cardIndex}`);
     const card = cards[cardIndex];
-    if (!card || !user) return;
 
     const swipeRequest: SwipeRequest = {
       swipingUserId: user.id,
       swipedUserId: card.id,
       isRightSwipe: direction === "right",
     };
+
     try {
       const swipeResponse: SwipeResponse = await dao.swipe(swipeRequest);
 
@@ -67,39 +68,37 @@ const SwipeScreen: React.FC = () => {
       />
       {loading ? (
         <ActivityIndicator size="large" />
+      ) : cards.length === 0 ? (
+        <View style={styles.container}>
+          <Text style={styles.cardTitle}>No Profiles Found</Text>
+          <Text style={styles.subtitle}>
+            Try adjusting your settings for better results
+          </Text>
+        </View>
       ) : (
         <Swiper
           ref={swiperRef}
           cards={cards}
-          renderCard={(card: User | {}) =>
-            card && Object.keys(card).length ? (
-              <View>
-                {/* TODO: Remove everything except Card when no longer testing with hardcoded users */}
-                <View
-                  style={{ position: "absolute", top: 20, left: 20, zIndex: 2 }}
-                >
-                  <Text style={{ color: "#FFF", fontSize: 20 }}>
-                    Swiping as: {user?.email}
-                  </Text>
-                </View>
-                <Card card={card as User} key={(card as User).id} />
-              </View>
-            ) : (
-              <View style={styles.cardContainer}>
-                <Text style={styles.cardTitle}>No Profiles Found</Text>
-                <Text style={styles.subtitle}>
-                  Try adjusting your settings for better results
+          renderCard={(card: User | {}) => (
+            <View>
+              {/* TODO: Remove everything except Card when no longer testing with hardcoded users */}
+              <View
+                style={{ position: "absolute", top: 20, left: 20, zIndex: 2 }}
+              >
+                <Text style={{ color: "#FFF", fontSize: 20 }}>
+                  Swiping as: {user?.email}
                 </Text>
               </View>
-            )
-          }
+              <Card card={card as User} key={(card as User).id} />
+            </View>
+          )}
           onSwipedLeft={(cardIndex) => handleSwipe(cardIndex, "left")}
           disableBottomSwipe={false}
           disableTopSwipe={true} // for now
           onSwipedRight={(cardIndex) => handleSwipe(cardIndex, "right")}
           onSwipedBottom={(cardIndex) => handleSwipe(cardIndex, "down")}
           onSwipedAll={() => {
-            refreshMatchableProfiles();
+            setTimeout(refreshMatchableProfiles, 500); // Give time for state updates (hopefully fixes duplicate last card bug)
           }}
           onTapCard={(cardIndex) => {
             console.log(
