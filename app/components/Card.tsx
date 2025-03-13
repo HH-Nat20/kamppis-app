@@ -20,7 +20,7 @@ interface CardProps {
 }
 
 type DetailStackParamList = {
-  DetailsScreen: { userId: number };
+  DetailsScreen: { userId: number, userName: string };
 };
 
 type DetailScreenNavigationProp = NativeStackNavigationProp<
@@ -33,7 +33,7 @@ const Card: React.FC<CardProps> = ({ card }) => {
   const navigation = useNavigation<DetailScreenNavigationProp>();
 
   const handleOpenDetails = (userId: number) => {
-    navigation.navigate("DetailsScreen", { userId });
+    navigation.navigate("DetailsScreen", { userId, userName: `${card.firstName} ${card.lastName}` });
   };
 
   // Get screen dimensions inside the component

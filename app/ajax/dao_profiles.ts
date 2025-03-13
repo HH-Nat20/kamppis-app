@@ -11,7 +11,8 @@ const ENDPOINT = "user-profiles";
  * @returns {Promise<User[]>}
  */
 export const getPossibleMatches = async (userId: number) => {
-  const response = await get(`/${ENDPOINT}/${userId}/query`);
+  //const response = await get(`/${ENDPOINT}/${userId}/query`);
+  const response = await get(`/${ENDPOINT}`);
   if (response.status == 204) {
     return [];
   }

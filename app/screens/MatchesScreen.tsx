@@ -22,7 +22,8 @@ import { bgGradient } from "../ui/colors";
 import { useUser } from "../contexts/UserContext";
 
 type ChatStackParamList = {
-  ChatScreen: { userId: number };
+  Matches: undefined;
+  ChatScreen: { userId: number, userName: string };
 };
 
 type MatchesScreenNavigationProp = NativeStackNavigationProp<
@@ -39,10 +40,11 @@ const MatchesScreen = () => {
   useEffect(() => {
     // Ensure loading is set to false after fetching
     setLoading(false);
+    console.log("USER IS ", user);
   }, [matches]);
 
-  const handleOpenChat = (userId: number) => {
-    navigation.navigate("ChatScreen", { userId });
+  const handleOpenChat = (userId: number, firstName: string) => {
+    navigation.navigate("ChatScreen", { userId, userName: firstName });
   };
 
   const renderItem = ({ item }: any) => {
@@ -51,7 +53,7 @@ const MatchesScreen = () => {
     return (
       <TouchableOpacity
         style={styles.matchItem}
-        onPress={() => handleOpenChat(item.id)}
+        onPress={() => handleOpenChat(item.id, item.firstName)}
       >
         {userPhoto ? (
           <Image source={{ uri: userPhoto }} style={styles.image} />
@@ -69,7 +71,6 @@ const MatchesScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.header}>Matches for {user?.email}</Text>
       <LinearGradient
         colors={bgGradient}
         style={styles.background}

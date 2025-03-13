@@ -61,9 +61,7 @@ const HomeScreen = () => {
   };
 
   useEffect(() => {
-    // Check server status
     checkServerStatus();
-    // Check database status
     checkDatabaseStatus();
   }, []);
 
@@ -74,7 +72,9 @@ const HomeScreen = () => {
         style={styles.background}
       />
       <Text style={styles.title}>App started</Text>
-
+      <Separator />
+      <Text style={styles.subtitle}>User: {user?.email}</Text>
+      <Separator />
       <Text style={styles.subtitle}>Checking server status...</Text>
       {serverStatus === "loading" ? (
         <ActivityIndicator />
@@ -100,7 +100,6 @@ const HomeScreen = () => {
         </Text>
       )}
       <Separator />
-      <Text style={styles.info}>Logged in as: {user?.email}</Text>
       <Button title="Login as different user" onPress={handleOpenLogin} />
     </View>
   );

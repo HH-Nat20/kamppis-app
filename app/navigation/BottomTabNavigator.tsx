@@ -23,6 +23,15 @@ const BottomTabNavigator: React.FC = () => {
           height: 60,
           paddingTop: 5,
         },
+        headerStyle: {
+          backgroundColor: colors.background,
+          elevation: 0 // removes shadow on Android
+        },
+        headerShadowVisible: false, // removes shadow on iOS
+        headerTitleStyle: {
+          color: colors.text,
+          fontSize: 18
+        },
         tabBarActiveTintColor: colors.active,
         tabBarInactiveTintColor: colors.inactive,
         tabBarIcon: ({ color, size }) => {
@@ -46,17 +55,16 @@ const BottomTabNavigator: React.FC = () => {
       <Tab.Screen
         name="Profile"
         component={TopTabNavigator}
-        options={{ headerShown: false }}
       />
       <Tab.Screen
         name="Swipe"
         component={SwipeStackNavigator}
-        options={{ headerShown: false }}
+        options={{ headerShown: false}}
       />
       <Tab.Screen
         name="Chat"
         component={ChatStackNavigator}
-        options={{ headerShown: false }}
+        options={{ tabBarLabel: "Matches", headerTitle: "Matches" }}
       />
     </Tab.Navigator>
   );

@@ -1,43 +1,57 @@
-const colors = {
-    primary: "#0F2573",
-    secondary: "#192348",
-    tertiary: "#233FA6",
-    quatenary: "#020D36",
-    quinary: "#22AB49",
-    senary: "#8FFFAF",
-    septenary: "#CC0E96",
-    octonary: "#692054",
-    nonary: "#C7A21E",
-    denary: "#F5CB36",
-    extra: "#F96E46",
-    bonus: "#A18276",
+export const colorSet = {
+    darkBlue: "#152a56",
+    red: "#953553",
+    teal: "#128387",
+    blue: "#1f6f8b",
 
-    success: "#22AB49",
-    warning: "#C7A21E",
-    danger: "#CC0E96",
-    info: "#8FFFAF",
+    lightGreen: "#8bc34a",
+    lightBlue: "#2196f3",
+    purple: "#9c27b0",
+    yellow: "#ffc107",
+    cyan: "#00bcd4",
+    green: "#4caf50",
+    orange: "#ff9800",
+    deepOrange: "#bf5431",
+    indigo: "#9051ff",
 
-    background: "#020D36",
-    text: "#AFAFAF",
-    textLight: "#F1F1F1",
-    textDark: "#F5CB36",
-    border: "#E0E0E0",
-    shadow: "#000000",
-    white: "#FFFFFF",
-    black: "#000000",  
+    white: "#EFEFEF",
+    black: "#000000",
+    grey: "#AFAFAF",
+    lightGrey: "#F1F1F1",
+    darkGrey: "#F5CB36",
+}
 
-    active: "#8FFFAF",
-    inactive: "#8F8F8F",
-    disabled: "#293358",
+export const colors = {
+    primary: colorSet.darkBlue,
+    secondary: colorSet.red,
+    tertiary: colorSet.teal,
+    quatenary: colorSet.blue,
+    quinary: colorSet.lightGreen,
+    senary: colorSet.lightBlue,
+    septenary: colorSet.purple,
+    octonary: colorSet.yellow,
+    nonary: colorSet.cyan,
+    denary: colorSet.green,
+    extra: colorSet.orange,
+    bonus: colorSet.deepOrange,
 
-    electricBlue: "#00E8FC",
-    mistyRose: "#FFE3E3",
-    silver: "A3A3A3",
-    battleshipGrey: "#7A918D",
-    green: "#2C944A",
-    tomato: "#FE654F",
-    crayolaRed: "#E84855",
+    success: colorSet.green,
+    warning: colorSet.yellow,
+    danger: colorSet.red,
+    info: colorSet.lightBlue,
 
+    background: colorSet.black,
+    text: colorSet.white,
+    textLight: colorSet.white,
+    textDark: colorSet.black,
+    border: colorSet.lightGrey,
+    shadow: colorSet.darkGrey,
+    white: colorSet.white,
+    black: colorSet.black,  
+
+    active: colorSet.lightGreen,
+    inactive: colorSet.grey,
+    disabled: colorSet.darkGrey,
 }
 
 export const bgGradient: [string, string, ...string[]] = [
@@ -69,6 +83,5 @@ export const renderTagBgColor = (tag: string): string => {
             return colors.secondary;
     }
 }
-
 
 export default colors;

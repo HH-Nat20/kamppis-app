@@ -80,17 +80,7 @@ const SwipeScreen: React.FC = () => {
           ref={swiperRef}
           cards={cards}
           renderCard={(card: User | {}) => (
-            <View>
-              {/* TODO: Remove everything except Card when no longer testing with hardcoded users */}
-              <View
-                style={{ position: "absolute", top: 20, left: 20, zIndex: 2 }}
-              >
-                <Text style={{ color: "#FFF", fontSize: 20 }}>
-                  Swiping as: {user?.email}
-                </Text>
-              </View>
               <Card card={card as User} key={(card as User).id} />
-            </View>
           )}
           onSwipedLeft={(cardIndex) => handleSwipe(cardIndex, "left")}
           disableBottomSwipe={false}

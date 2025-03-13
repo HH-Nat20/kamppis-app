@@ -46,6 +46,7 @@ const form = StyleSheet.create({
   pickerInput: {
     borderColor: colors.border,
     borderWidth: 1,
+    backgroundColor: colors.background,
     color: colors.text,
     borderRadius: 8,
     marginTop: 5,
@@ -55,7 +56,8 @@ const form = StyleSheet.create({
     paddingHorizontal: 10,
   },
   pickerItem: {
-    color: colors.black,
+    backgroundColor: colors.background,
+    color: colors.white,
   },
   selected: {
     color: colors.info,

@@ -14,7 +14,7 @@ const profile = StyleSheet.create({
   },
   portraitSwiper: {
     width: "100%",
-    height: 300,
+    height: 250,
     backgroundColor: "transparent",
   },
   portraitContainer: {
@@ -24,7 +24,7 @@ const profile = StyleSheet.create({
   },
   portrait: {
     width: "100%",
-    height: 300,
+    height: 250,
     resizeMode: "cover",
     borderColor: colors.primary,
     borderWidth: 5,

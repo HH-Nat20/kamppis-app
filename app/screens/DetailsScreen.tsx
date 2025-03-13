@@ -36,7 +36,6 @@ type DetailsScreenProps = {
 
 export default function DetailsScreen({ route }: DetailsScreenProps) {
   const swiperRef = useRef<Swiper<any>>(null);
-  const navigation = useNavigation<NavigationProp>();
   const { userId } = route.params;
 
   const [user, setUser] = useState<User | null>(null);
@@ -61,13 +60,6 @@ export default function DetailsScreen({ route }: DetailsScreenProps) {
     <TouchableWithoutFeedback onPress={() => setTooltip(null)}>
       <ScrollView style={styles.scrollContainer}>
         {loading && <ActivityIndicator size="large" color={colors.white} />}
-
-        <Pressable
-          style={styles.goBackButton}
-          onPress={() => navigation.goBack()}
-        >
-          <Entypo name="arrow-left" size={24} color={colors.white} />
-        </Pressable>
 
         <View style={styles.portraitSwiper}>
           <Swiper
@@ -130,13 +122,13 @@ export default function DetailsScreen({ route }: DetailsScreenProps) {
               ))}
           </View>
 
-          <Text style={styles.title}>
-            {user?.firstName} {user?.lastName}, {user?.age}
-          </Text>
-
           <Text style={styles.bioText}>{user?.bio}</Text>
 
           <View style={styles.definitionBox}>
+          <View style={styles.definition}>
+              <Text style={styles.definition}>Age</Text>
+              <Text style={styles.definitionValue}>{user?.age}</Text>
+            </View>
             <View style={styles.definition}>
               <Text style={styles.definition}>Gender</Text>
               <Text style={styles.definitionValue}>{user?.gender}</Text>
