@@ -43,6 +43,35 @@ const sendRequest = async (
   return fetch(`${baseUrl}${url}`, options);
 };
 
+export const uploadRequest = async (url: string, formData: FormData) => {
+  //const token = await getSessionToken();
+
+  console.log("Sending request to", `${baseUrl}/${url}`);
+  console.log("Body:", formData);
+  //console.log("Token", token);
+  
+
+  const headers: Record<string, string> = {
+    "Content-Type": "multipart/form-data",
+    //Authorization: `Bearer ${token}`,
+  };
+
+  const options: RequestInit = {
+    method: "POST",
+    headers,
+    body: formData,
+  };
+
+  const response = await fetch(`https://api.imgbb.com/1/upload?expiration=600&key=a5ea20879de8d531b4be0f87a0bee30e`, options);
+
+  console.log("Response", response);
+
+  //return fetch(`${baseUrl}${url}`, options);
+  //return fetch('https://api.imgbb.com/1/upload?expiration=600&key=a5ea20879de8d531b4be0f87a0bee30e', options);
+
+  return response;
+};
+
 // CRUD functions
 export const get = async (url: string) => sendRequest(url, "GET");
 

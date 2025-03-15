@@ -4,6 +4,7 @@ import form from './styles/form';
 import matches from './styles/matches';
 import swipe from './styles/swipe';
 import profile from './styles/profile';
+import upload from './styles/upload';
 
 const styles = {
   ...base,
@@ -11,7 +12,8 @@ const styles = {
   ...form,
   ...matches,
   ...swipe,
-  ...profile
+  ...profile,
+  ...upload,
 }
 
 export default styles;

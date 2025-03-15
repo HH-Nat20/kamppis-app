@@ -101,6 +101,8 @@ const HomeScreen = () => {
       )}
       <Separator />
       <Button title="Login as different user" onPress={handleOpenLogin} />
+      <Separator />
+      <Button title="Test Image Upload" onPress={() => navigation.navigate("Upload")} />
     </View>
   );
 };
