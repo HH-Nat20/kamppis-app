@@ -16,10 +16,16 @@ const base = StyleSheet.create({
     color: colors.text,
   },
   scrollContainer: {
+    display: "flex",
     flex: 1,
     backgroundColor: colors.background,
     color: colors.text,
-    paddingBottom: 20,
+    paddingBottom: 60,
+  },
+  scrollContent: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 20,
   },
   background: {
     ...StyleSheet.absoluteFillObject,
@@ -60,7 +66,6 @@ const base = StyleSheet.create({
     fontSize: 20,
     color: colors.text,
   },
-
 });
 
 export default base;

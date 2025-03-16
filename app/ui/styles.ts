@@ -6,6 +6,7 @@ import swipe from './styles/swipe';
 import profile from './styles/profile';
 import upload from './styles/upload';
 import modal from './styles/modal';
+import contentBox from './styles/contentBox';
 
 const styles = {
   ...base,
@@ -16,6 +17,7 @@ const styles = {
   ...profile,
   ...upload,
   ...modal,
+  ...contentBox,
 }
 
 export default styles;

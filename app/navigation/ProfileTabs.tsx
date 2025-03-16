@@ -3,41 +3,42 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import ProfilePersonalScreen from "../screens/ProfilePersonalScreen";
 import ProfilePreferencesScreen from "../screens/ProfilePreferencesScreen";
 import ProfilePhotosScreen from "../screens/ProfilePhotosScreen";
-
-import colors from "../ui/colors";
 import { ProfileFormProvider } from "../contexts/ProfileFormContext";
+import colors from "../ui/colors";
 
 export type ProfileTabParamList = {
   "Personal Info": undefined;
   "Match Preferences": undefined;
+  Photos: undefined;
 };
 
-const UpTab = createMaterialTopTabNavigator();
+const Tab = createMaterialTopTabNavigator<ProfileTabParamList>();
 
-const TopTabNavigator: React.FC = () => {
+const ProfileTabs: React.FC = () => {
   return (
     <ProfileFormProvider>
-      <UpTab.Navigator
+      <Tab.Navigator
         screenOptions={{
+          swipeEnabled: false,
           tabBarStyle: {
             backgroundColor: colors.background,
           },
           tabBarActiveTintColor: colors.active,
           tabBarInactiveTintColor: colors.inactive,
           tabBarIndicatorStyle: {
-            backgroundColor: colors.border, // The line under active tab
+            backgroundColor: colors.border,
           },
         }}
       >
-        <UpTab.Screen name="Personal Info" component={ProfilePersonalScreen} />
-        <UpTab.Screen
+        <Tab.Screen name="Personal Info" component={ProfilePersonalScreen} />
+        <Tab.Screen
           name="Match Preferences"
           component={ProfilePreferencesScreen}
         />
-        <UpTab.Screen name="Photos" component={ProfilePhotosScreen} />
-      </UpTab.Navigator>
+        <Tab.Screen name="Photos" component={ProfilePhotosScreen} />
+      </Tab.Navigator>
     </ProfileFormProvider>
   );
 };
 
-export default TopTabNavigator;
+export default ProfileTabs;

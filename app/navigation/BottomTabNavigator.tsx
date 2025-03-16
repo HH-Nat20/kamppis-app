@@ -1,10 +1,11 @@
 import React from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import TopTabNavigator from "./TopTabNavigator";
+
 import ChatStackNavigator from "./ChatStackNavigator";
 import HomeStackNavigator from "./HomeStackNavigator";
 import SwipeStackNavigator from "./SwipeStackNavigator";
+import ProfileStackNavigator from "./ProfileStackNavigator";
 
 import colors from "../ui/colors";
 
@@ -25,12 +26,12 @@ const BottomTabNavigator: React.FC = () => {
         },
         headerStyle: {
           backgroundColor: colors.background,
-          elevation: 0 // removes shadow on Android
+          elevation: 0, // removes shadow on Android
         },
         headerShadowVisible: false, // removes shadow on iOS
         headerTitleStyle: {
           color: colors.text,
-          fontSize: 18
+          fontSize: 18,
         },
         tabBarActiveTintColor: colors.active,
         tabBarInactiveTintColor: colors.inactive,
@@ -54,12 +55,13 @@ const BottomTabNavigator: React.FC = () => {
       />
       <Tab.Screen
         name="Profile"
-        component={TopTabNavigator}
+        component={ProfileStackNavigator}
+        options={{ headerShown: false }}
       />
       <Tab.Screen
         name="Swipe"
         component={SwipeStackNavigator}
-        options={{ headerShown: false}}
+        options={{ headerShown: false }}
       />
       <Tab.Screen
         name="Chat"
