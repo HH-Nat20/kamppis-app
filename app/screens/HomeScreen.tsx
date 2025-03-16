@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, ActivityIndicator, Button } from "react-native";
 
-import Section from "../components/Section";
-
 import dao from "../ajax/dao";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { HomeStackParamList } from "../navigation/HomeStackNavigator";
@@ -95,7 +93,6 @@ const HomeScreen = () => {
           {dbStatus === "ok" ? "OK" : "FAILED"}
         </Text>
       )}
-      <Section />
       <Separator />
       <Button title="Login as different user" onPress={handleOpenLogin} />
       <Separator />

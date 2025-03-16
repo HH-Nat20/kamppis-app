@@ -6,11 +6,14 @@ import React, {
   useEffect,
 } from "react";
 import { MatchUser } from "../types/Match";
+import { User } from "../types/User";
 
-type LoggedInUser = MatchUser;
+import dao from "../ajax/dao";
+
+type LoggedInUser = MatchUser & User;
 
 const UserContext = createContext<
-  | { user: LoggedInUser | undefined; setUser: (user: LoggedInUser) => void }
+  | { user: LoggedInUser | undefined; changeUser: (user: MatchUser) => void }
   | undefined
 >(undefined);
 
@@ -19,17 +22,23 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<LoggedInUser | undefined>(undefined);
 
+  const changeUser = (user: MatchUser) => {
+    dao.getUserProfile(user.id).then((profile) => {
+      setUser({ ...user, ...profile });
+    });
+  };
+
   useEffect(() => {
     const user: LoggedInUser = {
       id: 1,
       email: "alice.smith@example.com",
       status: "ONLINE",
-    };
-    setUser(user);
+    } as LoggedInUser;
+    changeUser(user);
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, changeUser }}>
       {children}
     </UserContext.Provider>
   );

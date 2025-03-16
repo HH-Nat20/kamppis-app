@@ -32,7 +32,7 @@ export const MatchableProfilesProvider = ({
     }
 
     try {
-      let users: User[] = await dao.getPossibleMatches(user.id);
+      let users = await dao.getPossibleMatches(user.id);
 
       if (users.length === 0) {
         setCards([]);
@@ -41,7 +41,7 @@ export const MatchableProfilesProvider = ({
       }
 
       // Filter out the current user
-      users = users.filter((u) => u.id !== user.id);
+      users = users.filter && users.filter((u) => u.id !== user.id);
       setLoading(false);
 
       if (!Array.isArray(users)) {

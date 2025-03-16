@@ -5,6 +5,7 @@ import matches from './styles/matches';
 import swipe from './styles/swipe';
 import profile from './styles/profile';
 import upload from './styles/upload';
+import modal from './styles/modal';
 
 const styles = {
   ...base,
@@ -14,6 +15,7 @@ const styles = {
   ...swipe,
   ...profile,
   ...upload,
+  ...modal,
 }
 
 export default styles;

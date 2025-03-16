@@ -2,6 +2,7 @@ import React from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import ProfilePersonalScreen from "../screens/ProfilePersonalScreen";
 import ProfilePreferencesScreen from "../screens/ProfilePreferencesScreen";
+import ProfilePhotosScreen from "../screens/ProfilePhotosScreen";
 
 import colors from "../ui/colors";
 import { ProfileFormProvider } from "../contexts/ProfileFormContext";
@@ -33,6 +34,7 @@ const TopTabNavigator: React.FC = () => {
           name="Match Preferences"
           component={ProfilePreferencesScreen}
         />
+        <UpTab.Screen name="Photos" component={ProfilePhotosScreen} />
       </UpTab.Navigator>
     </ProfileFormProvider>
   );
