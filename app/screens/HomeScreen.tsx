@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, ActivityIndicator, Button } from "react-native";
-import styles from "../ui/styles";
-import { bgGradient } from "../ui/colors";
 
-import { LinearGradient } from "expo-linear-gradient";
+import Section from "../components/Section";
 
 import dao from "../ajax/dao";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { HomeStackParamList } from "../navigation/HomeStackNavigator";
 import { useNavigation } from "@react-navigation/native";
 import { useUser } from "../contexts/UserContext";
+
+import styles from "../ui/styles";
 
 type HomeScreenNavigationProp = NativeStackNavigationProp<
   HomeStackParamList,
@@ -67,10 +67,6 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
-      <LinearGradient
-        colors={bgGradient}
-        style={styles.background}
-      />
       <Text style={styles.title}>App started</Text>
       <Separator />
       <Text style={styles.subtitle}>User: {user?.email}</Text>
@@ -99,10 +95,14 @@ const HomeScreen = () => {
           {dbStatus === "ok" ? "OK" : "FAILED"}
         </Text>
       )}
+      <Section />
       <Separator />
       <Button title="Login as different user" onPress={handleOpenLogin} />
       <Separator />
-      <Button title="Test Image Upload" onPress={() => navigation.navigate("Upload")} />
+      <Button
+        title="Test Image Upload"
+        onPress={() => navigation.navigate("Upload")}
+      />
     </View>
   );
 };

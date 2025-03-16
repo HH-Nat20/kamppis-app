@@ -79,11 +79,11 @@ export default function ProfilePreferencesScreen() {
                 <TouchableOpacity
                   style={[
                     styles.radioButton,
-                    value.includes(g) && styles.selectedRadio,
+                    value?.includes(g) && styles.selectedRadio,
                   ]}
                   onPress={() => {
-                    if (value.includes(g)) {
-                      onChange(value.filter((v) => v !== g));
+                    if (value?.includes(g)) {
+                      onChange(value?.filter((v) => v !== g));
                     } else {
                       onChange([...value, g]);
                     }
@@ -111,11 +111,11 @@ export default function ProfilePreferencesScreen() {
                 <TouchableOpacity
                   style={[
                     styles.radioButton,
-                    value.includes(l) && styles.selectedRadio,
+                    value?.includes(l) && styles.selectedRadio,
                   ]}
                   onPress={() => {
-                    if (value.includes(l)) {
-                      onChange(value.filter((v) => v !== l));
+                    if (value?.includes(l)) {
+                      onChange(value?.filter((v) => v !== l));
                     } else {
                       onChange([...value, l]);
                     }

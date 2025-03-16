@@ -125,11 +125,11 @@ export default function ProfilePersonalScreen() {
                 <TouchableOpacity
                   style={[
                     styles.radioButton,
-                    value.includes(l) && styles.selectedRadio,
+                    value?.includes(l) && styles.selectedRadio,
                   ]}
                   onPress={() => {
-                    if (value.includes(l)) {
-                      onChange(value.filter((v) => v !== l));
+                    if (value?.includes(l)) {
+                      onChange(value?.filter((v) => v !== l));
                     } else {
                       onChange([...value, l]);
                     }
