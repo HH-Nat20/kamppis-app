@@ -46,10 +46,17 @@ const sendRequest = async (
 export const uploadRequest = async (url: string, formData: FormData) => {
   //const token = await getSessionToken();
 
+  /**
+   * TODO: Currently this is not a very secure way to upload images.
+   * Consider how to handle logged user and their images.
+   * A /images/{userId} endpoint might be vulnerable to attacks if
+   * malicious users make requests to other users' endpoints.
+   *
+   */
+
   console.log("Sending request to", `${baseUrl}/${url}`);
   console.log("Body:", formData);
   //console.log("Token", token);
-  
 
   const headers: Record<string, string> = {
     "Content-Type": "multipart/form-data",
@@ -62,12 +69,12 @@ export const uploadRequest = async (url: string, formData: FormData) => {
     body: formData,
   };
 
-  const response = await fetch(`https://api.imgbb.com/1/upload?expiration=600&key=a5ea20879de8d531b4be0f87a0bee30e`, options);
+  /* Working example with imgbb */
+  //const response = await fetch(`https://api.imgbb.com/1/upload?expiration=600&key=a5ea20879de8d531b4be0f87a0bee30e`, options);
 
+  /** Actual Backend Request */
+  const response = await fetch(`${baseUrl}/${url}`, options);
   console.log("Response", response);
-
-  //return fetch(`${baseUrl}${url}`, options);
-  //return fetch('https://api.imgbb.com/1/upload?expiration=600&key=a5ea20879de8d531b4be0f87a0bee30e', options);
 
   return response;
 };

@@ -13,7 +13,11 @@ import dao from "../ajax/dao";
 type LoggedInUser = MatchUser & User;
 
 const UserContext = createContext<
-  | { user: LoggedInUser | undefined; changeUser: (user: MatchUser) => void }
+  | {
+      user: LoggedInUser | undefined;
+      changeUser: (user: MatchUser) => void;
+      refreshUser: () => void;
+    }
   | undefined
 >(undefined);
 
@@ -37,8 +41,14 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     changeUser(user);
   }, []);
 
+  const refreshUser = () => {
+    if (user) {
+      changeUser(user);
+    }
+  };
+
   return (
-    <UserContext.Provider value={{ user, changeUser }}>
+    <UserContext.Provider value={{ user, changeUser, refreshUser }}>
       {children}
     </UserContext.Provider>
   );
