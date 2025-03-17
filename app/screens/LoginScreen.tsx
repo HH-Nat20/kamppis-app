@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { 
-  View, Text, Button, TouchableOpacity, ActionSheetIOS, Modal, FlatList, Pressable, Platform 
+import {
+  View,
+  Text,
+  Button,
+  TouchableOpacity,
+  ActionSheetIOS,
+  Modal,
+  FlatList,
+  Pressable,
+  Platform,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -9,16 +17,22 @@ import { MatchUser } from "../types/Match";
 import styles from "../ui/styles";
 import { useUser } from "../contexts/UserContext";
 import { HomeStackParamList } from "../navigation/HomeStackNavigator";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-type HomeScreenNavigationProp = NativeStackNavigationProp<HomeStackParamList, "Home">;
+type HomeScreenNavigationProp = NativeStackNavigationProp<
+  HomeStackParamList,
+  "Home"
+>;
 
 export default function LoginScreen() {
   const navigation = useNavigation<HomeScreenNavigationProp>();
   const [loading, setLoading] = useState<boolean>(true);
   const [users, setUsers] = useState<MatchUser[]>([]);
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
-  const [selectedUserLabel, setSelectedUserLabel] = useState<string>("Select a user");
-  const [isAndroidPickerVisible, setAndroidPickerVisible] = useState<boolean>(false);
+  const [selectedUserLabel, setSelectedUserLabel] =
+    useState<string>("Select a user");
+  const [isAndroidPickerVisible, setAndroidPickerVisible] =
+    useState<boolean>(false);
   const { changeUser } = useUser();
 
   useEffect(() => {
@@ -66,9 +80,11 @@ export default function LoginScreen() {
       <Text style={styles.info}>Select a user to login</Text>
 
       {/* Button to Open Picker (iOS/Android) */}
-      <TouchableOpacity 
-        style={styles.pickerInput} 
-        onPress={Platform.OS === "ios" ? openUserPickerIOS : openUserPickerAndroid}
+      <TouchableOpacity
+        style={styles.pickerInput}
+        onPress={
+          Platform.OS === "ios" ? openUserPickerIOS : openUserPickerAndroid
+        }
       >
         <Text style={styles.pickerItem}>{selectedUserLabel}</Text>
       </TouchableOpacity>
@@ -96,7 +112,10 @@ export default function LoginScreen() {
                   </Pressable>
                 )}
               />
-              <Button title="Cancel" onPress={() => setAndroidPickerVisible(false)} />
+              <Button
+                title="Cancel"
+                onPress={() => setAndroidPickerVisible(false)}
+              />
             </View>
           </View>
         </Modal>
@@ -105,25 +124,66 @@ export default function LoginScreen() {
       {/* Login Button */}
       <Button
         title="Login"
-        onPress={() => {
+        onPress={async () => {
           if (!selectedUserId) {
             console.warn("No user selected");
             return;
           }
-          const selectedUser = users.find((user) => user.id.toString() === selectedUserId);
+          const selectedUser = users.find(
+            (user) => user.id.toString() === selectedUserId
+          );
           if (!selectedUser) {
             console.error("Selected user not found");
             return;
           }
           console.log("Login as", selectedUser);
-          changeUser(selectedUser);
 
-          navigation.reset({
-            index: 0,
-            routes: [{ name: "Home" }],
-          });
+          try {
+            const response = await fetch(
+              `https://kamppis.hellmanstudios.fi/api/login?email=${encodeURIComponent(
+                selectedUser.email
+              )}`,
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+
+            if (!response.ok) {
+              console.error(
+                "Login failed",
+                response.status,
+                response.statusText
+              );
+              return;
+            }
+
+            const data = await response.json();
+            const token = data.token;
+
+            if (!token) {
+              console.error("No token received");
+              return;
+            }
+            console.log("Received JWT:", token);
+
+            // Store the token in AsyncStorage or SecureStore for later use
+            await AsyncStorage.setItem("jwtToken", token);
+
+            changeUser(selectedUser);
+
+            navigation.reset({
+              index: 0,
+              routes: [{ name: "Home" }],
+            });
+          } catch (error) {
+            console.error("Login error:", error);
+          }
         }}
       />
+
     </View>
   );
 }

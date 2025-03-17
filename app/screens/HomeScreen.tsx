@@ -8,6 +8,8 @@ import { useNavigation } from "@react-navigation/native";
 import { useUser } from "../contexts/UserContext";
 
 import styles from "../ui/styles";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Toast from "react-native-toast-message";
 
 type HomeScreenNavigationProp = NativeStackNavigationProp<
   HomeStackParamList,
@@ -95,6 +97,50 @@ const HomeScreen = () => {
       )}
       <Separator />
       <Button title="Login as different user" onPress={handleOpenLogin} />
+
+      <Separator />
+      {/* Test auth token Button */}
+      <Button
+        title="Test JWT"
+        onPress={async () => {
+          // Get the token from AsyncStorage or SecureStore
+          const token = await AsyncStorage.getItem("jwtToken");
+
+          if (!token) {
+            console.warn("No token found");
+            return;
+          }
+
+          try {
+            const response = await fetch(
+              `https://kamppis.hellmanstudios.fi/api/login/protected`,
+              {
+                method: "GET",
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+
+            if (!response.ok) {
+              throw new Error(`Access denied: ${response.status}`);
+            }
+
+            if (!token) {
+              console.error("No token received");
+              return;
+            }
+            console.log("Protected endpoint accessed successfully");
+            Toast.show({
+              type: "success",
+              text1: "Authentication successful",
+              text2: `Woohooo! 🎉`,
+            });
+          } catch (error) {
+            console.error("Error accessing protected endpoint:", error);
+          }
+        }}
+      />
     </View>
   );
 };
