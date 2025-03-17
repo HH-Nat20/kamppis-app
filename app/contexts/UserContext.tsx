@@ -26,24 +26,46 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<LoggedInUser | undefined>(undefined);
 
-  const changeUser = (user: MatchUser) => {
-    dao.getUserProfile(user.id).then((profile) => {
-      setUser({ ...user, ...profile });
-    });
-  };
-
   useEffect(() => {
     const user: LoggedInUser = {
       id: 1,
       email: "alice.smith@example.com",
       status: "ONLINE",
     } as LoggedInUser;
-    changeUser(user);
+
+    console.log("Initializing user:", user);
+
+    dao
+      .getUserProfile(user.id)
+      .then((profile) => {
+        console.log("Setting initial user profile:", profile);
+        setUser({ ...user, ...profile });
+      })
+      .catch((error) => {
+        console.error("Error fetching initial user profile", error);
+      });
   }, []);
+
+  const changeUser = (user: MatchUser) => {
+    console.log("Fetching profile for user:", user);
+
+    dao
+      .getUserProfile(user.id)
+      .then((profile) => {
+        console.log("Profile data received:", profile);
+        setUser({ ...user, ...profile });
+      })
+      .catch((error) => {
+        console.error("Failed to fetch user profile", error);
+      });
+  };
 
   const refreshUser = () => {
     if (user) {
+      console.log("Refreshing user:", user);
       changeUser(user);
+    } else {
+      console.warn("refreshUser() called, but no user is set.");
     }
   };
 
