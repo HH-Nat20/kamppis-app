@@ -80,7 +80,7 @@ const SwipeScreen: React.FC = () => {
           ref={swiperRef}
           cards={cards}
           renderCard={(card: User | {}) => (
-              <Card card={card as User} key={(card as User).id} />
+            <Card card={card as User} key={(card as User).id} />
           )}
           onSwipedLeft={(cardIndex) => handleSwipe(cardIndex, "left")}
           disableBottomSwipe={false}

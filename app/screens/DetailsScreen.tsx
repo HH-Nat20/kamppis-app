@@ -9,7 +9,6 @@ import {
   Image,
   TouchableWithoutFeedback,
 } from "react-native";
-import Entypo from "@expo/vector-icons/Entypo";
 
 import Swiper from "react-native-deck-swiper";
 
@@ -26,6 +25,8 @@ import { RouteProp, useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { DetailsParamList } from "../navigation/SwipeStackNavigator";
 import { Photo } from "../types/Photo";
+
+import Portrait from "../components/Portrait";
 
 type DetailsScreenRouteProp = RouteProp<DetailsParamList, "DetailsScreen">;
 type NavigationProp = StackNavigationProp<DetailsParamList, "DetailsScreen">;
@@ -62,25 +63,27 @@ export default function DetailsScreen({ route }: DetailsScreenProps) {
         {loading && <ActivityIndicator size="large" color={colors.white} />}
 
         <View style={styles.portraitSwiper}>
-          <Swiper
-            ref={swiperRef}
-            cards={photos}
-            renderCard={(photo: Photo, index: number) => (
-              <View key={photo?.id || index} style={styles.portraitContainer}>
-                <Image source={{ uri: photo?.name }} style={styles.portrait} />
-              </View>
-            )}
-            cardIndex={0}
-            backgroundColor={colors.background}
-            stackSize={1}
-            stackSeparation={15}
-            stackScale={5}
-            infinite={true}
-            animateOverlayLabelsOpacity
-            animateCardOpacity
-            verticalSwipe={false}
-            horizontalSwipe={true}
-          />
+          {photos.length > 0 ? (
+            <Swiper
+              ref={swiperRef}
+              cards={photos}
+              renderCard={(photo: Photo, index: number) => (
+                <Portrait key={photo?.id || `photo-${index}`} photo={photo} />
+              )}
+              cardIndex={0}
+              backgroundColor={colors.background}
+              stackSize={Math.min(photos.length, 3)}
+              stackSeparation={15}
+              stackScale={5}
+              infinite={true}
+              animateOverlayLabelsOpacity
+              animateCardOpacity
+              verticalSwipe={false}
+              horizontalSwipe={true}
+            />
+          ) : (
+            <ActivityIndicator size="large" color={colors.white} />
+          )}
         </View>
 
         <View style={styles.profileInfo}>
@@ -125,7 +128,7 @@ export default function DetailsScreen({ route }: DetailsScreenProps) {
           <Text style={styles.bioText}>{user?.bio}</Text>
 
           <View style={styles.definitionBox}>
-          <View style={styles.definition}>
+            <View style={styles.definition}>
               <Text style={styles.definition}>Age</Text>
               <Text style={styles.definitionValue}>{user?.age}</Text>
             </View>

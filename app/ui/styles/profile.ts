@@ -58,6 +58,13 @@ const profile = StyleSheet.create({
     textAlign: "center",
     maxWidth: 200,
   },
+
+  imageLoader: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: [{ translateX: -15 }, { translateY: -15 }],
+  },
 });
 
 export default profile;
