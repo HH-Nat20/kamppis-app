@@ -40,7 +40,7 @@ const sendRequest = async (
     body: body ? JSON.stringify(body) : undefined,
   };
 
-  return fetch(`${baseUrl}${url}`, options);
+  return fetch(`${baseUrl}/${url}`, options);
 };
 
 export const uploadRequest = async (url: string, formData: FormData) => {

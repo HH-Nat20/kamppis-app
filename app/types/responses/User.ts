@@ -1,8 +1,9 @@
 import { Profile } from "./Profile";
 import { Gender } from "../enums/GenderEnum";
 import { Preferences } from "./Preferences";
+import { MatchUser } from "../Match";
 
-export interface User {
+interface User {
   id: number;
   email: string;
   status: "ACTIVE" | "INACTIVE";
@@ -15,3 +16,7 @@ export interface User {
   profile: Profile;
   preferences: Preferences;
 }
+
+type LoggedInUser = MatchUser & User;
+
+export { User, LoggedInUser };

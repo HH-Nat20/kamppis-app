@@ -83,7 +83,7 @@ const ImageUpload = () => {
       console.log("Image uploaded", response);
       setUploadSuccess(true);
       setUploading(false);
-      setResponseImageUrl(response?.imageUrl);
+      setResponseImageUrl(response?.original);
       refreshUser();
       Toast.show({
         type: "success",

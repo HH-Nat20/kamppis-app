@@ -73,8 +73,8 @@ export default function DetailsScreen({ route }: DetailsScreenProps) {
               cardIndex={0}
               backgroundColor={colors.background}
               stackSize={Math.min(photos.length, 3)}
-              stackSeparation={15}
-              stackScale={5}
+              stackSeparation={0}
+              stackScale={0}
               infinite={true}
               animateOverlayLabelsOpacity
               animateCardOpacity

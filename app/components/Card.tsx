@@ -10,8 +10,8 @@ import {
 import styles from "../ui/styles";
 import { renderTagBgColor } from "../ui/colors";
 import { User } from "../types/User";
-import { countAge, formatDate, getProfilePicture } from "../helpers/helpers";
-import AntDesign from '@expo/vector-icons/AntDesign';
+import { getProfilePicture, getImageUrl } from "../helpers/helpers";
+import AntDesign from "@expo/vector-icons/AntDesign";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
@@ -20,12 +20,11 @@ interface CardProps {
 }
 
 type DetailStackParamList = {
-  DetailsScreen: { userId: number, userName: string };
+  DetailsScreen: { userId: number; userName: string };
 };
 
-type DetailScreenNavigationProp = NativeStackNavigationProp<
-  DetailStackParamList
->;
+type DetailScreenNavigationProp =
+  NativeStackNavigationProp<DetailStackParamList>;
 
 const Card: React.FC<CardProps> = ({ card }) => {
   const [tapped, setTapped] = useState<boolean>(false);
@@ -33,7 +32,10 @@ const Card: React.FC<CardProps> = ({ card }) => {
   const navigation = useNavigation<DetailScreenNavigationProp>();
 
   const handleOpenDetails = (userId: number) => {
-    navigation.navigate("DetailsScreen", { userId, userName: `${card.firstName} ${card.lastName}` });
+    navigation.navigate("DetailsScreen", {
+      userId,
+      userName: `${card.firstName} ${card.lastName}`,
+    });
   };
 
   // Get screen dimensions inside the component
@@ -46,16 +48,26 @@ const Card: React.FC<CardProps> = ({ card }) => {
         style={[styles.cardContainer, { width, height }]} // Apply dimensions dynamically
       >
         <ImageBackground
-          source={{ uri: getProfilePicture(card.userPhotos) }}
+          source={{ uri: getImageUrl(getProfilePicture(card.userPhotos)) }}
           style={{ width, height }}
         >
           <View style={styles.overlay}>
-            <Text style={styles.cardTitle} onPress={() => handleOpenDetails(card.id)}>
-              {card.firstName}, {card.age} <AntDesign name="infocirlceo" size={24} color="white" />
+            <Text
+              style={styles.cardTitle}
+              onPress={() => handleOpenDetails(card.id)}
+            >
+              {card.firstName}, {card.age}{" "}
+              <AntDesign name="infocirlceo" size={24} color="white" />
             </Text>
             <View style={styles.tagArea}>
               {card.lifestyle.map((tag, index) => (
-                <Text key={index} style={{...styles.tag, backgroundColor: renderTagBgColor(tag)}}>
+                <Text
+                  key={index}
+                  style={{
+                    ...styles.tag,
+                    backgroundColor: renderTagBgColor(tag),
+                  }}
+                >
                   {tag.replaceAll("_", " ")}
                 </Text>
               ))}

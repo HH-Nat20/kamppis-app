@@ -1,35 +1,32 @@
 import React, { useState, useEffect } from "react";
-import { View, ActivityIndicator, Image } from "react-native";
+import { View, Image } from "react-native";
 
 import { Photo } from "../types/Photo";
 
 import styles from "../ui/styles";
-import { colorSet } from "../ui/colors";
+
+import { getImageUrl } from "../helpers/helpers";
 
 interface PortraitProps {
   photo: Photo;
 }
 
 const Portrait: React.FC<PortraitProps> = ({ photo }) => {
-  const [imageLoading, setImageLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    setImageLoading(true);
-  }, [photo]);
-
   return (
     <View style={styles.portraitContainer}>
-      {imageLoading && (
-        <ActivityIndicator
-          size="large"
-          color={colorSet.white}
-          style={styles.imageLoader}
-        />
-      )}
+      {/* Background Placeholder (Always Visible) */}
       <Image
-        source={{ uri: photo?.name }}
+        source={{
+          uri: "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png",
+        }}
         style={styles.portrait}
-        onLoad={() => setImageLoading(false)}
+        resizeMode="cover"
+      />
+
+      {/* Actual Image (On Top) */}
+      <Image
+        source={{ uri: getImageUrl(photo, "thumbnail") }}
+        style={styles.portrait}
       />
     </View>
   );

@@ -18,11 +18,30 @@ const profile = StyleSheet.create({
     backgroundColor: "transparent",
   },
   portraitContainer: {
+    position: "relative",
+    width: "100%",
+    height: 300,
+    backgroundColor: "transparent",
+    padding: 0,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  portrait: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    borderRadius: 10,
+    borderWidth: 2,
+  },
+  oldportraitContainer: {
     width: "100%",
     backgroundColor: "transparent",
     padding: 0,
   },
-  portrait: {
+  oldportrait: {
     width: "100%",
     height: 250,
     resizeMode: "cover",
@@ -64,6 +83,14 @@ const profile = StyleSheet.create({
     top: "50%",
     left: "50%",
     transform: [{ translateX: -15 }, { translateY: -15 }],
+  },
+  placeholderOverlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backgroundColor: "rgba(0,0,0,0.1)",
   },
 });
 

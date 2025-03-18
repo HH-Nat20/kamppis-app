@@ -15,9 +15,12 @@ import { useUser } from "../contexts/UserContext";
 import styles from "../ui/styles";
 import colors from "../ui/colors";
 import { Photo } from "../types/Photo";
+import Portrait from "../components/Portrait";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { ProfileStackParamList } from "../navigation/ProfileStackNavigator";
+
+import dao from "../ajax/dao";
 
 type ProfilePhotosNavigationProp = StackNavigationProp<
   ProfileStackParamList,
@@ -25,7 +28,7 @@ type ProfilePhotosNavigationProp = StackNavigationProp<
 >;
 
 export default function ProfilePhotosScreen() {
-  const { user } = useUser();
+  const { user, refreshUser } = useUser();
 
   const navigation = useNavigation<ProfilePhotosNavigationProp>();
 
@@ -43,6 +46,11 @@ export default function ProfilePhotosScreen() {
 
   const confirmDelete = (photo: Photo) => {
     console.log("Delete photo", photo);
+    dao.deleteImage(user, photo).then(() => {
+      console.log("Photo deleted, refreshing user data...");
+      Alert.alert("Photo Deleted", "Your photo has been deleted.");
+      refreshUser();
+    });
   };
 
   return (
@@ -55,7 +63,7 @@ export default function ProfilePhotosScreen() {
       >
         {user?.userPhotos?.map((photo, index) => (
           <ContentBox key={index}>
-            <Image source={{ uri: photo.name }} style={styles.portrait} />
+            <Portrait photo={photo} />
             <View
               style={{
                 marginTop: 10,

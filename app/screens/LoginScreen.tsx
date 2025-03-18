@@ -174,16 +174,15 @@ export default function LoginScreen() {
 
             changeUser(selectedUser);
 
-            navigation.reset({
-              index: 0,
-              routes: [{ name: "Home" }],
-            });
+            //navigation.reset({
+            //  index: 0,
+            //  routes: [{ name: "Home" }],
+            //});
           } catch (error) {
             console.error("Login error:", error);
           }
         }}
       />
-
     </View>
   );
 }

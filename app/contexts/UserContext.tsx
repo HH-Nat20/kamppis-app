@@ -6,11 +6,9 @@ import React, {
   useEffect,
 } from "react";
 import { MatchUser } from "../types/Match";
-import { User } from "../types/User";
+import { User, LoggedInUser } from "../types/User";
 
 import dao from "../ajax/dao";
-
-type LoggedInUser = MatchUser & User;
 
 const UserContext = createContext<
   | {

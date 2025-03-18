@@ -30,20 +30,46 @@ const formatDate = (dateTuple?: [number, number, number]) => {
   )}`;
 };
 
-const getProfilePicture = (photos?: Photo[]): string => {
-  let url =
-    "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png";
-
+const getProfilePicture = (photos?: Photo[]): Photo | undefined => {
   if (photos) {
     console.log("Found some photos...", photos);
     const profilePicture = photos.find((photo) => photo.isProfilePhoto);
     if (profilePicture) {
       console.log("Found a profile picture...", profilePicture);
-      url = profilePicture.name;
+      return profilePicture;
+    }
+  }
+
+  return undefined;
+};
+
+const getImageUrl = (
+  photo: Photo | undefined,
+  returnType: "original" | "thumbnail" | "resized" = "original"
+): string => {
+  let url =
+    "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png";
+
+  console.log("Photo:", photo);
+  if (photo?.name) {
+    if (photo.name.startsWith("http")) {
+      url = photo.name; // If it's already a full URL, return as is
+    } else {
+      const originalExtensionMatch = photo.name.match(/-original\.(\w+)$/);
+      const originalExtension = originalExtensionMatch
+        ? originalExtensionMatch[1]
+        : "jpg"; // Default to jpg if not found
+
+      const modifiedName =
+        returnType === "original"
+          ? photo.name // Keep the original filename and extension
+          : photo.name.replace(/-original\.\w+$/, `-${returnType}.jpg`); // Change to JPG for resized/thumbnail
+
+      url = `https://hellmanstudios.fi/kamppis-images/${photo.userId}/${modifiedName}`; // TODO: Replace with ENV variable
     }
   }
 
   return url;
 };
 
-export { countAge, formatDate, getProfilePicture };
+export { countAge, formatDate, getProfilePicture, getImageUrl };

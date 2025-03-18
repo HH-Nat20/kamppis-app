@@ -14,7 +14,7 @@ import { StatusBar } from "expo-status-bar";
 import { LinearGradient } from "expo-linear-gradient";
 
 import { useMatch } from "../contexts/MatchContext";
-import { getProfilePicture } from "../helpers/helpers";
+import { getProfilePicture, getImageUrl } from "../helpers/helpers";
 
 import styles from "../ui/styles";
 import { bgGradient } from "../ui/colors";
@@ -23,12 +23,11 @@ import { useUser } from "../contexts/UserContext";
 
 type ChatStackParamList = {
   Matches: undefined;
-  ChatScreen: { userId: number, userName: string };
+  ChatScreen: { userId: number; userName: string };
 };
 
-type MatchesScreenNavigationProp = NativeStackNavigationProp<
-  ChatStackParamList
->;
+type MatchesScreenNavigationProp =
+  NativeStackNavigationProp<ChatStackParamList>;
 
 const MatchesScreen = () => {
   const { matches } = useMatch();
@@ -56,7 +55,10 @@ const MatchesScreen = () => {
         onPress={() => handleOpenChat(item.id, item.firstName)}
       >
         {userPhoto ? (
-          <Image source={{ uri: userPhoto }} style={styles.image} />
+          <Image
+            source={{ uri: getImageUrl(userPhoto) }}
+            style={styles.image}
+          />
         ) : (
           <View style={[styles.image, styles.placeholder]}>
             <Text style={styles.placeholderText}>No Photo</Text>
@@ -71,10 +73,7 @@ const MatchesScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <LinearGradient
-        colors={bgGradient}
-        style={styles.background}
-      />
+      <LinearGradient colors={bgGradient} style={styles.background} />
 
       {loading ? (
         <ActivityIndicator size="large" color="#fff" />

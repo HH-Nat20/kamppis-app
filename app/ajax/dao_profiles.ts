@@ -12,7 +12,7 @@ const ENDPOINT = "user-profiles";
  */
 export const getPossibleMatches = async (userId: number) => {
   //const response = await get(`/${ENDPOINT}/${userId}/query`);
-  const response = await get(`/${ENDPOINT}`);
+  const response = await get(`${ENDPOINT}`);
   if (response.status == 204) {
     return [];
   }
@@ -29,7 +29,7 @@ export const getPossibleMatches = async (userId: number) => {
  * @returns {Promise<User>}
  */
 export const getUserProfile = async (userId: number) => {
-  const response = await get(`/${ENDPOINT}/${userId}`);
+  const response = await get(`${ENDPOINT}/${userId}`);
   const user: User = await response.json();
   console.log(`Found user profile: `, user);
   return user;
@@ -41,7 +41,7 @@ export const getUserProfile = async (userId: number) => {
  * @returns {Promise<User[]>}
  */
 export const getAllUserProfiles = async () => {
-  const response = await get(`/${ENDPOINT}`);
+  const response = await get(`${ENDPOINT}`);
   const users: User[] = await response.json();
   return users;
 };
@@ -53,7 +53,7 @@ export const getAllUserProfiles = async () => {
  * @returns {Promise<User>}
  */
 export const updateUserProfile = async (userId: number, userProfile: User) => {
-  const response = await update(`/${ENDPOINT}/${userId}`, userProfile);
+  const response = await update(`${ENDPOINT}/${userId}`, userProfile);
   const user: User = await response.json();
   console.log(`Updated profile: `, user);
   return user;
