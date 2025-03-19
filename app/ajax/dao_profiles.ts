@@ -17,7 +17,7 @@ export const getPossibleMatches = async (userId: number) => {
     return [];
   }
   const responseBody = await response.json();
-  console.log(`Found ${responseBody.length} profiles: `, responseBody);
+  //console.log(`Found ${responseBody.length} profiles: `, responseBody);
   const users: User[] = responseBody;
   return users;
 };
@@ -31,7 +31,7 @@ export const getPossibleMatches = async (userId: number) => {
 export const getUserProfile = async (userId: number) => {
   const response = await get(`${ENDPOINT}/${userId}`);
   const user: User = await response.json();
-  console.log(`Found user profile: `, user);
+  //console.log(`Found user profile: `, user); // TODO: Figure out why this gets called so many times
   return user;
 };
 

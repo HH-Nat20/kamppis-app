@@ -39,7 +39,6 @@ const MatchesScreen = () => {
   useEffect(() => {
     // Ensure loading is set to false after fetching
     setLoading(false);
-    console.log("USER IS ", user);
   }, [matches]);
 
   const handleOpenChat = (userId: number, firstName: string) => {
@@ -56,7 +55,7 @@ const MatchesScreen = () => {
       >
         {userPhoto ? (
           <Image
-            source={{ uri: getImageUrl(userPhoto) }}
+            source={{ uri: getImageUrl(userPhoto, "thumbnail", item.id) }}
             style={styles.image}
           />
         ) : (

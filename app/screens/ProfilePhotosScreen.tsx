@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -30,10 +30,26 @@ type ProfilePhotosNavigationProp = StackNavigationProp<
 export default function ProfilePhotosScreen() {
   const { user, refreshUser } = useUser();
 
+  const [photos, setPhotos] = useState<Photo[]>([]);
+  useEffect(() => {
+    if (user) {
+      setPhotos(user.userPhotos || []);
+    }
+  }, [user]);
+
   const navigation = useNavigation<ProfilePhotosNavigationProp>();
 
   const handleDeletePress = (photo: Photo) => {
     console.log("Delete requested, opening modal...");
+
+    if (photo.isProfilePhoto) {
+      Alert.alert(
+        "Cannot Delete Profile Photo",
+        "This photo is currently set as your profile photo. Please change your profile photo before deleting it."
+      );
+      return;
+    }
+
     Alert.alert("Delete Photo", "Are you sure you want to delete this photo?", [
       {
         text: "Cancel",
@@ -49,7 +65,21 @@ export default function ProfilePhotosScreen() {
     dao.deleteImage(user, photo).then(() => {
       console.log("Photo deleted, refreshing user data...");
       Alert.alert("Photo Deleted", "Your photo has been deleted.");
-      refreshUser();
+      setPhotos(photos.filter((p) => p.id !== photo.id));
+    });
+  };
+
+  const changeProfilePhoto = (photo: Photo, value: boolean) => {
+    console.log("Change profile photo", photo, value);
+    dao.putImage(user, photo, value).then((response) => {
+      photos.forEach((p) => {
+        if (p.id === photo.id) {
+          p.isProfilePhoto = value;
+        } else {
+          p.isProfilePhoto = false;
+        }
+      });
+      setPhotos([...photos]);
     });
   };
 
@@ -77,7 +107,7 @@ export default function ProfilePhotosScreen() {
                 <Switch
                   value={photo.isProfilePhoto}
                   onValueChange={(value) => {
-                    console.log("Change profile photo", photo, value);
+                    changeProfilePhoto(photo, value);
                   }}
                 />
                 <Text style={{ color: colors.white }}>Profile Photo</Text>

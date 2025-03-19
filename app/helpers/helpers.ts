@@ -32,7 +32,7 @@ const formatDate = (dateTuple?: [number, number, number]) => {
 
 const getProfilePicture = (photos?: Photo[]): Photo | undefined => {
   if (photos) {
-    console.log("Found some photos...", photos);
+    //console.log("Found some photos...", photos);
     const profilePicture = photos.find((photo) => photo.isProfilePhoto);
     if (profilePicture) {
       console.log("Found a profile picture...", profilePicture);
@@ -45,12 +45,13 @@ const getProfilePicture = (photos?: Photo[]): Photo | undefined => {
 
 const getImageUrl = (
   photo: Photo | undefined,
-  returnType: "original" | "thumbnail" | "resized" = "original"
+  returnType: "original" | "thumbnail" | "resized" = "original",
+  overrideUserId: number = 0
 ): string => {
   let url =
     "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png";
 
-  console.log("Photo:", photo);
+  //console.log("Photo:", photo);
   if (photo?.name) {
     if (photo.name.startsWith("http")) {
       url = photo.name; // If it's already a full URL, return as is
@@ -65,10 +66,13 @@ const getImageUrl = (
           ? photo.name // Keep the original filename and extension
           : photo.name.replace(/-original\.\w+$/, `-${returnType}.jpg`); // Change to JPG for resized/thumbnail
 
-      url = `https://hellmanstudios.fi/kamppis-images/${photo.userId}/${modifiedName}`; // TODO: Replace with ENV variable
+      url = `https://hellmanstudios.fi/kamppis-images/${
+        photo.userId ?? overrideUserId
+      }/${modifiedName}`; // TODO: Replace with ENV variable
     }
   }
 
+  console.log("Returning IMAGE URL:", url);
   return url;
 };
 
