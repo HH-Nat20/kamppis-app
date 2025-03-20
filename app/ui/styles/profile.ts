@@ -20,7 +20,7 @@ const profile = StyleSheet.create({
   portraitContainer: {
     position: "relative",
     width: "100%",
-    height: 300,
+    height: 250,
     backgroundColor: "transparent",
     padding: 0,
     alignItems: "center",
