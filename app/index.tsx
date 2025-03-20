@@ -6,14 +6,19 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { UserProvider } from "./contexts/UserContext";
 import { MatchableProfilesProvider } from "./contexts/MatchableProfilesContext";
 
+import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
+import "@/global.css";
+
 export default function App() {
   return (
     <UserProvider>
       <MatchableProfilesProvider>
         <MatchProvider>
           <SafeAreaProvider>
-            <AppNavigator />
-            <Toast />
+            <GluestackUIProvider>
+              <AppNavigator />
+              <Toast />
+            </GluestackUIProvider>
           </SafeAreaProvider>
         </MatchProvider>
       </MatchableProfilesProvider>
