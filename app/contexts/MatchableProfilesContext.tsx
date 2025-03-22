@@ -1,10 +1,13 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { User } from "../types/User";
+
+import { ProfileCard } from "../types/ProfileCard";
 import dao from "../ajax/dao";
 import { useUser } from "./UserContext";
 
+import { buildShuffledProfileCards } from "../helpers/profileCardBuilder";
+
 interface MatchableProfilesContextProps {
-  cards: User[];
+  cards: ProfileCard[];
   refreshMatchableProfiles: () => Promise<void>;
   loading: boolean;
 }
@@ -19,7 +22,7 @@ export const MatchableProfilesProvider = ({
   children: React.ReactNode;
 }) => {
   const { user } = useUser();
-  const [cards, setCards] = useState<User[]>([]);
+  const [cards, setCards] = useState<ProfileCard[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   const fetchMatchableProfiles = async () => {
@@ -32,7 +35,9 @@ export const MatchableProfilesProvider = ({
     }
 
     try {
-      let users = await dao.getPossibleMatches(user.id);
+      let users = await dao.getAllProfiles(); // dao.getPossibleMatches(user.id);
+
+      console.log("Users received from API:", users);
 
       if (users.length === 0) {
         setCards([]);
@@ -42,7 +47,6 @@ export const MatchableProfilesProvider = ({
 
       // Filter out the current user
       users = users.filter && users.filter((u) => u.id !== user.id);
-      setLoading(false);
 
       if (!Array.isArray(users)) {
         console.warn("No users received from API");
@@ -50,7 +54,9 @@ export const MatchableProfilesProvider = ({
         return;
       }
 
-      setCards(users);
+      const profileCards: ProfileCard[] = buildShuffledProfileCards(users);
+      setCards(profileCards);
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching users:", error);
     }

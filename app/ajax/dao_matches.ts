@@ -1,4 +1,4 @@
-import { User } from "../types/User";
+import { User } from "../types/responses/User";
 import { Match } from "../types/Match";
 import { get } from "./request";
 

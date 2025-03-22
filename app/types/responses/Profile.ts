@@ -1,5 +1,7 @@
+import { Photo } from "./Photo";
+
 export interface Profile {
   id: string;
-  userId: string;
   bio: string;
+  photos?: Photo[];
 }

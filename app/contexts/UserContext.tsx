@@ -6,14 +6,14 @@ import React, {
   useEffect,
 } from "react";
 import { MatchUser } from "../types/Match";
-import { User, LoggedInUser } from "../types/User";
+import { User } from "../types/responses/User";
 
 import dao from "../ajax/dao";
 
 const UserContext = createContext<
   | {
-      user: LoggedInUser | undefined;
-      changeUser: (user: MatchUser) => void;
+      user: User | undefined;
+      changeUser: (user: number) => void;
       refreshUser: () => void;
     }
   | undefined
@@ -22,36 +22,28 @@ const UserContext = createContext<
 export const UserProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [user, setUser] = useState<LoggedInUser | undefined>(undefined);
+  const [user, setUser] = useState<User | undefined>(undefined);
 
   useEffect(() => {
-    const user: LoggedInUser = {
-      id: 1,
-      email: "alice.smith@example.com",
-      status: "ONLINE",
-    } as LoggedInUser;
-
-    console.log("Initializing user:", user);
-
     dao
-      .getUserProfile(user.id)
+      .getProfile(1) // TODO: Get profile by userID not profileId
       .then((profile) => {
         console.log("Setting initial user profile:", profile);
-        setUser({ ...user, ...profile });
+        setUser(profile); // TODO: Figure out correct datatype
       })
       .catch((error) => {
         console.error("Error fetching initial user profile", error);
       });
   }, []);
 
-  const changeUser = (user: MatchUser) => {
+  const changeUser = (userId: number) => {
     console.log("Fetching profile for user:", user);
 
     dao
-      .getUserProfile(user.id)
+      .getProfile(userId)
       .then((profile) => {
         console.log("Profile data received:", profile);
-        setUser({ ...user, ...profile });
+        setUser(user);
       })
       .catch((error) => {
         console.error("Failed to fetch user profile", error);
@@ -61,7 +53,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   const refreshUser = () => {
     if (user) {
       console.log("Refreshing user:", user);
-      changeUser(user);
+      changeUser(user.id);
     } else {
       console.warn("refreshUser() called, but no user is set.");
     }

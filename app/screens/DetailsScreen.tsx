@@ -17,16 +17,19 @@ import colors, { renderTagBgColor } from "../ui/colors";
 
 import dao from "../ajax/dao";
 
-import { User } from "../types/User";
+import { User } from "../types/responses/User";
+import { ProfileCard } from "../types/ProfileCard";
 import { LifestyleDescriptions } from "../types/enums/LifestyleEnum";
 import { CleanlinessDescriptions } from "../types/enums/CLeanlinessEnum";
 
 import { RouteProp, useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { DetailsParamList } from "../navigation/SwipeStackNavigator";
-import { Photo } from "../types/Photo";
+import { Photo } from "../types/responses/Photo";
 
 import Portrait from "../components/Portrait";
+import { RoomProfile } from "../types/responses/RoomProfile";
+import { UserProfile } from "../types/responses/UserProfile";
 
 type DetailsScreenRouteProp = RouteProp<DetailsParamList, "DetailsScreen">;
 type NavigationProp = StackNavigationProp<DetailsParamList, "DetailsScreen">;
@@ -37,18 +40,28 @@ type DetailsScreenProps = {
 
 export default function DetailsScreen({ route }: DetailsScreenProps) {
   const swiperRef = useRef<Swiper<any>>(null);
-  const { userId } = route.params;
+  const { userId, profileId } = route.params;
 
   const [user, setUser] = useState<User | null>(null);
   const [photos, setPhotos] = useState<Photo[]>([]);
+  const [profile, setProfile] = useState<UserProfile | RoomProfile | null>(
+    null
+  );
   const [loading, setLoading] = useState<boolean>(true);
   const [tooltip, setTooltip] = useState<string | null>(null);
 
+  const [preferredLocations, setPreferredLocations] = useState<string[]>([]);
+
   useEffect(() => {
-    dao.getUserProfile(userId).then((user) => {
-      console.log("Here are some photos", user.userPhotos);
+    dao.getProfile(userId).then((user) => {
       setUser(user);
-      setPhotos(user.userPhotos || []);
+      const correctProfile =
+        user.userProfile?.id === profileId
+          ? user.userProfile
+          : user.roomProfiles.filter((p) => p.id === profileId)[0];
+      setProfile(correctProfile);
+      setPhotos(correctProfile.photos || []);
+      setPreferredLocations(["Helsinki", "Espoo", "Vantaa"]);
       setLoading(false);
     });
   }, [userId]);
@@ -88,23 +101,25 @@ export default function DetailsScreen({ route }: DetailsScreenProps) {
 
         <View style={styles.profileInfo}>
           <View style={styles.tagArea}>
-            {user?.cleanliness && (
-              <Pressable onPress={() => toggleTooltip(user.cleanliness)}>
+            {profile && "cleanliness" in profile && profile.cleanliness && (
+              <Pressable onPress={() => toggleTooltip(profile.cleanliness)}>
                 <Text style={styles.cleanlinessTag}>
-                  {user.cleanliness.replaceAll("_", " ")}
+                  {profile.cleanliness.replaceAll("_", " ")}
                 </Text>
-                {tooltip === user.cleanliness && (
+                {tooltip === profile.cleanliness && (
                   <View style={styles.tooltip}>
                     <Text style={styles.tooltipText}>
-                      {CleanlinessDescriptions[user.cleanliness]}
+                      {CleanlinessDescriptions[profile.cleanliness]}
                     </Text>
                   </View>
                 )}
               </Pressable>
             )}
 
-            {user?.lifestyle &&
-              user.lifestyle.map((tag, index) => (
+            {profile &&
+              "lifestyle" in profile &&
+              profile.lifestyle &&
+              profile.lifestyle.map((tag, index) => (
                 <Pressable key={index} onPress={() => toggleTooltip(tag)}>
                   <Text
                     style={{
@@ -125,7 +140,7 @@ export default function DetailsScreen({ route }: DetailsScreenProps) {
               ))}
           </View>
 
-          <Text style={styles.bioText}>{user?.bio}</Text>
+          <Text style={styles.bioText}>{profile?.bio}</Text>
 
           <View style={styles.definitionBox}>
             <View style={styles.definition}>
@@ -138,15 +153,15 @@ export default function DetailsScreen({ route }: DetailsScreenProps) {
             </View>
             <View style={styles.definition}>
               <Text style={styles.definition}>Max Rent:</Text>
-              <Text style={styles.definitionValue}>{user?.maxRent}</Text>
+              <Text style={styles.definitionValue}>unavailable</Text>
             </View>
           </View>
 
           <Text style={styles.subtitle}>Locations:</Text>
 
           <View style={styles.tagArea}>
-            {user?.preferredLocations &&
-              user.preferredLocations.map((tag, index) => (
+            {preferredLocations &&
+              preferredLocations.map((tag, index) => (
                 <Text key={index} style={styles.tag}>
                   {tag}
                 </Text>

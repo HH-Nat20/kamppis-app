@@ -1,5 +1,5 @@
-import { Photo } from "../types/Photo";
-import { LoggedInUser } from "../types/User";
+import { Photo } from "../types/responses/Photo";
+import { User } from "../types/responses/User";
 import { uploadRequest, remove, update } from "./request";
 
 const ENDPOINT = "images";
@@ -20,15 +20,12 @@ export const postImage = async (formData: FormData, userId: number) => {
 /**
  * Delete an image from the server
  */
-export const deleteImage = async (
-  authUser: LoggedInUser | undefined,
-  photo: Photo
-) => {
+export const deleteImage = async (authUser: User | undefined, photo: Photo) => {
   if (!authUser) {
     throw new Error("User is not authenticated");
   }
   console.log("Deleting image", photo.id);
-  const response = await remove(`${ENDPOINT}/${authUser!.id}/${photo.id}`);
+  const response = await remove(`${ENDPOINT}/${authUser!.id}/${photo.id}`); // TODO: userId or profileId?
   console.log("Response", response);
   if (!response.ok) {
     throw new Error("Failed to delete image");
@@ -41,7 +38,7 @@ export const deleteImage = async (
  * Set ProfilePhoto State
  */
 export const putImage = async (
-  authUser: LoggedInUser | undefined,
+  authUser: User | undefined,
   photo: Photo,
   isProfilePhoto: boolean
 ) => {

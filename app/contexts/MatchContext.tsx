@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 import Toast from "react-native-toast-message";
-import { User } from "../types/User";
+import { User } from "../types/responses/User";
 
 import dao from "../ajax/dao";
 import { useUser } from "./UserContext";

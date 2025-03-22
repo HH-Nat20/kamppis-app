@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useForm, FormProvider, FieldErrors } from "react-hook-form";
-import { User } from "../types/User";
+import { User } from "../types/responses/User";
 import { Gender } from "../types/enums/GenderEnum";
 import { useUser } from "./UserContext";
 import dao from "../ajax/dao";
@@ -9,12 +9,13 @@ import { useMatchableProfiles } from "./MatchableProfilesContext";
 import { profileSchema, UserFormSchema } from "../validation/profileSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Toast from "react-native-toast-message";
+import { UserProfile } from "../types/responses/UserProfile";
 
 interface ProfileFormContextProps {
   loading: boolean;
-  onSubmit: (data: User) => Promise<void>;
+  onSubmit: (data: UserProfile) => Promise<void>;
   onError?: (errors: any) => void;
-  formState: { errors: FieldErrors<User> };
+  formState: { errors: FieldErrors<UserProfile> };
 }
 
 const ProfileFormContext = createContext<ProfileFormContextProps | undefined>(
@@ -63,8 +64,8 @@ export const ProfileFormProvider = ({
       }
       setLoading(true);
       try {
-        const userProfile = await dao.getUserProfile(user.id);
-        reset(userProfile); // Update form with fetched data
+        const userResponse = await dao.getProfile(user.id); // TODO: Get profile by userID not profileId
+        reset(userResponse.userProfile); // Update form with fetched data
       } catch (error) {
         console.error("Failed to fetch user profile", error);
       } finally {
@@ -76,7 +77,7 @@ export const ProfileFormProvider = ({
   }, [user, reset]);
 
   // Submit handler (updates existing profile or creates a new one)
-  const onSubmit = async (data: User) => {
+  const onSubmit = async (data: UserProfile) => {
     try {
       if (Object.keys(errors).length > 0) {
         Toast.show({
@@ -88,7 +89,7 @@ export const ProfileFormProvider = ({
       }
       setLoading(true);
       if (user) {
-        const updatedProfile = await dao.updateUserProfile(user.id, data);
+        const updatedProfile = await dao.updateProfile(user.id, data);
         reset(updatedProfile); // Sync form with updated profile
         Toast.show({
           type: "success",
@@ -129,7 +130,9 @@ export const ProfileFormProvider = ({
   };
 
   return (
-    <ProfileFormContext.Provider value={{ loading, onSubmit, onError, formState: { errors } }}>
+    <ProfileFormContext.Provider
+      value={{ loading, onSubmit, onError, formState: { errors } }}
+    >
       <FormProvider {...methods}>
         {loading ? <ActivityIndicator size="large" color="#fff" /> : children}
       </FormProvider>

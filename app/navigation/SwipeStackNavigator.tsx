@@ -1,7 +1,5 @@
 import React from "react";
-import {
-  createStackNavigator,
-} from "@react-navigation/stack";
+import { createStackNavigator } from "@react-navigation/stack";
 import { RouteProp } from "@react-navigation/native";
 import SwipeScreen from "../screens/SwipeScreen";
 import DetailsScreen from "../screens/DetailsScreen";
@@ -10,7 +8,7 @@ import colors from "../ui/colors";
 
 export type DetailsParamList = {
   Swipe: undefined;
-  DetailsScreen: { userId: number; userName: string };
+  DetailsScreen: { userId: number; userName: string; profileId: number };
 };
 
 const Stack = createStackNavigator<DetailsParamList>();
@@ -38,7 +36,7 @@ const SwipeStackNavigator: React.FC = () => {
       <Stack.Screen
         name="DetailsScreen"
         component={DetailsScreen}
-        options={({ route }: { route: RouteProp<DetailsParamList, "DetailsScreen"> }) => ({
+        options={({ route }) => ({
           title: route.params.userName || "Profile",
         })}
       />

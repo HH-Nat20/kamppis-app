@@ -14,7 +14,7 @@ import DeleteButton from "../components/DeleteButton";
 import { useUser } from "../contexts/UserContext";
 import styles from "../ui/styles";
 import colors from "../ui/colors";
-import { Photo } from "../types/Photo";
+import { Photo } from "../types/responses/Photo";
 import Portrait from "../components/Portrait";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -33,7 +33,7 @@ export default function ProfilePhotosScreen() {
   const [photos, setPhotos] = useState<Photo[]>([]);
   useEffect(() => {
     if (user) {
-      setPhotos(user.userPhotos || []);
+      setPhotos(user.userProfile.photos || []);
     }
   }, [user]);
 
@@ -91,7 +91,7 @@ export default function ProfilePhotosScreen() {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        {user?.userPhotos?.map((photo, index) => (
+        {user?.userProfile?.photos?.map((photo, index) => (
           <ContentBox key={index}>
             <Portrait photo={photo} />
             <View

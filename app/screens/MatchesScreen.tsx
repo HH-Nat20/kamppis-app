@@ -83,7 +83,7 @@ const MatchesScreen = () => {
       ) : (
         <FlatList
           data={matches}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item) => item.id.toString()} // TODO: Make sure item.id is profileId and not userId!!!
           renderItem={renderItem}
           numColumns={2}
           columnWrapperStyle={styles.columnWrapper}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Image } from "react-native";
 
-import { Photo } from "../types/Photo";
+import { Photo } from "../types/responses/Photo";
 
 import styles from "../ui/styles";
 

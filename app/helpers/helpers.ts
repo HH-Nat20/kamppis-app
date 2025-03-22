@@ -1,4 +1,4 @@
-import { Photo } from "../types/Photo";
+import { Photo } from "../types/responses/Photo";
 
 const countAge = (dateTuple?: [number, number, number]) => {
   if (!dateTuple || dateTuple.length !== 3) {
@@ -46,28 +46,31 @@ const getProfilePicture = (photos?: Photo[]): Photo | undefined => {
 const getImageUrl = (
   photo: Photo | undefined,
   returnType: "original" | "thumbnail" | "resized" = "original",
-  overrideUserId: number = 0
+  overrideProfileId: number = 0
 ): string => {
   let url =
     "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png";
 
-  //console.log("Photo:", photo);
-  if (photo?.name) {
-    if (photo.name.startsWith("http")) {
-      url = photo.name; // If it's already a full URL, return as is
+  console.log("Photo:", photo);
+  console.log("Return type:", returnType);
+  console.log("Override profile ID:", overrideProfileId);
+
+  if (photo?.url) {
+    if (photo.url.startsWith("http")) {
+      url = photo.url; // If it's already a full URL, return as is
     } else {
-      const originalExtensionMatch = photo.name.match(/-original\.(\w+)$/);
+      const originalExtensionMatch = photo.url.match(/-original\.(\w+)$/);
       const originalExtension = originalExtensionMatch
         ? originalExtensionMatch[1]
         : "jpg"; // Default to jpg if not found
 
       const modifiedName =
         returnType === "original"
-          ? photo.name // Keep the original filename and extension
-          : photo.name.replace(/-original\.\w+$/, `-${returnType}.jpg`); // Change to JPG for resized/thumbnail
+          ? photo.url // Keep the original filename and extension
+          : photo.url.replace(/-original\.\w+$/, `-${returnType}.jpg`); // Change to JPG for resized/thumbnail
 
       url = `https://hellmanstudios.fi/kamppis-images/${
-        photo.userId ?? overrideUserId
+        photo.profileId ?? overrideProfileId
       }/${modifiedName}`; // TODO: Replace with ENV variable
     }
   }

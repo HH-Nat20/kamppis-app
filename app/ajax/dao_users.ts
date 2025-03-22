@@ -1,4 +1,4 @@
-import { User } from "../types/User";
+import { User } from "../types/responses/User";
 import { MatchUser } from "../types/Match";
 
 import { get, create, update, remove } from "./request";

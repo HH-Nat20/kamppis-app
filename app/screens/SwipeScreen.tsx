@@ -9,8 +9,8 @@ import Card from "../components/Card";
 
 import dao from "../ajax/dao";
 
-import { User } from "../types/User";
 import { SwipeRequest, SwipeResponse } from "../types/requests/SwipeRequest";
+import { ProfileCard } from "../types/ProfileCard";
 
 import styles from "../ui/styles";
 import { useUser } from "../contexts/UserContext";
@@ -79,8 +79,8 @@ const SwipeScreen: React.FC = () => {
         <Swiper
           ref={swiperRef}
           cards={cards}
-          renderCard={(card: User | {}) => (
-            <Card card={card as User} key={(card as User).id} />
+          renderCard={(card: ProfileCard | {}) => (
+            <Card card={card as ProfileCard} key={(card as ProfileCard).id} />
           )}
           onSwipedLeft={(cardIndex) => handleSwipe(cardIndex, "left")}
           disableBottomSwipe={false}
@@ -91,9 +91,7 @@ const SwipeScreen: React.FC = () => {
             setTimeout(refreshMatchableProfiles, 500); // Give time for state updates (hopefully fixes duplicate last card bug)
           }}
           onTapCard={(cardIndex) => {
-            console.log(
-              `${cards[cardIndex].firstName} ${cards[cardIndex].lastName} was tapped`
-            );
+            console.log(`tappity tap`);
           }}
           cardIndex={0}
           backgroundColor="transparent"
