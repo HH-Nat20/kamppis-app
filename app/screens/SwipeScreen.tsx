@@ -35,7 +35,7 @@ const SwipeScreen: React.FC = () => {
 
     const swipeRequest: SwipeRequest = {
       swipingUserId: user.id,
-      swipedUserId: card.id,
+      swipedUserId: card.user.id,
       isRightSwipe: direction === "right",
     };
 

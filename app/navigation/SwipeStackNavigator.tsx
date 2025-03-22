@@ -8,7 +8,11 @@ import colors from "../ui/colors";
 
 export type DetailsParamList = {
   Swipe: undefined;
-  DetailsScreen: { userId: number; userName: string; profileId: number };
+  DetailsScreen: {
+    userId: number;
+    userName: string;
+    profileId: string;
+  };
 };
 
 const Stack = createStackNavigator<DetailsParamList>();

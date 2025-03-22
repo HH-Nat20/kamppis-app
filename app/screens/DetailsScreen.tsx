@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
   StatusBar,
-  Text,
   View,
+  Text,
   ScrollView,
   Pressable,
   ActivityIndicator,
@@ -30,6 +30,9 @@ import { Photo } from "../types/responses/Photo";
 import Portrait from "../components/Portrait";
 import { RoomProfile } from "../types/responses/RoomProfile";
 import { UserProfile } from "../types/responses/UserProfile";
+
+import { Heading } from "@/components/ui/heading";
+import { Center } from "@/components/ui/center";
 
 type DetailsScreenRouteProp = RouteProp<DetailsParamList, "DetailsScreen">;
 type NavigationProp = StackNavigationProp<DetailsParamList, "DetailsScreen">;
@@ -95,7 +98,9 @@ export default function DetailsScreen({ route }: DetailsScreenProps) {
               horizontalSwipe={true}
             />
           ) : (
-            <ActivityIndicator size="large" color={colors.white} />
+            <Center style={styles.portraitSwiper}>
+              <Heading style={styles.text}>No photos available</Heading>
+            </Center>
           )}
         </View>
 

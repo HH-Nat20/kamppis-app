@@ -40,6 +40,9 @@ const sendRequest = async (
     body: body ? JSON.stringify(body) : undefined,
   };
 
+  console.log("Sending request to", `${baseUrl}/${url}`);
+  console.log("Options", options);
+
   return fetch(`${baseUrl}/${url}`, options);
 };
 

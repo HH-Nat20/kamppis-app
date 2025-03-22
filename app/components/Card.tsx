@@ -12,10 +12,11 @@ import styles from "../ui/styles";
 import { renderTagBgColor } from "../ui/colors";
 import { ProfileCard } from "../types/ProfileCard";
 import { getProfilePicture, getImageUrl } from "../helpers/helpers";
-import AntDesign from "@expo/vector-icons/AntDesign";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { DetailsParamList } from "../navigation/SwipeStackNavigator";
+
+import ProfileTitle from "./ProfileTitle";
 
 interface CardProps {
   card: ProfileCard;
@@ -50,13 +51,10 @@ const Card: React.FC<CardProps> = ({ card }) => {
 
   const content = (
     <View style={[styles.overlay, { width, height }]}>
-      <Text
-        style={styles.cardTitle}
+      <ProfileTitle
+        card={card}
         onPress={() => handleOpenDetails(card.user?.id)}
-      >
-        {card.user?.firstName}, {card.user?.age}{" "}
-        <AntDesign name="infocirlceo" size={24} color="white" />
-      </Text>
+      />
       <View style={styles.tagArea}>
         {card.profile &&
           "lifestyle" in card.profile &&
