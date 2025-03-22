@@ -1,206 +1,222 @@
 import React from "react";
-import {
-  View,
-  Text,
-  ScrollView,
-  SafeAreaView,
-  TextInput,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-} from "react-native";
-import ContentBox from "../components/ContentBox";
-import SaveButton from "../components/SaveButton";
-import styles from "../ui/styles";
-import { User } from "../types/User";
+import { KeyboardAvoidingView, ScrollView } from "react-native";
 import { Controller, useFormContext } from "react-hook-form";
+import { useProfileForm } from "../contexts/ProfileFormContext";
+import { User } from "../types/responses/User";
 import { Gender } from "../types/enums/GenderEnum";
 import { Lifestyle } from "../types/enums/LifestyleEnum";
-import { useProfileForm } from "../contexts/ProfileFormContext";
 import { Cleanliness } from "../types/enums/CLeanlinessEnum";
+
+import { VStack } from "@/components/ui/vstack";
+import { HStack } from "@/components/ui/hstack";
+import { Text } from "@/components/ui/text";
+import { Heading } from "@/components/ui/heading";
+import { Input, InputField } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { ButtonText } from "@/components/ui/button";
+import { Pressable } from "@/components/ui/pressable";
+import { Divider } from "@/components/ui/divider";
+import { Box } from "@/components/ui/box";
+import { Textarea, TextareaInput } from "@/components/ui/textarea";
 
 export default function ProfilePersonalScreen() {
   const {
     control,
     handleSubmit,
-    formState: { errors, isDirty }, // Track form changes using isDirty
+    formState: { errors, isDirty },
   } = useFormContext<User>();
 
   const { onSubmit, onError } = useProfileForm();
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={styles.scrollContainer}
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-      >
-        <ContentBox>
-          <Text style={styles.text}>First Name:</Text>
-          <Controller
-            control={control}
-            name="firstName"
-            render={({ field: { onChange, value } }) => (
-              <TextInput
-                style={styles.input}
-                placeholder="Enter your first name"
-                value={value}
-                onChangeText={onChange}
-              />
-            )}
-          />
-          {errors.firstName && (
-            <Text style={styles.failed}>{errors.firstName.message}</Text>
-          )}
-
-          <Text style={styles.text}>Last Name:</Text>
-          <Controller
-            control={control}
-            name="lastName"
-            render={({ field: { onChange, value } }) => (
-              <TextInput
-                style={styles.input}
-                placeholder="Enter your last name"
-                value={value}
-                onChangeText={onChange}
-              />
-            )}
-          />
-          {errors.lastName && (
-            <Text style={styles.failed}>{errors.lastName.message}</Text>
-          )}
-
-          <Text style={styles.text}>Age:</Text>
-          <Controller
-            control={control}
-            name="age"
-            render={({ field: { onChange, value } }) => (
-              <TextInput
-                editable={false} // Age is not editable
-                style={{ ...styles.input, color: "gray" }}
-                value={String(value) + " years. (not editable here)"}
-                keyboardType="numeric"
-                onChangeText={(text) => onChange(parseInt(text) || 0)}
-              />
-            )}
-          />
-          {errors.age && (
-            <Text style={styles.failed}>{errors.age.message}</Text>
-          )}
-        </ContentBox>
-
-        <ContentBox>
-          <Text style={styles.text}>Gender (select one):</Text>
-          <View style={styles.radioGroup}>
-            {Object.values(Gender).map((g) => (
-              <Controller
-                key={g}
-                control={control}
-                name="gender"
-                render={({ field: { onChange, value } }) => (
-                  <TouchableOpacity
-                    style={[
-                      styles.radioButton,
-                      value === g && styles.selectedRadio,
-                    ]}
-                    onPress={() => onChange(g)}
-                  >
-                    <Text style={styles.tag}>{g}</Text>
-                  </TouchableOpacity>
-                )}
-              />
-            ))}
-          </View>
-          {errors.gender && (
-            <Text style={styles.failed}>{errors.gender.message}</Text>
-          )}
-        </ContentBox>
-
-        <ContentBox>
-          <Text style={styles.text}>Lifestyle (select one or more):</Text>
-          <View style={styles.radioGroup}>
-            {Object.values(Lifestyle).map((l) => (
-              <Controller
-                key={l}
-                control={control}
-                name="lifestyle"
-                render={({ field: { onChange, value } }) => (
-                  <TouchableOpacity
-                    style={[
-                      styles.radioButton,
-                      value?.includes(l) && styles.selectedRadio,
-                    ]}
-                    onPress={() => {
-                      if (value?.includes(l)) {
-                        onChange(value?.filter((v) => v !== l));
-                      } else {
-                        onChange([...value, l]);
-                      }
-                    }}
-                  >
-                    <Text style={styles.tooltipText}>
-                      {l.replace("_", " ")}
-                    </Text>
-                  </TouchableOpacity>
-                )}
-              />
-            ))}
-          </View>
-          {errors.lifestyle && (
-            <Text style={styles.failed}>{errors.lifestyle.message}</Text>
-          )}
-        </ContentBox>
-
-        <ContentBox>
-          <Text style={styles.text}>Cleanliness (select one):</Text>
-          <View style={styles.radioGroup}>
-            {Object.values(Cleanliness).map((c) => (
-              <Controller
-                key={c}
-                control={control}
-                name="cleanliness"
-                render={({ field: { onChange, value } }) => (
-                  <TouchableOpacity
-                    style={[
-                      styles.radioButton,
-                      value === c && styles.selectedRadio,
-                    ]}
-                    onPress={() => onChange(c)}
-                  >
-                    <Text style={styles.cleanlinessTag}>{c}</Text>
-                  </TouchableOpacity>
-                )}
-              />
-            ))}
-          </View>
-          {errors.cleanliness && (
-            <Text style={styles.failed}>{errors.cleanliness.message}</Text>
-          )}
-        </ContentBox>
-
-        <ContentBox>
-          <Text style={styles.text}>Bio:</Text>
-          <Controller
-            control={control}
-            name="bio"
-            render={({ field: { onChange, value } }) => (
-              <TextInput
-                multiline
-                style={{ ...styles.input, height: 120 }}
-                placeholder="Enter your bio"
-                value={value}
-                onChangeText={onChange}
-              />
-            )}
-          />
-          {errors.bio && (
-            <Text style={styles.failed}>{errors.bio.message}</Text>
-          )}
-        </ContentBox>
+    <VStack className="px-5 py-4 flex-1 dark:bg-black bg-white" space="xl">
+      <Heading className="mb-2">Personal Details</Heading>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <VStack space="xl">
+          <ProfileInputSection control={control} errors={errors} />
+          <Divider />
+          <GenderSection control={control} errors={errors} />
+          <Divider />
+          <LifestyleSection control={control} errors={errors} />
+          <Divider />
+          <CleanlinessSection control={control} errors={errors} />
+          <Divider />
+          <BioSection control={control} errors={errors} />
+        </VStack>
         <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }} />
       </ScrollView>
 
-      {isDirty && <SaveButton onPress={handleSubmit(onSubmit, onError)} />}
-    </SafeAreaView>
+      {isDirty && (
+        <Button onPress={handleSubmit(onSubmit, onError)}>
+          <ButtonText>Save Changes</ButtonText>
+        </Button>
+      )}
+    </VStack>
   );
 }
+
+const ProfileInputSection = ({ control, errors }: any) => (
+  <VStack space="md">
+    <Heading size="sm">Basic Info</Heading>
+
+    {["firstName", "lastName"].map((field) => (
+      <VStack key={field} space="xs">
+        <Text>{field === "firstName" ? "First Name" : "Last Name"}</Text>
+        <Controller
+          control={control}
+          name={field}
+          render={({ field: { onChange, value } }) => (
+            <Input>
+              <InputField
+                value={value}
+                onChangeText={onChange}
+                placeholder={`Enter your ${
+                  field === "firstName" ? "first" : "last"
+                } name`}
+              />
+            </Input>
+          )}
+        />
+        {errors[field] && (
+          <Text className="text-error-500">{errors[field].message}</Text>
+        )}
+      </VStack>
+    ))}
+  </VStack>
+);
+
+const GenderSection = ({ control, errors }: any) => (
+  <VStack space="md">
+    <Heading size="sm">Gender</Heading>
+    <HStack space="sm" className="flex-wrap">
+      {Object.values(Gender).map((g) => (
+        <Controller
+          key={g}
+          control={control}
+          name="gender"
+          render={({ field: { onChange, value } }) => (
+            <Pressable
+              className={`px-4 py-2 rounded-full border ${
+                value === g
+                  ? "bg-success-900 dark:bg-success-100 border-primary-500"
+                  : "border-gray-300"
+              }`}
+              onPress={() => onChange(g)}
+            >
+              <Text
+                className={
+                  value === g ? "text-white" : "text-black dark:text-white"
+                }
+              >
+                {g === "NOT_IMPORTANT" ? "PREFER NOT TO SAY" : g}
+              </Text>
+            </Pressable>
+          )}
+        />
+      ))}
+    </HStack>
+    {errors.gender && (
+      <Text className="text-error-500">{errors.gender.message}</Text>
+    )}
+  </VStack>
+);
+
+const LifestyleSection = ({ control, errors }: any) => (
+  <VStack space="md">
+    <Heading size="sm">Lifestyle</Heading>
+    <HStack space="sm" className="flex-wrap">
+      {Object.values(Lifestyle).map((l) => (
+        <Controller
+          key={l}
+          control={control}
+          name="lifestyle"
+          render={({ field: { onChange, value } }) => (
+            <Pressable
+              className={`px-4 py-2 rounded-full border ${
+                value?.includes(l)
+                  ? "bg-error-900 dark:bg-error-100 border-primary-500"
+                  : "border-gray-300"
+              }`}
+              onPress={() => {
+                if (value?.includes(l)) {
+                  onChange(value.filter((v: string) => v !== l));
+                } else {
+                  onChange([...(value || []), l]);
+                }
+              }}
+            >
+              <Text
+                className={
+                  value?.includes(l)
+                    ? "text-white"
+                    : "text-black dark:text-white"
+                }
+              >
+                {l.replace("_", " ")}
+              </Text>
+            </Pressable>
+          )}
+        />
+      ))}
+    </HStack>
+    {errors.lifestyle && (
+      <Text className="text-error-500">{errors.lifestyle.message}</Text>
+    )}
+  </VStack>
+);
+
+const CleanlinessSection = ({ control, errors }: any) => (
+  <VStack space="md">
+    <Heading size="sm">Cleanliness</Heading>
+    <HStack space="sm" className="flex-wrap">
+      {Object.values(Cleanliness).map((c) => (
+        <Controller
+          key={c}
+          control={control}
+          name="cleanliness"
+          render={({ field: { onChange, value } }) => (
+            <Pressable
+              className={`px-4 py-2 rounded-full border ${
+                value === c
+                  ? "bg-info-900 dark:bg-info-100 border-primary-500"
+                  : "border-gray-300"
+              }`}
+              onPress={() => onChange(c)}
+            >
+              <Text
+                className={
+                  value === c ? "text-white" : "text-black dark:text-white"
+                }
+              >
+                {c}
+              </Text>
+            </Pressable>
+          )}
+        />
+      ))}
+    </HStack>
+    {errors.cleanliness && (
+      <Text className="text-error-500">{errors.cleanliness.message}</Text>
+    )}
+  </VStack>
+);
+
+const BioSection = ({ control, errors }: any) => (
+  <VStack space="md">
+    <Heading size="sm">Bio</Heading>
+    <Controller
+      control={control}
+      name="bio"
+      render={({ field: { onChange, value } }) => (
+        <Textarea size="lg" isInvalid={!!errors.bio} className="w-full h-64">
+          <TextareaInput
+            value={value}
+            onChangeText={onChange}
+            placeholder="Tell us about yourself"
+          />
+        </Textarea>
+      )}
+    />
+    {errors.bio && <Text className="text-error-500">{errors.bio.message}</Text>}
+  </VStack>
+);

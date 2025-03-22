@@ -7,6 +7,7 @@ import { UserProvider } from "./contexts/UserContext";
 import { MatchableProfilesProvider } from "./contexts/MatchableProfilesContext";
 
 import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
+
 import "@/global.css";
 
 export default function App() {
@@ -15,7 +16,7 @@ export default function App() {
       <MatchableProfilesProvider>
         <MatchProvider>
           <SafeAreaProvider>
-            <GluestackUIProvider>
+            <GluestackUIProvider mode={"system"}>
               <AppNavigator />
               <Toast />
             </GluestackUIProvider>

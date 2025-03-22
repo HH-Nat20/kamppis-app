@@ -64,8 +64,17 @@ export const ProfileFormProvider = ({
       }
       setLoading(true);
       try {
-        const userResponse = await dao.getProfile(user.id); // TODO: Get profile by userID not profileId
-        reset(userResponse.userProfile); // Update form with fetched data
+        const userResponse = await dao.getProfile(
+          parseInt(user.userProfile.id)
+        ); // TODO: Get profile by userID not profileId
+        console.log("Fetched user profile", userResponse.userProfile);
+        reset({
+          ...userResponse.userProfile,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          gender: user.gender,
+          age: user.age,
+        }); // Update form with fetched data
       } catch (error) {
         console.error("Failed to fetch user profile", error);
       } finally {

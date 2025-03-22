@@ -1,26 +1,37 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  ScrollView,
-  SafeAreaView,
-  Image,
-  Alert,
-} from "react-native";
-import { Switch } from "@/components/ui/switch";
-import ContentBox from "../components/ContentBox";
-import AddButton from "../components/AddButton";
-import DeleteButton from "../components/DeleteButton";
-import { useUser } from "../contexts/UserContext";
-import styles from "../ui/styles";
-import colors from "../ui/colors";
-import { Photo } from "../types/responses/Photo";
-import Portrait from "../components/Portrait";
+import { Alert, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { useUser } from "../contexts/UserContext";
+
+import { Photo } from "../types/responses/Photo";
 import { ProfileStackParamList } from "../navigation/ProfileStackNavigator";
 
+import { Fab, FabLabel, FabIcon } from "@/components/ui/fab";
+import { AddIcon } from "@/components/ui/icon";
+
+import {
+  Actionsheet,
+  ActionsheetContent,
+  ActionsheetItem,
+  ActionsheetItemText,
+  ActionsheetDragIndicator,
+  ActionsheetDragIndicatorWrapper,
+  ActionsheetBackdrop,
+} from "@/components/ui/actionsheet";
+
+import { VStack } from "@/components/ui/vstack";
+import { HStack } from "@/components/ui/hstack";
+import { Text } from "@/components/ui/text";
+import { Heading } from "@/components/ui/heading";
+import { Box } from "@/components/ui/box";
+import { Switch } from "@/components/ui/switch";
+import { Icon } from "@/components/ui/icon";
+import { Pressable } from "@/components/ui/pressable";
+import { Plus, Trash2 } from "lucide-react-native";
+
 import dao from "../ajax/dao";
+import Portrait from "../components/Portrait";
 
 type ProfilePhotosNavigationProp = StackNavigationProp<
   ProfileStackParamList,
@@ -28,102 +39,110 @@ type ProfilePhotosNavigationProp = StackNavigationProp<
 >;
 
 export default function ProfilePhotosScreen() {
+  const [showActionsheet, setShowActionsheet] = useState(false);
+  const handleClose = () => setShowActionsheet(false);
   const { user, refreshUser } = useUser();
-
   const [photos, setPhotos] = useState<Photo[]>([]);
+  const navigation = useNavigation<ProfilePhotosNavigationProp>();
+
   useEffect(() => {
     if (user) {
       setPhotos(user.userProfile.photos || []);
     }
   }, [user]);
 
-  const navigation = useNavigation<ProfilePhotosNavigationProp>();
-
   const handleDeletePress = (photo: Photo) => {
-    console.log("Delete requested, opening modal...");
-
     if (photo.isProfilePhoto) {
       Alert.alert(
         "Cannot Delete Profile Photo",
-        "This photo is currently set as your profile photo. Please change your profile photo before deleting it."
+        "Please change your profile photo before deleting this one."
       );
       return;
     }
 
-    Alert.alert("Delete Photo", "Are you sure you want to delete this photo?", [
-      {
-        text: "Cancel",
-        onPress: () => console.log("Cancel Pressed"),
-        style: "cancel",
-      },
+    Alert.alert("Delete Photo", "Are you sure?", [
+      { text: "Cancel", style: "cancel" },
       { text: "Delete", onPress: () => confirmDelete(photo) },
     ]);
   };
 
   const confirmDelete = (photo: Photo) => {
-    console.log("Delete photo", photo);
     dao.deleteImage(user, photo).then(() => {
-      console.log("Photo deleted, refreshing user data...");
       Alert.alert("Photo Deleted", "Your photo has been deleted.");
       setPhotos(photos.filter((p) => p.id !== photo.id));
     });
   };
 
   const changeProfilePhoto = (photo: Photo, value: boolean) => {
-    console.log("Change profile photo", photo, value);
-    dao.putImage(user, photo, value).then((response) => {
-      photos.forEach((p) => {
-        if (p.id === photo.id) {
-          p.isProfilePhoto = value;
-        } else {
-          p.isProfilePhoto = false;
-        }
-      });
-      setPhotos([...photos]);
+    dao.putImage(user, photo, value).then(() => {
+      const updated = photos.map((p) => ({
+        ...p,
+        isProfilePhoto: p.id === photo.id ? value : false,
+      }));
+      setPhotos(updated);
     });
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <VStack className="px-5 py-4 flex-1 bg-white dark:bg-black" space="xl">
+      <Heading className="mb-2">Your Photos</Heading>
       <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={styles.scrollContainer}
-        contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 50 }}
       >
-        {user?.userProfile?.photos?.map((photo, index) => (
-          <ContentBox key={index}>
-            <Portrait photo={photo} />
-            <View
-              style={{
-                marginTop: 10,
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
+        <VStack space="xl">
+          {photos.map((photo, index) => (
+            <Box
+              key={index}
+              className="p-4 rounded-xl border border-border bg-info-900 dark:bg-info-100"
             >
-              <View
-                style={{ flexDirection: "row", alignItems: "center", gap: 10 }}
-              >
-                <Switch
-                  value={photo.isProfilePhoto}
-                  onValueChange={(value) => {
-                    changeProfilePhoto(photo, value);
-                  }}
-                />
-                <Text style={{ color: colors.white }}>Profile Photo</Text>
-              </View>
-              <DeleteButton onPress={() => handleDeletePress(photo)} />
-            </View>
-          </ContentBox>
-        ))}
+              <Portrait photo={photo} />
+              <HStack className="justify-between items-center mt-4">
+                <HStack space="md" className="items-center">
+                  <Switch
+                    value={photo.isProfilePhoto}
+                    onValueChange={(value) => changeProfilePhoto(photo, value)}
+                  />
+                  <Text className="text-white">Profile Photo</Text>
+                </HStack>
+                <Pressable onPress={() => handleDeletePress(photo)}>
+                  <Icon className="text-white" as={Trash2} />
+                </Pressable>
+              </HStack>
+            </Box>
+          ))}
+        </VStack>
       </ScrollView>
+      <Fab
+        className="absolute bottom-5 right-5 bg-success-500"
+        //onPress={() => navigation.navigate("Upload")}
+        onPress={() => setShowActionsheet(true)}
+        size="md"
+        isHovered={false}
+        isDisabled={false}
+        isPressed={false}
+      >
+        <FabIcon className="text-white" as={AddIcon} />
+        <FabLabel className="text-white">Add Image</FabLabel>
+      </Fab>
 
-      <AddButton
-        onPress={() => {
-          console.log("Navigating to Upload screen...");
-          navigation.navigate("Upload");
-        }}
-      />
-    </SafeAreaView>
+      <Actionsheet isOpen={showActionsheet} onClose={handleClose}>
+        <ActionsheetBackdrop />
+        <ActionsheetContent>
+          <ActionsheetDragIndicatorWrapper>
+            <ActionsheetDragIndicator />
+          </ActionsheetDragIndicatorWrapper>
+          <ActionsheetItem onPress={() => navigation.navigate("Upload")}>
+            <ActionsheetItemText>Upload from gallery</ActionsheetItemText>
+          </ActionsheetItem>
+          <ActionsheetItem onPress={handleClose}>
+            <ActionsheetItemText>Use Camera</ActionsheetItemText>
+          </ActionsheetItem>
+          <ActionsheetItem onPress={handleClose}>
+            <ActionsheetItemText>Cancel</ActionsheetItemText>
+          </ActionsheetItem>
+        </ActionsheetContent>
+      </Actionsheet>
+    </VStack>
   );
 }

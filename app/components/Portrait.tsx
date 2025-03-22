@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, Image } from "react-native";
 
 import { Photo } from "../types/responses/Photo";
+import { Box } from "@/components/ui/box";
 
 import styles from "../ui/styles";
 
@@ -11,9 +12,9 @@ interface PortraitProps {
   photo: Photo;
 }
 
-const Portrait: React.FC<PortraitProps> = ({ photo }) => {
+const Portrait = ({ photo }: { photo: Photo }) => {
   return (
-    <View style={styles.portraitContainer}>
+    <Box className="w-full aspect-square overflow-hidden rounded-lg">
       {/* Background Placeholder (Always Visible) */}
       <Image
         source={{
@@ -25,10 +26,13 @@ const Portrait: React.FC<PortraitProps> = ({ photo }) => {
 
       {/* Actual Image (On Top) */}
       <Image
-        source={{ uri: getImageUrl(photo, "thumbnail") }}
-        style={styles.portrait}
+        source={{
+          uri: getImageUrl(photo, "thumbnail"),
+        }}
+        style={{ width: "100%", height: "100%" }}
+        resizeMode="cover"
       />
-    </View>
+    </Box>
   );
 };
 
