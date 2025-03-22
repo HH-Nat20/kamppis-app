@@ -12,7 +12,7 @@ interface PortraitProps {
   photo: Photo;
 }
 
-const Portrait = ({ photo }: { photo: Photo }) => {
+const Portrait = ({ photo }: { photo: Photo | string }) => {
   return (
     <Box className="w-full aspect-square overflow-hidden rounded-lg">
       {/* Background Placeholder (Always Visible) */}
@@ -27,7 +27,8 @@ const Portrait = ({ photo }: { photo: Photo }) => {
       {/* Actual Image (On Top) */}
       <Image
         source={{
-          uri: getImageUrl(photo, "thumbnail"),
+          uri:
+            typeof photo === "string" ? photo : getImageUrl(photo, "thumbnail"),
         }}
         style={{ width: "100%", height: "100%" }}
         resizeMode="cover"

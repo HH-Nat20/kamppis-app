@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import {
   View,
@@ -11,15 +11,24 @@ import {
 
 import Toast from "react-native-toast-message";
 
+import Portrait from "../components/Portrait";
+
 import * as ImagePicker from "expo-image-picker";
 
 import { useUser } from "../contexts/UserContext";
+import { useNavigation, RouteProp, useRoute } from "@react-navigation/native";
+import { ProfileStackParamList } from "../navigation/ProfileStackNavigator";
 
 import dao from "../ajax/dao";
 
 import styles from "../ui/styles";
 
+type UploadScreenRouteProp = RouteProp<ProfileStackParamList, "Upload">;
+
 const ImageUpload = () => {
+  const route = useRoute<UploadScreenRouteProp>();
+  const mode = route.params?.mode || "gallery";
+
   type Image = {
     uri: string;
     width: number;
@@ -38,21 +47,48 @@ const ImageUpload = () => {
 
   const [responseImageUrl, setResponseImageUrl] = useState<string | null>(null);
 
-  const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images", "videos"],
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
+  const navigation = useNavigation();
 
-    console.log(result);
+  const pickImage = async () => {
+    let result;
+
+    if (mode === "camera") {
+      const cameraPermission =
+        await ImagePicker.requestCameraPermissionsAsync();
+      if (!cameraPermission.granted) {
+        Toast.show({
+          type: "error",
+          text1: "Permission Denied",
+          text2: "Camera access is required.",
+        });
+        navigation.goBack();
+        return;
+      }
+
+      result = await ImagePicker.launchCameraAsync({
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+    } else {
+      result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+    }
 
     if (!result.canceled) {
       setImage(result.assets[0] as Image);
+    } else {
+      navigation.goBack();
     }
   };
+
+  useEffect(() => {
+    pickImage();
+  }, []);
 
   const uploadImage = async () => {
     if (!image) {
@@ -104,11 +140,23 @@ const ImageUpload = () => {
 
   return (
     <View style={styles.container}>
-      <Button title="Pick an image from camera roll" onPress={pickImage} />
+      {/*<Button title="Pick an image from camera roll" onPress={pickImage} />*/}
       {image && (
         <View>
-          <Image source={{ uri: image.uri }} style={styles.thumbnail} />
-          <Button title="Upload image" onPress={() => uploadImage()} />
+          <Portrait photo={image.uri} />
+          <View
+            style={{
+              marginTop: 20,
+              gap: 20,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexDirection: "row",
+            }}
+          >
+            <Button title="Cancel" onPress={() => navigation.goBack()} />
+            <Button title="Upload image" onPress={() => uploadImage()} />
+          </View>
           {uploading && (
             <View>
               <Text style={styles.text}>Uploading image...</Text>
@@ -119,16 +167,6 @@ const ImageUpload = () => {
             <Text style={styles.text}>Image uploaded successfully!</Text>
           )}
           {uploadError && <Text style={styles.text}>{uploadError}</Text>}
-          {responseImageUrl && (
-            <View>
-              <Text style={styles.text}>Image URL:</Text>
-              <Text style={styles.text}>{responseImageUrl}</Text>
-              <Image
-                source={{ uri: responseImageUrl }}
-                style={styles.thumbnail}
-              />
-            </View>
-          )}
         </View>
       )}
     </View>

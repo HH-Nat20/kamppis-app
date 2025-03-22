@@ -83,6 +83,11 @@ export default function ProfilePhotosScreen() {
     });
   };
 
+  const openUploader = (mode: string) => {
+    setShowActionsheet(false);
+    navigation.navigate("Upload", { mode });
+  };
+
   return (
     <VStack className="px-5 py-4 flex-1 bg-white dark:bg-black" space="xl">
       <Heading className="mb-2">Your Photos</Heading>
@@ -115,7 +120,6 @@ export default function ProfilePhotosScreen() {
       </ScrollView>
       <Fab
         className="absolute bottom-5 right-5 bg-success-500"
-        //onPress={() => navigation.navigate("Upload")}
         onPress={() => setShowActionsheet(true)}
         size="md"
         isHovered={false}
@@ -132,10 +136,10 @@ export default function ProfilePhotosScreen() {
           <ActionsheetDragIndicatorWrapper>
             <ActionsheetDragIndicator />
           </ActionsheetDragIndicatorWrapper>
-          <ActionsheetItem onPress={() => navigation.navigate("Upload")}>
+          <ActionsheetItem onPress={() => openUploader("gallery")}>
             <ActionsheetItemText>Upload from gallery</ActionsheetItemText>
           </ActionsheetItem>
-          <ActionsheetItem onPress={handleClose}>
+          <ActionsheetItem onPress={() => openUploader("camera")}>
             <ActionsheetItemText>Use Camera</ActionsheetItemText>
           </ActionsheetItem>
           <ActionsheetItem onPress={handleClose}>

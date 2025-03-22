@@ -8,7 +8,7 @@ import { colorSet } from "../ui/colors";
 
 export type ProfileStackParamList = {
   ProfileTabs: undefined;
-  Upload: undefined;
+  Upload: { mode: string };
 };
 
 const Stack = createStackNavigator<ProfileStackParamList>();
