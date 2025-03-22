@@ -1,3 +1,4 @@
+import { User } from "./responses/User";
 export interface MatchUser {
   id: number;
   email: string;
@@ -5,7 +6,10 @@ export interface MatchUser {
 }
 export interface Match {
   id: number;
-  users: MatchUser[];
-  createdAt: number[];
-  updatedAt: number[];
+  userIds: number[];
+}
+
+export interface MatchWithUser {
+  matchId: number;
+  user: User;
 }

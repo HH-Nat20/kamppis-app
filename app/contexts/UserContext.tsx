@@ -5,7 +5,6 @@ import React, {
   ReactNode,
   useEffect,
 } from "react";
-import { MatchUser } from "../types/Match";
 import { User } from "../types/responses/User";
 
 import dao from "../ajax/dao";
@@ -26,7 +25,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
 
   useEffect(() => {
     dao
-      .getProfile(1) // TODO: Get profile by userID not profileId
+      .getProfile(user?.id || 1) // TODO: Get profile by userID not profileId
       .then((profile) => {
         console.log("Setting initial user profile:", profile);
         setUser(profile); // TODO: Figure out correct datatype
@@ -37,13 +36,13 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   }, []);
 
   const changeUser = (userId: number) => {
-    console.log("Fetching profile for user:", user);
+    console.log("Fetching profile for user:", userId);
 
     dao
       .getProfile(userId)
       .then((profile) => {
         console.log("Profile data received:", profile);
-        setUser(user);
+        setUser(profile);
       })
       .catch((error) => {
         console.error("Failed to fetch user profile", error);

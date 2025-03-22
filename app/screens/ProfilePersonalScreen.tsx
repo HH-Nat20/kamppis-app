@@ -3,6 +3,7 @@ import { KeyboardAvoidingView, ScrollView } from "react-native";
 import { Controller, useFormContext } from "react-hook-form";
 import { useProfileForm } from "../contexts/ProfileFormContext";
 import { User } from "../types/responses/User";
+import { UserProfileForm } from "../types/requests/UserProfileForm";
 import { Gender } from "../types/enums/GenderEnum";
 import { Lifestyle } from "../types/enums/LifestyleEnum";
 import { Cleanliness } from "../types/enums/CLeanlinessEnum";
@@ -24,7 +25,7 @@ export default function ProfilePersonalScreen() {
     control,
     handleSubmit,
     formState: { errors, isDirty },
-  } = useFormContext<User>();
+  } = useFormContext<UserProfileForm>();
 
   const { onSubmit, onError } = useProfileForm();
 

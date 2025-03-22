@@ -1,12 +1,14 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 import Toast from "react-native-toast-message";
 import { User } from "../types/responses/User";
+import { MatchWithUser } from "../types/Match";
+import { Match } from "../types/Match";
 
 import dao from "../ajax/dao";
 import { useUser } from "./UserContext";
 
 interface MatchContextProps {
-  matches: User[];
+  matches: MatchWithUser[];
   refreshMatches: () => void;
 }
 
@@ -15,7 +17,7 @@ const MatchContext = createContext<MatchContextProps | undefined>(undefined);
 export const MatchProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [matches, setMatches] = useState<User[]>([]);
+  const [matches, setMatches] = useState<MatchWithUser[]>([]);
   const [prevMatchesCount, setPrevMatchesCount] = useState(0);
   const { user } = useUser();
 
@@ -24,14 +26,27 @@ export const MatchProvider: React.FC<{ children: React.ReactNode }> = ({
   const fetchMatches = async () => {
     if (!user?.id) return;
     try {
-      const matches = await dao.getMatchedProfiles(user.id);
-      setMatches(matches);
+      const matchesResponse = await dao.getMatches(user.id);
+
+      const userMatches: MatchWithUser[] = await Promise.all(
+        matchesResponse.map(async (match: Match) => {
+          const otherUserId = match.userIds.find((id) => id !== user.id)!;
+          const userProfile = await dao.getProfile(otherUserId);
+          return {
+            user: userProfile,
+            matchId: match.id,
+          };
+        })
+      );
+
+      setMatches(userMatches);
     } catch (error) {
       console.error("Error fetching matches:", error);
     }
   };
 
   useEffect(() => {
+    console.log("Fetching matches for user:", user);
     fetchMatches(); // Fetch on mount
   }, [user]);
 
@@ -42,7 +57,7 @@ export const MatchProvider: React.FC<{ children: React.ReactNode }> = ({
       Toast.show({
         type: "success",
         text1: "New Match!",
-        text2: `${newMatch.firstName} matched with you 🎉`,
+        text2: `${newMatch.user.firstName} matched with you 🎉`,
       });
     }
     setPrevMatchesCount(matches.length);

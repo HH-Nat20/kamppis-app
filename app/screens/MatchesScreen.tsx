@@ -20,10 +20,12 @@ import styles from "../ui/styles";
 import { bgGradient } from "../ui/colors";
 
 import { useUser } from "../contexts/UserContext";
+import { User } from "../types/responses/User";
+import { UserProfile } from "../types/responses/UserProfile";
 
 type ChatStackParamList = {
   Matches: undefined;
-  ChatScreen: { userId: number; userName: string };
+  ChatScreen: { matchId: number; userName: string; user: User };
 };
 
 type MatchesScreenNavigationProp =
@@ -41,17 +43,23 @@ const MatchesScreen = () => {
     setLoading(false);
   }, [matches]);
 
-  const handleOpenChat = (userId: number, firstName: string) => {
-    navigation.navigate("ChatScreen", { userId, userName: firstName });
+  const handleOpenChat = (matchId: number, user: User) => {
+    console.log("Opening chat with user:", user.id);
+    navigation.navigate("ChatScreen", {
+      matchId,
+      userName: user.firstName,
+      user,
+    });
   };
 
   const renderItem = ({ item }: any) => {
-    const userPhoto = getProfilePicture(item.userPhotos);
+    console.log("RENDERING ITEM", item);
+    const userPhoto = getProfilePicture(item.user.userProfile.photos);
 
     return (
       <TouchableOpacity
         style={styles.matchItem}
-        onPress={() => handleOpenChat(item.id, item.firstName)}
+        onPress={() => handleOpenChat(item.matchId, item.user)}
       >
         {userPhoto ? (
           <Image
@@ -64,7 +72,7 @@ const MatchesScreen = () => {
           </View>
         )}
         <View style={styles.overlay}>
-          <Text style={styles.name}>{item.firstName}</Text>
+          <Text style={styles.name}>{item.user!.firstName}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -83,7 +91,7 @@ const MatchesScreen = () => {
       ) : (
         <FlatList
           data={matches}
-          keyExtractor={(item) => item.id.toString()} // TODO: Make sure item.id is profileId and not userId!!!
+          keyExtractor={(item) => item.matchId.toString()} // TODO: Make sure item.id is profileId and not userId!!!
           renderItem={renderItem}
           numColumns={2}
           columnWrapperStyle={styles.columnWrapper}

@@ -4,6 +4,7 @@ import { RoomProfile } from "../types/responses/RoomProfile";
 import { User } from "../types/responses/User";
 
 import { get, update } from "./request";
+import { UserProfileForm } from "../types/requests/UserProfileForm";
 
 const ENDPOINT = "profiles";
 
@@ -57,7 +58,7 @@ export const getAllProfiles = async () => {
  */
 export const updateProfile = async (
   userId: number,
-  userProfile: UserProfile
+  userProfile: UserProfileForm
 ) => {
   const response = await update(`${ENDPOINT}/${userId}`, userProfile);
   const user: UserProfile = await response.json();

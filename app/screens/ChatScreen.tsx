@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { SafeAreaView, Text } from "react-native";
+import { SafeAreaView, ActivityIndicator } from "react-native";
 import { RouteProp, useNavigation } from "@react-navigation/native";
 import { ChatStackParamList } from "../navigation/ChatStackNavigator";
 
 import dao from "../ajax/dao";
 
 import { Match, MatchUser } from "../types/Match";
+import { User } from "../types/responses/User";
 import { MessageDTO, ChatMessage } from "../types/Chat";
 
 import * as Stomp from "@stomp/stompjs";
 import { IMessage } from "@stomp/stompjs";
 import Chat from "@codsod/react-native-chat";
 import { useUser } from "../contexts/UserContext";
+import { useMatch } from "../contexts/MatchContext";
 import { StackNavigationProp } from "@react-navigation/stack";
 import styles from "../ui/styles";
 import colors from "../ui/colors";
@@ -36,6 +38,7 @@ const mapMessageDTOToChatMessage = (dto: MessageDTO): ChatMessage => {
 
 export default function ChatScreen({ route }: ChatScreenProps) {
   const { user } = useUser();
+  const { matches } = useMatch();
 
   const navigation = useNavigation<StackNavigationProp<ChatStackParamList>>();
 
@@ -50,10 +53,9 @@ export default function ChatScreen({ route }: ChatScreenProps) {
     user?.id || 1
   );
 
-  const { userId } = route.params;
-  const [match, setMatch] = useState<Match>();
-  const [recipent, setRecipent] = useState<MatchUser>();
-  const [you, setYou] = useState<MatchUser>();
+  const { matchId, user: recipent } = route.params;
+
+  const [you, setYou] = useState<User>();
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [stompClient, setStompClient] = useState<Stomp.Client | null>(null);
@@ -63,62 +65,56 @@ export default function ChatScreen({ route }: ChatScreenProps) {
   }, [user]);
 
   useEffect(() => {
-    dao.getMatches(DUMMY_LOGGED_IN_USER).then((matches) => {
-      const userMatches = matches.filter((match) => {
-        return (
-          (match.users[0]?.id === userId &&
-            match.users[1]?.id === DUMMY_LOGGED_IN_USER) ||
-          (match.users[1]?.id === userId &&
-            match.users[0]?.id === DUMMY_LOGGED_IN_USER)
-        );
-      });
-
-      if (userMatches.length === 0) {
-        console.warn("No matches found");
-        return;
-      }
-
-      const match = userMatches[0];
-      setMatch(match);
-
-      const recipent = match.users.find((user) => user?.id === userId);
-      setRecipent(recipent);
-
-      const you = match.users.find((user) => user?.id === DUMMY_LOGGED_IN_USER);
-      setYou(you);
-
-      console.log("Matches:", userMatches);
-      console.log("Recipent:", recipent);
-      console.log("You:", you);
-
-      // Clear messages when switching to a new match
-      setMessages([]);
-    });
-  }, [userId]);
+    if (!recipent || !user) return;
+    setYou(user);
+    setMessages([]);
+  }, [recipent, user]);
 
   useEffect(() => {
-    const client = new Stomp.Client({
-      // brokerURL: "ws://localhost:8080/ws",
-      // brokerURL: "ws://10.0.2.2:8080/ws", // For Android Emulator
-      brokerURL: "wss://kamppis.hellmanstudios.fi/ws", // Deployed to hellmanstudios.fi
+    if (!matchId || !you?.email) return;
 
-      // ! THESE TWO LINES ARE NEEDED FOR STOMP OVER WEBSOCKETS IN ANDROID !
-      // https://stomp-js.github.io/workaround/stompjs/rx-stomp/react-native-additional-notes.html
+    const client = new Stomp.Client({
+      brokerURL: "wss://kamppis.hellmanstudios.fi/ws",
       forceBinaryWSFrames: true,
       appendMissingNULLonIncoming: true,
-
-      onConnect: (frame) => {
-        console.log("Connected: " + frame);
-
-        // Subscribe to messages
-        subscribeToMatch(client);
+      onConnect: () => {
+        client.subscribe(
+          `/user/matches/${matchId}/messages`,
+          (message: IMessage) => {
+            const dto: MessageDTO = JSON.parse(message.body);
+            setMessages((prev) =>
+              prev.find((m) => m._id === dto.id)
+                ? prev
+                : [...prev, mapMessageDTOToChatMessage(dto)]
+            );
+          },
+          { email: you.email }
+        );
       },
-      onDisconnect: () => console.log("Disconnected"),
-      debug: (msg) => console.log(msg),
     });
+
     client.activate();
     setStompClient(client);
-  }, [match]);
+
+    return () => {
+      client.deactivate();
+    };
+  }, [matchId, you?.email]);
+
+  const onSendMessage = (text: string) => {
+    if (stompClient?.connected && text) {
+      stompClient.publish({
+        destination: `/app/matches/${matchId}/messages`,
+        body: JSON.stringify({
+          content: text,
+          senderEmail: you!.email,
+          matchId,
+          createdAt: new Date().toISOString(),
+        }),
+        headers: { email: you!.email },
+      });
+    }
+  };
 
   const subscribeToMatch = (client: Stomp.Client) => {
     if (!client) {
@@ -127,7 +123,7 @@ export default function ChatScreen({ route }: ChatScreenProps) {
     }
 
     client.subscribe(
-      `/user/matches/${match?.id}/messages`,
+      `/user/matches/${recipent?.id}/messages`,
       (message: IMessage) => {
         console.log("Received message as IMessage:", message.body);
         const messageDTO: MessageDTO = JSON.parse(message.body);
@@ -145,22 +141,13 @@ export default function ChatScreen({ route }: ChatScreenProps) {
     );
   };
 
-  const onSendMessage = (text: string) => {
-    if (stompClient && stompClient.connected && text) {
-      const sendingMessage = {
-        content: text,
-        senderEmail: you?.email, // Email only
-        matchId: match?.id, // Match ID for backend processing
-        createdAt: new Date().toISOString(),
-      };
-      // Clients send messages to ("/app/matches/{matchId}/messages")
-      stompClient.publish({
-        destination: `/app/matches/${match?.id}/messages`,
-        body: JSON.stringify(sendingMessage),
-        headers: { email: you?.email || "" }, // Add user email to headers
-      });
-    }
-  };
+  if (!recipent || !you) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <ActivityIndicator size="large" color={colors.white} />
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -181,10 +168,11 @@ export default function ChatScreen({ route }: ChatScreenProps) {
         placeholder="Enter Your Message"
         placeholderColor="gray"
         backgroundImage={
-          "https://images.pexels.com/photos/18955755/pexels-photo-18955755/free-photo-of-balconies-in-a-house-building.jpeg"
+          "https://picsum.photos/200/300?random=" + // TODO: Something nicer
+          Math.floor(Math.random() * 100)
         }
-        // showEmoji={true}
-        // onPressEmoji={() => console.log("Emoji Button Pressed..")}
+        //showEmoji={true}
+        //onPressEmoji={() => console.log("Emoji Button Pressed..")}
         // showAttachment={true}
         // onPressAttachment={() => console.log("Attachment Button Pressed..")}
         timeContainerColor="red"

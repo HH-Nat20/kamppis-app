@@ -37,8 +37,6 @@ export const MatchableProfilesProvider = ({
     try {
       let users = await dao.getAllProfiles(); // dao.getPossibleMatches(user.id);
 
-      console.log("Users received from API:", users);
-
       if (users.length === 0) {
         setCards([]);
         setLoading(false);

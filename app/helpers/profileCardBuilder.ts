@@ -30,9 +30,5 @@ export function buildShuffledProfileCards(users: User[]): ProfileCard[] {
     [profileCards[i], profileCards[j]] = [profileCards[j], profileCards[i]];
   }
 
-  profileCards.map((c) =>
-    console.log(`Profile photos for user ${c.profile.id}:`, c.profile.photos)
-  );
-
   return profileCards;
 }

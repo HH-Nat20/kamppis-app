@@ -14,6 +14,7 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { getUsers } from "../ajax/dao_users";
 import { MatchUser } from "../types/Match";
+import { User } from "../types/responses/User";
 import styles from "../ui/styles";
 import { useUser } from "../contexts/UserContext";
 import { HomeStackParamList } from "../navigation/HomeStackNavigator";
@@ -172,7 +173,9 @@ export default function LoginScreen() {
             // Store the token in AsyncStorage or SecureStore for later use
             await AsyncStorage.setItem("jwtToken", token);
 
-            changeUser(selectedUser);
+            console.log("CHANGING USER TO", selectedUser.id);
+
+            changeUser(selectedUser.id);
 
             navigation.reset({
               index: 0,

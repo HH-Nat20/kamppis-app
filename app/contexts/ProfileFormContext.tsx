@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useForm, FormProvider, FieldErrors } from "react-hook-form";
-import { User } from "../types/responses/User";
+import { User } from "../types/responses/User"; // Don't use this
+import { UserProfile } from "../types/responses/UserProfile"; // Don't use this
+import { UserProfileForm } from "../types/requests/UserProfileForm"; // Use this
 import { Gender } from "../types/enums/GenderEnum";
 import { useUser } from "./UserContext";
 import dao from "../ajax/dao";
@@ -9,13 +11,14 @@ import { useMatchableProfiles } from "./MatchableProfilesContext";
 import { profileSchema, UserFormSchema } from "../validation/profileSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Toast from "react-native-toast-message";
-import { UserProfile } from "../types/responses/UserProfile";
+import { Lifestyle } from "../types/enums/LifestyleEnum";
+import { Location } from "../types/enums/LocationEnum";
 
 interface ProfileFormContextProps {
   loading: boolean;
-  onSubmit: (data: UserProfile) => Promise<void>;
+  onSubmit: (data: UserProfileForm) => Promise<void>;
   onError?: (errors: any) => void;
-  formState: { errors: FieldErrors<UserProfile> };
+  formState: { errors: FieldErrors<UserProfileForm> };
 }
 
 const ProfileFormContext = createContext<ProfileFormContextProps | undefined>(
@@ -30,6 +33,7 @@ export const ProfileFormProvider = ({
   const { user } = useUser();
   const [loading, setLoading] = useState<boolean>(true);
   const { refreshMatchableProfiles } = useMatchableProfiles();
+  const [userProfile, setUserProfile] = useState<UserProfileForm | null>(null);
 
   const methods = useForm<UserFormSchema>({
     resolver: yupResolver(profileSchema),
@@ -68,13 +72,22 @@ export const ProfileFormProvider = ({
           parseInt(user.userProfile.id)
         ); // TODO: Get profile by userID not profileId
         console.log("Fetched user profile", userResponse.userProfile);
-        reset({
-          ...userResponse.userProfile,
+        const updatedProfile: UserProfileForm = {
           firstName: user.firstName,
           lastName: user.lastName,
           gender: user.gender,
           age: user.age,
-        }); // Update form with fetched data
+          maxRent: "HIGH",
+          lifestyle: userResponse.userProfile.lifestyle || ([] as Lifestyle[]),
+          cleanliness: userResponse.userProfile.cleanliness || "SPOTLESS",
+          bio: userResponse.userProfile.bio || "",
+          minAgePreference: 24,
+          maxAgePreference: 44,
+          preferredGenders: [Gender.FEMALE],
+          preferredLocations: [Location.HELSINKI],
+        };
+        setUserProfile(updatedProfile);
+        reset(updatedProfile);
       } catch (error) {
         console.error("Failed to fetch user profile", error);
       } finally {
@@ -86,13 +99,14 @@ export const ProfileFormProvider = ({
   }, [user, reset]);
 
   // Submit handler (updates existing profile or creates a new one)
-  const onSubmit = async (data: UserProfile) => {
+  const onSubmit = async (data: UserProfileForm) => {
+    console.log("Trying to submit profile", data);
     try {
       if (Object.keys(errors).length > 0) {
         Toast.show({
           type: "info",
           text1: "Invalid Input",
-          text2: "Please fix the errors before submitting.",
+          text2: "Cannot submit this shit.",
         });
         return;
       }
