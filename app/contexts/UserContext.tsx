@@ -2,17 +2,16 @@ import React, {
   createContext,
   useContext,
   useState,
-  ReactNode,
   useEffect,
+  ReactNode,
 } from "react";
 import { User } from "../types/responses/User";
-
 import dao from "../ajax/dao";
 
 const UserContext = createContext<
   | {
       user: User | undefined;
-      changeUser: (user: number) => void;
+      changeUser: (userId: number) => void;
       refreshUser: () => void;
     }
   | undefined
@@ -23,23 +22,11 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<User | undefined>(undefined);
 
-  useEffect(() => {
-    dao
-      .getProfile(user?.id || 1) // TODO: Get profile by userID not profileId
-      .then((profile) => {
-        console.log("Setting initial user profile:", profile);
-        setUser(profile); // TODO: Figure out correct datatype
-      })
-      .catch((error) => {
-        console.error("Error fetching initial user profile", error);
-      });
-  }, []);
-
-  const changeUser = (userId: number) => {
+  const fetchAndSetUser = (userId: number) => {
     console.log("Fetching profile for user:", userId);
 
     dao
-      .getProfile(userId)
+      .getUser(userId)
       .then((profile) => {
         console.log("Profile data received:", profile);
         setUser(profile);
@@ -49,10 +36,19 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
       });
   };
 
+  useEffect(() => {
+    const defaultUserId = 1;
+    fetchAndSetUser(defaultUserId);
+  }, []);
+
+  const changeUser = (userId: number) => {
+    fetchAndSetUser(userId);
+  };
+
   const refreshUser = () => {
     if (user) {
-      console.log("Refreshing user:", user);
-      changeUser(user.id);
+      console.log("Refreshing user:", user.id);
+      fetchAndSetUser(user.id);
     } else {
       console.warn("refreshUser() called, but no user is set.");
     }

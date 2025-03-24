@@ -1,5 +1,4 @@
 import { User } from "../types/responses/User";
-import { MatchUser } from "../types/Match";
 
 import { get, create, update, remove } from "./request";
 
@@ -7,8 +6,14 @@ const ENDPOINT = "users";
 
 export const getUser = async (id: number) => {
   const response = await get(`${ENDPOINT}/${id}`);
-  const user: MatchUser = await response.json();
+  const user: User = await response.json();
   return user;
+};
+
+export const getUserPreferences = async (id: number) => {
+  const response = await get(`${ENDPOINT}/${id}/preferences`);
+  const preferences = await response.json();
+  return preferences;
 };
 
 export const createUser = async (newUser: User) => {
@@ -28,6 +33,6 @@ export const removeUser = async (id: number) => {
 
 export const getUsers = async () => {
   const response = await get(`${ENDPOINT}`);
-  const users: MatchUser[] = await response.json();
+  const users: User[] = await response.json();
   return users;
 };

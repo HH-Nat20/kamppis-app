@@ -31,7 +31,7 @@ export const MatchProvider: React.FC<{ children: React.ReactNode }> = ({
       const userMatches: MatchWithUser[] = await Promise.all(
         matchesResponse.map(async (match: Match) => {
           const otherUserId = match.userIds.find((id) => id !== user.id)!;
-          const userProfile = await dao.getProfile(otherUserId);
+          const userProfile = await dao.getUser(otherUserId);
           return {
             user: userProfile,
             matchId: match.id,

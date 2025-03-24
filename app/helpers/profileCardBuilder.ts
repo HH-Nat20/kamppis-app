@@ -1,27 +1,18 @@
-import { User } from "../types/responses/User";
+import { UserProfile } from "../types/responses/UserProfile";
+import { RoomProfile } from "../types/responses/RoomProfile";
 import { ProfileCard } from "../types/ProfileCard";
 
-export function buildShuffledProfileCards(users: User[]): ProfileCard[] {
+export function buildShuffledProfileCards(
+  profiles: (UserProfile | RoomProfile)[]
+): ProfileCard[] {
   const profileCards: ProfileCard[] = [];
 
-  for (const user of users) {
-    // Add the user's personal profile
-    if (user.userProfile) {
-      profileCards.push({
-        id: user.userProfile.id as unknown as number,
-        user,
-        profile: user.userProfile,
-      });
-    }
-
-    // Add each of the user's room profiles
-    for (const roomProfile of user.roomProfiles ?? []) {
-      profileCards.push({
-        id: roomProfile.id as unknown as number,
-        user,
-        profile: roomProfile,
-      });
-    }
+  for (const profile of profiles) {
+    profileCards.push({
+      id: profile.id as unknown as number,
+      user: "user" in profile ? profile.user : profile.users,
+      profile: profile,
+    });
   }
 
   // Shuffle the profileCards array using Fisher-Yates algorithm

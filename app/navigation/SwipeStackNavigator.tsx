@@ -9,7 +9,6 @@ import colors from "../ui/colors";
 export type DetailsParamList = {
   Swipe: undefined;
   DetailsScreen: {
-    userId: number;
     userName: string;
     profileId: string;
   };

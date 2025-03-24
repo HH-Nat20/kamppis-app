@@ -1,13 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import {
-  View,
-  Text,
-  Button,
-  Platform,
-  Image,
-  ActivityIndicator,
-} from "react-native";
+import { View, Text, Button, Platform, ActivityIndicator } from "react-native";
 
 import Toast from "react-native-toast-message";
 
@@ -45,8 +38,6 @@ const ImageUpload = () => {
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [uploadSuccess, setUploadSuccess] = useState(false);
 
-  const [responseImageUrl, setResponseImageUrl] = useState<string | null>(null);
-
   const navigation = useNavigation();
 
   const pickImage = async () => {
@@ -72,18 +63,19 @@ const ImageUpload = () => {
       });
     } else {
       result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        mediaTypes: ["images"],
         allowsEditing: true,
         aspect: [4, 3],
         quality: 1,
       });
     }
 
-    if (!result.canceled) {
-      setImage(result.assets[0] as Image);
-    } else {
+    if (result.canceled) {
       navigation.goBack();
+      return;
     }
+
+    setImage(result.assets[0] as Image);
   };
 
   useEffect(() => {
@@ -119,7 +111,6 @@ const ImageUpload = () => {
       console.log("Image uploaded", response);
       setUploadSuccess(true);
       setUploading(false);
-      setResponseImageUrl(response?.original);
       refreshUser();
       Toast.show({
         type: "success",

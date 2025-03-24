@@ -41,10 +41,9 @@ const ProfileTitle: React.FC<ProfileTitleProps> = ({
           padding: 5,
         }}
       />{" "}
-      {profileType === "user"
-        ? `${card.user.firstName}, ${card.user.age}`
-        : `${card.profile.bio.substring(0, 20)}...`}{" "}
-      {/** TODO: Put something better than bio snippet here? */}
+      {"users" in profile
+        ? profile.users.map((u) => u.firstName).join(", ")
+        : `${profile.user?.firstName}, ${profile.user?.age}`}
     </Text>
   );
 };

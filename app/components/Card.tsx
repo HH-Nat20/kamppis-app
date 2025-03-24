@@ -17,6 +17,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { DetailsParamList } from "../navigation/SwipeStackNavigator";
 
 import ProfileTitle from "./ProfileTitle";
+import TagArea from "./TagArea";
 
 interface CardProps {
   card: ProfileCard;
@@ -35,10 +36,11 @@ const Card: React.FC<CardProps> = ({ card }) => {
   const navigation = useNavigation<DetailScreenNavigationProp>();
   const { width, height } = Dimensions.get("window");
 
-  const handleOpenDetails = (userId: number) => {
+  const handleOpenDetails = () => {
     navigation.navigate("DetailsScreen", {
-      userId,
-      userName: card.user?.firstName || "",
+      userName: Array.isArray(card.user)
+        ? card.user.map((u) => u.firstName).join(", ") // TODO: Maybe something better
+        : card.user.firstName,
       profileId: card.profile!.id,
     });
   };
@@ -48,30 +50,6 @@ const Card: React.FC<CardProps> = ({ card }) => {
     const url = getImageUrl(photo);
     setImageUrl(url);
   }, [card]);
-
-  const content = (
-    <View style={[styles.overlay, { width, height }]}>
-      <ProfileTitle
-        card={card}
-        onPress={() => handleOpenDetails(card.user?.id)}
-      />
-      <View style={styles.tagArea}>
-        {card.profile &&
-          "lifestyle" in card.profile &&
-          card.profile.lifestyle.map((tag, index) => (
-            <Text
-              key={index}
-              style={{
-                ...styles.tag,
-                backgroundColor: renderTagBgColor(tag),
-              }}
-            >
-              {tag.replaceAll("_", " ")}
-            </Text>
-          ))}
-      </View>
-    </View>
-  );
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -97,7 +75,10 @@ const Card: React.FC<CardProps> = ({ card }) => {
               <ActivityIndicator size="large" color="#fff" />
             </View>
           ) : (
-            content
+            <View style={[styles.overlay, { width, height }]}>
+              <ProfileTitle card={card} onPress={() => handleOpenDetails()} />
+              <TagArea card={card} />
+            </View>
           )}
         </ImageBackground>
       </Pressable>

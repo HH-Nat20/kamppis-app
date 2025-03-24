@@ -18,7 +18,6 @@ import colors, { renderTagBgColor } from "../ui/colors";
 import dao from "../ajax/dao";
 
 import { User } from "../types/responses/User";
-import { ProfileCard } from "../types/ProfileCard";
 import { LifestyleDescriptions } from "../types/enums/LifestyleEnum";
 import { CleanlinessDescriptions } from "../types/enums/CLeanlinessEnum";
 
@@ -43,9 +42,8 @@ type DetailsScreenProps = {
 
 export default function DetailsScreen({ route }: DetailsScreenProps) {
   const swiperRef = useRef<Swiper<any>>(null);
-  const { userId, profileId } = route.params;
+  const { profileId } = route.params;
 
-  const [user, setUser] = useState<User | null>(null);
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [profile, setProfile] = useState<UserProfile | RoomProfile | null>(
     null
@@ -53,21 +51,13 @@ export default function DetailsScreen({ route }: DetailsScreenProps) {
   const [loading, setLoading] = useState<boolean>(true);
   const [tooltip, setTooltip] = useState<string | null>(null);
 
-  const [preferredLocations, setPreferredLocations] = useState<string[]>([]);
-
   useEffect(() => {
-    dao.getProfile(userId).then((user) => {
-      setUser(user);
-      const correctProfile =
-        user.userProfile?.id === profileId
-          ? user.userProfile
-          : user.roomProfiles.filter((p) => p.id === profileId)[0];
-      setProfile(correctProfile);
-      setPhotos(correctProfile.photos || []);
-      setPreferredLocations(["Helsinki", "Espoo", "Vantaa"]);
+    dao.getProfile(parseInt(profileId)).then((profile) => {
+      setProfile(profile);
+      setPhotos(profile.photos || []);
       setLoading(false);
     });
-  }, [userId]);
+  }, [profileId]);
 
   const toggleTooltip = (tag: string) => {
     setTooltip(tooltip === tag ? null : tag);
@@ -150,28 +140,38 @@ export default function DetailsScreen({ route }: DetailsScreenProps) {
           <View style={styles.definitionBox}>
             <View style={styles.definition}>
               <Text style={styles.definition}>Age</Text>
-              <Text style={styles.definitionValue}>{user?.age}</Text>
+              <Text style={styles.definitionValue}>
+                {profile && "users" in profile
+                  ? profile.users.map((u) => u.age).join(", ")
+                  : profile?.user?.age}
+              </Text>
             </View>
             <View style={styles.definition}>
               <Text style={styles.definition}>Gender</Text>
-              <Text style={styles.definitionValue}>{user?.gender}</Text>
+              <Text style={styles.definitionValue}>
+                {profile && "users" in profile
+                  ? profile.users.map((u) => u.gender).join(", ")
+                  : profile?.user?.gender}
+              </Text>
             </View>
-            <View style={styles.definition}>
-              <Text style={styles.definition}>Max Rent:</Text>
-              <Text style={styles.definitionValue}>unavailable</Text>
-            </View>
+            {profile && "rent" in profile && (
+              <View style={styles.definition}>
+                <Text style={styles.definition}>Rent:</Text>
+                <Text style={styles.definitionValue}>{profile?.rent}</Text>
+              </View>
+            )}
           </View>
+          {profile && "location" in profile && (
+            <>
+              <Text style={styles.subtitle}>Locations:</Text>
 
-          <Text style={styles.subtitle}>Locations:</Text>
-
-          <View style={styles.tagArea}>
-            {preferredLocations &&
-              preferredLocations.map((tag, index) => (
-                <Text key={index} style={styles.tag}>
-                  {tag}
+              <View style={styles.tagArea}>
+                <Text style={styles.tag}>
+                  {profile.location.replaceAll("_", " ")}
                 </Text>
-              ))}
-          </View>
+              </View>
+            </>
+          )}
         </View>
 
         <StatusBar barStyle="light-content" />

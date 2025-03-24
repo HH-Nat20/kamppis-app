@@ -14,13 +14,13 @@ const profile = StyleSheet.create({
   },
   portraitSwiper: {
     width: "100%",
-    height: 250,
+    height: 400,
     backgroundColor: "transparent",
   },
   portraitContainer: {
     position: "relative",
     width: "100%",
-    height: 250,
+    height: 400,
     backgroundColor: "transparent",
     padding: 0,
     alignItems: "center",

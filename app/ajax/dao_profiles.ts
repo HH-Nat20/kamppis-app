@@ -15,8 +15,7 @@ const ENDPOINT = "profiles";
  * @returns {Promise<UserProfile[] | RoomProfile[]>}
  */
 export const getPossibleMatches = async (userId: number) => {
-  //const response = await get(`/${ENDPOINT}/${userId}/query`);
-  const response = await get(`${ENDPOINT}`);
+  const response = await get(`${ENDPOINT}/${userId}/query`);
   if (response.status == 204) {
     return [];
   }
@@ -30,11 +29,13 @@ export const getPossibleMatches = async (userId: number) => {
  * Fetch a profile by ID
  *
  * @param {number} userId
- * @returns {Promise<User>}
+ * @returns {Promise<UserProfile | RoomProfile>}
  */
-export const getProfile = async (userId: number): Promise<User> => {
-  const response = await get(`users/${userId}`);
-  const profile: User = await response.json();
+export const getProfile = async (
+  userId: number
+): Promise<UserProfile | RoomProfile> => {
+  const response = await get(`${ENDPOINT}/${userId}`);
+  const profile: UserProfile | RoomProfile = await response.json();
   //console.log(`Found user profile: `, user); // TODO: Figure out why this gets called so many times
   return profile;
 };
@@ -42,11 +43,11 @@ export const getProfile = async (userId: number): Promise<User> => {
 /**
  * For testing purposes, fetch all user profiles
  *
- * @returns {Promise<User[]>}
+ * @returns {Promise<(UserProfile | RoomProfile)[]>}
  */
 export const getAllProfiles = async () => {
-  const response = await get(`users`);
-  const profiles: User[] = await response.json(); // TODO: Is User a good idea? Maybe UserProfile[] | RoomProfile[]?
+  const response = await get(ENDPOINT);
+  const profiles: (UserProfile | RoomProfile)[] = await response.json(); // TODO: Is User a good idea? Maybe UserProfile[] | RoomProfile[]?
   return profiles;
 };
 
@@ -54,14 +55,14 @@ export const getAllProfiles = async () => {
  * Update a user profile
  *
  * @param {number} userId
- * @returns {Promise<User>}
+ * @returns {Promise<UserProfile | RoomProfile>}
  */
 export const updateProfile = async (
-  userId: number,
-  userProfile: UserProfileForm
+  profileId: number,
+  profileForm: UserProfileForm
 ) => {
-  const response = await update(`${ENDPOINT}/${userId}`, userProfile);
-  const user: UserProfile = await response.json();
-  console.log(`Updated profile: `, user);
-  return user;
+  const response = await update(`${ENDPOINT}/${profileId}`, profileForm);
+  const profile: UserProfile = await response.json();
+  console.log(`Updated profile: `, profile);
+  return profile;
 };

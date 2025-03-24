@@ -3,7 +3,7 @@ import { useForm, FormProvider, FieldErrors } from "react-hook-form";
 import { User } from "../types/responses/User"; // Don't use this
 import { UserProfile } from "../types/responses/UserProfile"; // Don't use this
 import { UserProfileForm } from "../types/requests/UserProfileForm"; // Use this
-import { Gender } from "../types/enums/GenderEnum";
+import { Gender, GenderLabels } from "../types/enums/GenderEnum";
 import { useUser } from "./UserContext";
 import dao from "../ajax/dao";
 import { ActivityIndicator } from "react-native";
@@ -13,6 +13,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Toast from "react-native-toast-message";
 import { Lifestyle } from "../types/enums/LifestyleEnum";
 import { Location } from "../types/enums/LocationEnum";
+import { MaxRent } from "../types/enums/MaxRentEnum";
+import { Preferences } from "../types/responses/Preferences";
+import { Cleanliness } from "../types/enums/CLeanlinessEnum";
 
 interface ProfileFormContextProps {
   loading: boolean;
@@ -42,7 +45,7 @@ export const ProfileFormProvider = ({
       lastName: "",
       age: 18,
       gender: Gender.OTHER,
-      maxRent: "HIGH",
+      maxRent: MaxRent.HIGH,
       lifestyle: [],
       bio: "",
       minAgePreference: 18,
@@ -68,23 +71,36 @@ export const ProfileFormProvider = ({
       }
       setLoading(true);
       try {
-        const userResponse = await dao.getProfile(
+        const userResponse: User = await dao.getUser(
           parseInt(user.userProfile.id)
-        ); // TODO: Get profile by userID not profileId
+        );
+
+        const preferencesResponse: Preferences = await dao.getUserPreferences(
+          parseInt(user.userProfile.id)
+        );
+
         console.log("Fetched user profile", userResponse.userProfile);
         const updatedProfile: UserProfileForm = {
-          firstName: user.firstName,
-          lastName: user.lastName,
-          gender: user.gender,
-          age: user.age,
-          maxRent: "HIGH",
+          firstName: user.firstName || "",
+          lastName: user.lastName || "",
+          gender: user.gender || Gender.NOT_IMPORTANT,
+          age: user.age || 18,
+          maxRent: preferencesResponse.roomPreference?.maxRent || MaxRent.HIGH,
           lifestyle: userResponse.userProfile.lifestyle || ([] as Lifestyle[]),
-          cleanliness: userResponse.userProfile.cleanliness || "SPOTLESS",
+          cleanliness: userResponse.userProfile.cleanliness || Cleanliness.TIDY,
           bio: userResponse.userProfile.bio || "",
-          minAgePreference: 24,
-          maxAgePreference: 44,
-          preferredGenders: [Gender.FEMALE],
-          preferredLocations: [Location.HELSINKI],
+          minAgePreference:
+            preferencesResponse.roommatePreference?.minAgePreference || 21,
+          maxAgePreference:
+            preferencesResponse.roommatePreference?.maxAgePreference || 44,
+          genderPreferences: preferencesResponse.roommatePreference
+            ?.genderPreferences || [Gender.NOT_IMPORTANT],
+          locationPreferences: preferencesResponse.roommatePreference
+            ?.locationPreferences || [
+            Location.HELSINKI,
+            Location.ESPOO,
+            Location.VANTAA,
+          ],
         };
         setUserProfile(updatedProfile);
         reset(updatedProfile);

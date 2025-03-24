@@ -35,24 +35,32 @@ export const MatchableProfilesProvider = ({
     }
 
     try {
-      let users = await dao.getAllProfiles(); // dao.getPossibleMatches(user.id);
+      let profiles = await dao.getAllProfiles(); // dao.getPossibleMatches(user.id);
 
-      if (users.length === 0) {
+      if (profiles.length === 0) {
         setCards([]);
         setLoading(false);
         return;
       }
 
       // Filter out the current user
-      users = users.filter && users.filter((u) => u.id !== user.id);
+      profiles =
+        profiles.filter &&
+        profiles.filter((profile) => {
+          const isCurrentUsersUserProfile =
+            "userId" in profile && profile.userId === user.id;
+          const isCurrentUsersRoomProfile =
+            "userIds" in profile && profile.userIds?.includes(user.id);
+          return !isCurrentUsersUserProfile && !isCurrentUsersRoomProfile;
+        });
 
-      if (!Array.isArray(users)) {
+      if (!Array.isArray(profiles)) {
         console.warn("No users received from API");
         setLoading(false);
         return;
       }
 
-      const profileCards: ProfileCard[] = buildShuffledProfileCards(users);
+      const profileCards: ProfileCard[] = buildShuffledProfileCards(profiles);
       setCards(profileCards);
       setLoading(false);
     } catch (error) {
