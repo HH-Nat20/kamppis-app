@@ -44,11 +44,11 @@ export const profileSchema = yup.object({
       yup.ref("minAgePreference"),
       "Max age must be greater than Min age"
     ),
-  preferredGenders: yup
+  genderPreferences: yup
     .array()
     .of(yup.mixed<Gender>().oneOf(Object.values(Gender), "Invalid selection"))
     .min(1, "Select at least one preferred gender option"),
-  preferredLocations: yup
+  locationPreferences: yup
     .array()
     .of(
       yup.mixed<Location>().oneOf(Object.values(Location), "Invalid location")

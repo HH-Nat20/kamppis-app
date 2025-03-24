@@ -107,7 +107,7 @@ const GenderPreferenceSection = ({ control, errors }: any) => (
         <Controller
           key={g}
           control={control}
-          name="preferredGenders"
+          name="genderPreferences"
           render={({ field: { onChange, value } }) => (
             <Pressable
               className={`px-4 py-2 rounded-full border ${
@@ -137,8 +137,8 @@ const GenderPreferenceSection = ({ control, errors }: any) => (
         />
       ))}
     </HStack>
-    {errors.preferredGenders && (
-      <Text className="text-error-500">{errors.preferredGenders.message}</Text>
+    {errors.genderPreferences && (
+      <Text className="text-error-500">{errors.genderPreferences.message}</Text>
     )}
   </VStack>
 );
@@ -151,7 +151,7 @@ const LocationPreferenceSection = ({ control, errors }: any) => (
         <Controller
           key={l}
           control={control}
-          name="preferredLocations"
+          name="locationPreferences"
           render={({ field: { onChange, value } }) => (
             <Pressable
               className={`px-4 py-2 rounded-full border ${
@@ -181,9 +181,9 @@ const LocationPreferenceSection = ({ control, errors }: any) => (
         />
       ))}
     </HStack>
-    {errors.preferredLocations && (
+    {errors.locationPreferences && (
       <Text className="text-error-500">
-        {errors.preferredLocations.message}
+        {errors.locationPreferences.message}
       </Text>
     )}
   </VStack>

@@ -50,8 +50,8 @@ export const ProfileFormProvider = ({
       bio: "",
       minAgePreference: 18,
       maxAgePreference: 99,
-      preferredGenders: [],
-      preferredLocations: [],
+      genderPreferences: [],
+      locationPreferences: [],
     },
   });
 

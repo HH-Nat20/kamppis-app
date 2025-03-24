@@ -61,6 +61,7 @@ export const updateProfile = async (
   profileId: number,
   profileForm: UserProfileForm
 ) => {
+  console.log("Updating profile with form: ", profileForm);
   const response = await update(`${ENDPOINT}/${profileId}`, profileForm);
   const profile: UserProfile = await response.json();
   console.log(`Updated profile: `, profile);
