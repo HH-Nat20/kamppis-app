@@ -44,7 +44,7 @@ const Card: React.FC<CardProps> = ({ card }) => {
           : "firstName" in card.user
           ? card.user.firstName
           : "",
-      profileId: card.profile!.id,
+      profileId: card.profile!.id.toString(),
     });
   };
 
