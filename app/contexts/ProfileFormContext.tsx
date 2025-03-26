@@ -13,7 +13,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Toast from "react-native-toast-message";
 import { Lifestyle } from "../types/enums/LifestyleEnum";
 import { Location } from "../types/enums/LocationEnum";
-import { MaxRent } from "../types/enums/MaxRentEnum";
 import { Preferences } from "../types/responses/Preferences";
 import { Cleanliness } from "../types/enums/CLeanlinessEnum";
 
@@ -45,7 +44,7 @@ export const ProfileFormProvider = ({
       lastName: "",
       age: 18,
       gender: Gender.OTHER,
-      maxRent: MaxRent.HIGH,
+      maxRent: 1000,
       lifestyle: [],
       bio: "",
       minAgePreference: 18,
@@ -85,7 +84,7 @@ export const ProfileFormProvider = ({
           lastName: user.lastName || "",
           gender: user.gender || Gender.NOT_IMPORTANT,
           age: user.age || 18,
-          maxRent: preferencesResponse.roomPreference?.maxRent || MaxRent.HIGH,
+          maxRent: preferencesResponse.roomPreference?.maxRent || 1000,
           lifestyle: userResponse.userProfile.lifestyle || ([] as Lifestyle[]),
           cleanliness: userResponse.userProfile.cleanliness || Cleanliness.TIDY,
           bio: userResponse.userProfile.bio || "",

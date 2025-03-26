@@ -3,7 +3,6 @@ import { Gender } from "../types/enums/GenderEnum";
 import { Lifestyle } from "../types/enums/LifestyleEnum";
 import { Location } from "../types/enums/LocationEnum";
 import { Cleanliness } from "../types/enums/CLeanlinessEnum";
-import { MaxRent } from "../types/enums/MaxRentEnum";
 
 export const profileSchema = yup.object({
   firstName: yup
@@ -22,7 +21,7 @@ export const profileSchema = yup.object({
     .min(18, "You must be at least 18")
     .max(99, "Age must be below 99"),
   gender: yup.mixed<Gender>().oneOf(Object.values(Gender), "Invalid gender"),
-  maxRent: yup.string().oneOf(Object.values(MaxRent)).required(),
+  maxRent: yup.number().required("Max rent is required").min(200),
   lifestyle: yup
     .array()
     .of(

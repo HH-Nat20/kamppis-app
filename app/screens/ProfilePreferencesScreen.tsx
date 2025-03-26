@@ -189,50 +189,27 @@ const LocationPreferenceSection = ({ control, errors }: any) => (
   </VStack>
 );
 
-const RentSection = ({ control, errors }: any) => {
-  const getNumericValue = (rent: "LOW" | "MID" | "HIGH") => {
-    switch (rent) {
-      case "LOW":
-        return 400;
-      case "MID":
-        return 600;
-      case "HIGH":
-        return 800;
-      default:
-        return 500;
-    }
-  };
-
-  const getRentCategory = (num: number): "LOW" | "MID" | "HIGH" => {
-    if (num <= 400) return "LOW";
-    if (num <= 600) return "MID";
-    return "HIGH";
-  };
-
-  return (
-    <VStack space="md">
-      <Heading size="sm">Max Rent</Heading>
-      <Controller
-        control={control}
-        name="maxRent"
-        render={({ field: { onChange, value } }) => (
-          <>
-            <Slider
-              min={200}
-              max={1000}
-              increment={50}
-              values={[getNumericValue(value)]}
-              onChange={(values: number[]) =>
-                onChange(getRentCategory(values[0]))
-              }
-            />
-            <Text>Selected: {value}</Text>
-          </>
-        )}
-      />
-      {errors.maxRent && (
-        <Text className="text-error-500">{errors.maxRent.message}</Text>
+const RentSection = ({ control, errors }: any) => (
+  <VStack space="md">
+    <Heading size="sm">Max Rent</Heading>
+    <Controller
+      control={control}
+      name="maxRent"
+      render={({ field: { onChange, value } }) => (
+        <>
+          <Slider
+            min={200}
+            max={1500}
+            increment={50}
+            values={[value ?? 1000]}
+            onChange={(values: number[]) => onChange(values[0])}
+          />
+          <Text>Selected: {value}</Text>
+        </>
       )}
-    </VStack>
-  );
-};
+    />
+    {errors.maxRent && (
+      <Text className="text-error-500">{errors.maxRent.message}</Text>
+    )}
+  </VStack>
+);
