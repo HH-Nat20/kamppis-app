@@ -1,8 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useForm, FormProvider, FieldErrors } from "react-hook-form";
-import { User } from "../types/responses/User"; // Don't use this
-import { UserProfile } from "../types/responses/UserProfile"; // Don't use this
-import { UserProfileForm } from "../types/requests/UserProfileForm"; // Use this
+import { User } from "../types/responses/User";
+import { UserProfileForm } from "../types/requests/UserProfileForm";
 import { Gender, GenderLabels } from "../types/enums/GenderEnum";
 import { useUser } from "./UserContext";
 import dao from "../ajax/dao";
@@ -71,9 +70,7 @@ export const ProfileFormProvider = ({
       }
       setLoading(true);
       try {
-        const userResponse: User = await dao.getUser(
-          user.userProfile.id
-        );
+        const userResponse: User = await dao.getUser(user.userProfile.id);
 
         const preferencesResponse: Preferences = await dao.getUserPreferences(
           user.userProfile.id

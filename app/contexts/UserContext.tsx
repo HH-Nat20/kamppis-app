@@ -2,62 +2,53 @@ import React, {
   createContext,
   useContext,
   useState,
-  useEffect,
   ReactNode,
+  useMemo,
 } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { User } from "../types/responses/User";
-import dao from "../ajax/dao";
+import { getUserQueryOptions } from "../queries/userQueries";
 
-const UserContext = createContext<
-  | {
-      user: User | undefined;
-      changeUser: (userId: number) => void;
-      refreshUser: () => void;
-    }
-  | undefined
->(undefined);
+type UserContextType = {
+  user: User | undefined;
+  changeUser: (userId: number) => void;
+  refreshUser: () => void;
+};
+
+const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [user, setUser] = useState<User | undefined>(undefined);
+  const [userId, setUserId] = useState<number>(1); // default userId
 
-  const fetchAndSetUser = (userId: number) => {
-    console.log("Fetching profile for user:", userId);
+  const {
+    data: user,
+    refetch,
+    isError,
+    error,
+  } = useQuery(getUserQueryOptions(userId));
 
-    dao
-      .getUser(userId)
-      .then((profile) => {
-        console.log("Profile data received:", profile);
-        setUser(profile);
-      })
-      .catch((error) => {
-        console.error("Failed to fetch user profile", error);
-      });
-  };
+  const contextValue = useMemo(() => {
+    const changeUser = (newId: number) => {
+      console.log("Changing user to", newId);
+      setUserId(newId);
+    };
 
-  useEffect(() => {
-    const defaultUserId = 1;
-    fetchAndSetUser(defaultUserId);
-  }, []);
+    const refreshUser = () => {
+      console.log("Refreshing user", userId);
+      refetch();
+    };
 
-  const changeUser = (userId: number) => {
-    fetchAndSetUser(userId);
-  };
+    return { user, changeUser, refreshUser };
+  }, [user, userId, refetch]);
 
-  const refreshUser = () => {
-    if (user) {
-      console.log("Refreshing user:", user.id);
-      fetchAndSetUser(user.id);
-    } else {
-      console.warn("refreshUser() called, but no user is set.");
-    }
-  };
+  if (isError) {
+    console.error("Error fetching user:", error);
+  }
 
   return (
-    <UserContext.Provider value={{ user, changeUser, refreshUser }}>
-      {children}
-    </UserContext.Provider>
+    <UserContext.Provider value={contextValue}>{children}</UserContext.Provider>
   );
 };
 
