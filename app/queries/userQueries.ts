@@ -13,10 +13,11 @@ export const getUserQueryOptions = (userId: number) => {
   });
 };
 
-export const getUserPreferencesQueryOptions = (userId: number) => {
+export const getUserPreferencesQueryOptions = (userId: number | undefined) => {
   return queryOptions<Preferences, Error>({
-    queryKey: queryKeys.userPreferences(userId),
-    queryFn: () => dao.getUserPreferences(userId),
+    queryKey: queryKeys.userPreferences(userId || 0), // 0 shouldn't be called because of the enabled below
+    queryFn: () => dao.getUserPreferences(userId || 0),
     staleTime: 1000 * 60 * 5, // 5 minutes cache
+    enabled: !!userId,
   });
 };
