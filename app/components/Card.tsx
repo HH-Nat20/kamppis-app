@@ -38,9 +38,12 @@ const Card: React.FC<CardProps> = ({ card }) => {
 
   const handleOpenDetails = () => {
     navigation.navigate("DetailsScreen", {
-      userName: Array.isArray(card.user)
-        ? card.user.map((u) => u.firstName).join(", ") // TODO: Maybe something better
-        : card.user.firstName,
+      userName:
+        "flat" in card.profile
+          ? card.profile.flat.name
+          : "firstName" in card.user
+          ? card.user.firstName
+          : "",
       profileId: card.profile!.id,
     });
   };

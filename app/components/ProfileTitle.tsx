@@ -4,6 +4,8 @@ import { Text } from "react-native";
 import { UserProfile } from "../types/responses/UserProfile";
 import { RoomProfile } from "../types/responses/RoomProfile";
 import { ProfileCard } from "../types/ProfileCard";
+
+import { formatCity } from "../helpers/helpers";
 import Entypo from "@expo/vector-icons/Entypo";
 
 import styles from "../ui/styles";
@@ -42,7 +44,7 @@ const ProfileTitle: React.FC<ProfileTitleProps> = ({
         }}
       />{" "}
       {"users" in profile
-        ? profile.users.map((u) => u.firstName).join(", ")
+        ? profile.flat.name + ", " + formatCity(profile.flat.location)
         : `${profile.user?.firstName}, ${profile.user?.age}`}
     </Text>
   );

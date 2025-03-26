@@ -79,4 +79,8 @@ const getImageUrl = (
   return url;
 };
 
-export { countAge, formatDate, getProfilePicture, getImageUrl };
+const formatCity = (city: string) => {
+  return city.charAt(0).toUpperCase() + city.slice(1).toLowerCase();
+};
+
+export { countAge, formatDate, getProfilePicture, getImageUrl, formatCity };
