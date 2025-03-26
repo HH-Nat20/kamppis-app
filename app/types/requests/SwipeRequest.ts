@@ -1,6 +1,6 @@
 export interface SwipeRequest {
-  swipingUserId: number;
-  swipedUserId: number;
+  swipingProfileId: number;
+  swipedProfileId: number;
   isRightSwipe: boolean;
 }
 

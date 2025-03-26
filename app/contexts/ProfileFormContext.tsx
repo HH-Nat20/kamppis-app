@@ -72,11 +72,11 @@ export const ProfileFormProvider = ({
       setLoading(true);
       try {
         const userResponse: User = await dao.getUser(
-          parseInt(user.userProfile.id)
+          user.userProfile.id
         );
 
         const preferencesResponse: Preferences = await dao.getUserPreferences(
-          parseInt(user.userProfile.id)
+          user.userProfile.id
         );
 
         console.log("Fetched user profile", userResponse.userProfile);

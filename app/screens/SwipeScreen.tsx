@@ -34,8 +34,8 @@ const SwipeScreen: React.FC = () => {
     const card = cards[cardIndex];
 
     const swipeRequest: SwipeRequest = {
-      swipingUserId: user.id,
-      swipedUserId: Array.isArray(card.user) ? card.user[0].id : card.user.id, // TODO: Iterate over all users in a room
+      swipingProfileId: user.userProfile.id, //TODO: Allow swiping as a roomProfile
+      swipedProfileId: card.profile.id,
       isRightSwipe: direction === "right",
     };
 
