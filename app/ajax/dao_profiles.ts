@@ -47,7 +47,7 @@ export const getProfile = async (
  */
 export const getAllProfiles = async () => {
   const response = await get(ENDPOINT);
-  const profiles: (UserProfile | RoomProfile)[] = await response.json(); // TODO: Is User a good idea? Maybe UserProfile[] | RoomProfile[]?
+  const profiles: (UserProfile | RoomProfile)[] = await response.json();
   return profiles;
 };
 
