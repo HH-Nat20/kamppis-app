@@ -14,6 +14,8 @@ import { ProfileCard } from "../types/ProfileCard";
 import Card from "../components/Card";
 import styles from "../ui/styles";
 
+import Container from "../components/Container";
+
 const SwipeScreen: React.FC = () => {
   const swiperRef = useRef<Swiper<any>>(null);
 
@@ -72,7 +74,7 @@ const SwipeScreen: React.FC = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <Container>
       <Swiper
         ref={swiperRef}
         cards={cards}
@@ -113,7 +115,7 @@ const SwipeScreen: React.FC = () => {
           },
         }}
       />
-    </View>
+    </Container>
   );
 };
 

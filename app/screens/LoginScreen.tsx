@@ -19,6 +19,7 @@ import styles from "../ui/styles";
 import { useUser } from "../contexts/UserContext";
 import { HomeStackParamList } from "../navigation/HomeStackNavigator";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Container from "../components/Container";
 
 type HomeScreenNavigationProp = NativeStackNavigationProp<
   HomeStackParamList,
@@ -77,7 +78,7 @@ export default function LoginScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <Container>
       <Text style={styles.info}>Select a user to login</Text>
 
       {/* Button to Open Picker (iOS/Android) */}
@@ -186,6 +187,6 @@ export default function LoginScreen() {
           }
         }}
       />
-    </View>
+    </Container>
   );
 }

@@ -68,7 +68,7 @@ export default function DetailsScreen() {
               />
             ) : (
               <Center style={styles.portraitSwiper}>
-                <Heading style={styles.text}>No photos available</Heading>
+                <Heading size="lg">No photos available</Heading>
               </Center>
             )}
           </View>

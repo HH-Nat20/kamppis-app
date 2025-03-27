@@ -13,7 +13,7 @@ export default function Container({
   children: React.ReactNode;
 }) {
   return (
-    <VStack className="px-5 py-4 flex-1 dark:bg-black bg-white" space="xl">
+    <VStack className="flex-1 dark:bg-black bg-white" space="xl">
       {title && <Heading className="mb-2">{title}</Heading>}
       <ScrollView showsVerticalScrollIndicator={false}>
         {children}

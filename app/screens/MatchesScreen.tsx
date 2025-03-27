@@ -23,6 +23,8 @@ import { useUser } from "../contexts/UserContext";
 import { User } from "../types/responses/User";
 import { UserProfile } from "../types/responses/UserProfile";
 
+import Container from "../components/Container";
+
 type ChatStackParamList = {
   Matches: undefined;
   ChatScreen: { matchId: number; userName: string; user: User };
@@ -79,7 +81,7 @@ const MatchesScreen = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView className="flex-1 bg-white dark:bg-gray-800">
       <LinearGradient colors={bgGradient} style={styles.background} />
 
       {loading ? (

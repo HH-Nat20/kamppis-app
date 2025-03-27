@@ -1,20 +1,24 @@
 import React from "react";
-import { View, Text, ActivityIndicator, Button } from "react-native";
+import { ActivityIndicator } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useQueries } from "@tanstack/react-query";
 
 import { useUser } from "../contexts/UserContext";
 import { HomeStackParamList } from "../navigation/HomeStackNavigator";
-import styles from "../ui/styles";
 import {
   getServerHealthQuery,
   getDatabaseHealthQuery,
 } from "../queries/healthQueries";
 
 import TestJWTButton from "../components/TestJWTButton";
+import Container from "../components/Container";
 
-const Separator = () => <View style={styles.separator} />;
+import { VStack } from "@/components/ui/vstack";
+import { Text } from "@/components/ui/text";
+import { Button, ButtonText } from "@/components/ui/button";
+import { Heading } from "@/components/ui/heading";
+import { Center } from "@/components/ui/center";
 
 const HomeScreen = () => {
   const navigation =
@@ -32,45 +36,55 @@ const HomeScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>App started</Text>
-      <Separator />
-      <Text style={styles.subtitle}>User: {user?.email}</Text>
-      <Separator />
+    <Container>
+      {/** Temporary solution for not being able to center vertically */}
+      <VStack className="items-center justify-center gap-4 mt-4 py-4"></VStack>
+      <VStack className="items-center justify-center gap-4 mt-4 py-4"></VStack>
+      <VStack className="items-center justify-center gap-4 mt-4 py-4">
+        <Heading>App started</Heading>
+        <Text>User: {user?.email}</Text>
 
-      <Text style={styles.subtitle}>Checking server status...</Text>
-      {serverHealth.isLoading ? (
-        <ActivityIndicator />
-      ) : (
-        <Text
-          style={[
-            styles.status,
-            serverHealth.data?.status === "ok" ? styles.ok : styles.failed,
-          ]}
-        >
-          {serverHealth.data?.status === "ok" ? "OK" : "FAILED"}
-        </Text>
-      )}
+        <VStack className="items-center gap-2 mt-4">
+          <Text>Checking server status...</Text>
+          {serverHealth.isLoading ? (
+            <ActivityIndicator />
+          ) : (
+            <Text
+              className={
+                serverHealth.data?.status === "ok"
+                  ? "text-success-500"
+                  : "text-error-500"
+              }
+            >
+              {serverHealth.data?.status === "ok" ? "OK" : "FAILED"}
+            </Text>
+          )}
+        </VStack>
 
-      <Text style={styles.subtitle}>Checking DB status...</Text>
-      {dbHealth.isLoading ? (
-        <ActivityIndicator />
-      ) : (
-        <Text
-          style={[
-            styles.status,
-            dbHealth.data?.status === "ok" ? styles.ok : styles.failed,
-          ]}
-        >
-          {dbHealth.data?.status === "ok" ? "OK" : "FAILED"}
-        </Text>
-      )}
+        <VStack className="items-center gap-2 mt-4">
+          <Text>Checking DB status...</Text>
+          {dbHealth.isLoading ? (
+            <ActivityIndicator />
+          ) : (
+            <Text
+              className={
+                dbHealth.data?.status === "ok"
+                  ? "text-success-500"
+                  : "text-error-500"
+              }
+            >
+              {dbHealth.data?.status === "ok" ? "OK" : "FAILED"}
+            </Text>
+          )}
+        </VStack>
 
-      <Separator />
-      <Button title="Login as different user" onPress={handleOpenLogin} />
-      <Separator />
-      <TestJWTButton />
-    </View>
+        <Button onPress={handleOpenLogin} className="mt-6">
+          <ButtonText>Login as different user</ButtonText>
+        </Button>
+
+        <TestJWTButton />
+      </VStack>
+    </Container>
   );
 };
 

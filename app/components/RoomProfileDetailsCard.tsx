@@ -40,22 +40,22 @@ export const RoomProfileDetailsCard = ({
       </Box>
 
       <Box className="my-5 flex-col">
-        <VStack className="items-start pb-2">
+        <VStack className="flex-row gap-2 pb-2">
           <Heading size="xs">Rent</Heading>
           <Text size="xs">€{profile.rent}</Text>
         </VStack>
         <Divider orientation="horizontal" className="my-2 bg-background-300" />
-        <VStack className="items-start pb-2">
+        <VStack className="flex-row gap-2 pb-2">
           <Heading size="xs">Private Room</Heading>
-          <Text size="xs">{profile.isPrivateRoom ? "Yes" : "No"}</Text>
+          <Text size="xs">{profile.isPrivateRoom ? "✅" : "❌"}</Text>
         </VStack>
         <Divider orientation="horizontal" className="my-2 bg-background-300" />
-        <VStack className="items-start pb-2">
+        <VStack className="flex-row gap-2 pb-2">
           <Heading size="xs">Utilities</Heading>
           <Text size="xs">{profile.roomUtilities.join(", ")}</Text>
         </VStack>
         <Divider orientation="horizontal" className="my-2 bg-background-300" />
-        <VStack className="items-start pb-2">
+        <VStack className="flex-row gap-2 pb-2">
           <Heading size="xs">Rooms Available</Heading>
           <Text size="xs">
             {profile.totalRoommates - profile.userIds!.length}
