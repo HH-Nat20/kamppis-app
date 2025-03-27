@@ -1,46 +1,43 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useRef } from "react";
 import { Text, View, ActivityIndicator } from "react-native";
-
 import Swiper from "react-native-deck-swiper";
-import { LinearGradient } from "expo-linear-gradient";
 import Ionicons from "@expo/vector-icons/Ionicons";
-
-import Card from "../components/Card";
-
-import dao from "../ajax/dao";
-
-import { SwipeRequest, SwipeResponse } from "../types/requests/SwipeRequest";
-import { ProfileCard } from "../types/ProfileCard";
-
-import styles from "../ui/styles";
-import { useUser } from "../contexts/UserContext";
 import Toast from "react-native-toast-message";
+
+import { useUser } from "../contexts/UserContext";
 import { useMatch } from "../contexts/MatchContext";
 import { useMatchableProfiles } from "../contexts/MatchableProfilesContext";
+import { useSwipeMutation } from "../queries/swipeMutations";
+
+import { SwipeRequest } from "../types/requests/SwipeRequest";
+import { ProfileCard } from "../types/ProfileCard";
+import Card from "../components/Card";
+import styles from "../ui/styles";
 
 const SwipeScreen: React.FC = () => {
   const swiperRef = useRef<Swiper<any>>(null);
 
-  const { cards, loading, refreshMatchableProfiles } = useMatchableProfiles();
   const { user } = useUser();
   const { refreshMatches } = useMatch();
+  const { cards, loading, refreshMatchableProfiles } = useMatchableProfiles();
+
+  const swipeMutation = useSwipeMutation();
 
   const handleSwipe = async (
     cardIndex: number,
     direction: "left" | "right" | "down"
   ) => {
-    if (!cards[cardIndex] || !user) return;
-    console.log(`Swiped ${direction} on card ${cardIndex}`);
     const card = cards[cardIndex];
+    if (!card || !user) return;
 
     const swipeRequest: SwipeRequest = {
-      swipingProfileId: user.userProfile.id, //TODO: Allow swiping as a roomProfile
+      swipingProfileId: user.userProfile.id,
       swipedProfileId: card.profile.id,
       isRightSwipe: direction === "right",
     };
 
     try {
-      const swipeResponse: SwipeResponse = await dao.swipe(swipeRequest);
+      const swipeResponse = await swipeMutation.mutateAsync(swipeRequest);
 
       if (swipeResponse.isMatch) {
         Toast.show({
@@ -48,137 +45,90 @@ const SwipeScreen: React.FC = () => {
           text1: "New Match!",
           text2: "It's a match! 🎉",
         });
-        refreshMatches(); // Update matches after a successful match
+        refreshMatches();
       }
     } catch (error) {
-      console.error("Error swiping:", error);
+      console.error("Swipe failed:", error);
     }
   };
 
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
+  if (cards.length === 0) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.cardTitle}>No Profiles Found</Text>
+        <Text style={styles.subtitle}>
+          Try adjusting your settings for better results
+        </Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
-      <LinearGradient
-        colors={[
-          "rgba(145, 46, 211, 1)",
-          "rgba(103, 28, 151, 1)",
-          "rgba(65, 16, 95, 1)",
-          "rgba(47, 9, 69, 1)",
-        ]}
-        style={styles.background}
+      <Swiper
+        ref={swiperRef}
+        cards={cards}
+        renderCard={(card) => <Card card={card as ProfileCard} />}
+        onSwipedLeft={(i) => handleSwipe(i, "left")}
+        onSwipedRight={(i) => handleSwipe(i, "right")}
+        onSwipedBottom={(i) => handleSwipe(i, "down")}
+        onSwipedAll={() => {
+          setTimeout(refreshMatchableProfiles, 500);
+        }}
+        cardIndex={0}
+        backgroundColor="transparent"
+        stackScale={-3}
+        stackSize={10}
+        animateOverlayLabelsOpacity
+        animateCardOpacity
+        infinite={false}
+        overlayLabels={{
+          bottom: {
+            element: <Ionicons name="help-outline" size={300} color="blue" />,
+            title: "BLEAH",
+            style: overlayStyle,
+          },
+          left: {
+            element: <Ionicons name="thumbs-down" size={300} color="red" />,
+            title: "NOPE",
+            style: overlayStyle,
+          },
+          right: {
+            element: <Ionicons name="thumbs-up" size={300} color="green" />,
+            title: "LIKE",
+            style: overlayStyle,
+          },
+          top: {
+            element: <Ionicons name="heart" size={300} color="red" />,
+            title: "SUPER LIKE",
+            style: overlayStyle,
+          },
+        }}
       />
-      {loading ? (
-        <ActivityIndicator size="large" />
-      ) : cards.length === 0 ? (
-        <View style={styles.container}>
-          <Text style={styles.cardTitle}>No Profiles Found</Text>
-          <Text style={styles.subtitle}>
-            Try adjusting your settings for better results
-          </Text>
-        </View>
-      ) : (
-        <Swiper
-          ref={swiperRef}
-          cards={cards}
-          renderCard={(card: ProfileCard | {}) => (
-            <Card card={card as ProfileCard} key={(card as ProfileCard).id} />
-          )}
-          onSwipedLeft={(cardIndex) => handleSwipe(cardIndex, "left")}
-          disableBottomSwipe={false}
-          disableTopSwipe={true} // for now
-          onSwipedRight={(cardIndex) => handleSwipe(cardIndex, "right")}
-          onSwipedBottom={(cardIndex) => handleSwipe(cardIndex, "down")}
-          onSwipedAll={() => {
-            setTimeout(refreshMatchableProfiles, 500); // Give time for state updates (hopefully fixes duplicate last card bug)
-          }}
-          onTapCard={(cardIndex) => {
-            console.log(`tappity tap`);
-          }}
-          cardIndex={0}
-          backgroundColor="transparent"
-          stackScale={-3}
-          stackSize={10}
-          animateOverlayLabelsOpacity
-          animateCardOpacity
-          infinite={false} // change?
-          overlayLabels={{
-            bottom: {
-              element: <Ionicons name="help-outline" size={100} color="blue" />,
-              title: "BLEAH",
-              style: {
-                label: {
-                  backgroundColor: "black",
-                  borderColor: "black",
-                  color: "white",
-                  borderWidth: 1,
-                },
-                wrapper: {
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                },
-              },
-            },
-            left: {
-              element: <Ionicons name="thumbs-down" size={100} color="red" />,
-              title: "NOPE",
-              style: {
-                label: {
-                  backgroundColor: "black",
-                  borderColor: "black",
-                  color: "red",
-                  borderWidth: 1,
-                  fontSize: 24,
-                },
-                wrapper: {
-                  flexDirection: "column",
-                  alignItems: "flex-end",
-                  justifyContent: "flex-start",
-                  marginTop: 30,
-                  marginLeft: -30,
-                },
-              },
-            },
-            right: {
-              element: <Ionicons name="thumbs-up" size={100} color="green" />,
-              title: "LIKE",
-              style: {
-                label: {
-                  backgroundColor: "black",
-                  borderColor: "black",
-                  color: "green",
-                  borderWidth: 1,
-                },
-                wrapper: {
-                  flexDirection: "column",
-                  alignItems: "flex-start",
-                  justifyContent: "flex-start",
-                  marginTop: 30,
-                  marginLeft: 30,
-                },
-              },
-            },
-            top: {
-              element: <Ionicons name="heart" size={100} color="red" />,
-              title: "SUPER LIKE",
-              style: {
-                label: {
-                  backgroundColor: "black",
-                  borderColor: "black",
-                  color: "white",
-                  borderWidth: 1,
-                },
-                wrapper: {
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                },
-              },
-            },
-          }}
-        />
-      )}
     </View>
   );
+};
+
+const overlayStyle = {
+  label: {
+    backgroundColor: "black",
+    borderColor: "black",
+    color: "white",
+    borderWidth: 1,
+  },
+  wrapper: {
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+  },
 };
 
 export default SwipeScreen;
