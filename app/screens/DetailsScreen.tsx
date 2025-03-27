@@ -1,181 +1,126 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import {
   StatusBar,
   View,
   Text,
   ScrollView,
-  Pressable,
   ActivityIndicator,
-  Image,
-  TouchableWithoutFeedback,
 } from "react-native";
 
 import Swiper from "react-native-deck-swiper";
+import { useRoute } from "@react-navigation/native";
+import { useQuery } from "@tanstack/react-query";
 
 import styles from "../ui/styles";
-import colors, { renderTagBgColor } from "../ui/colors";
-
-import dao from "../ajax/dao";
-
-import { User } from "../types/responses/User";
-import { LifestyleDescriptions } from "../types/enums/LifestyleEnum";
-import { CleanlinessDescriptions } from "../types/enums/CLeanlinessEnum";
-
-import { RouteProp, useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { DetailsParamList } from "../navigation/SwipeStackNavigator";
-import { Photo } from "../types/responses/Photo";
+import colors from "../ui/colors";
 
 import Portrait from "../components/Portrait";
-import { RoomProfile } from "../types/responses/RoomProfile";
-import { UserProfile } from "../types/responses/UserProfile";
-
+import TagArea from "../components/TagArea";
 import { Heading } from "@/components/ui/heading";
 import { Center } from "@/components/ui/center";
 
+import { UserProfileDetailsCard } from "../components/UserProfileDetailsCard";
+import { RoomProfileDetailsCard } from "../components/RoomProfileDetailsCard";
+
+import { DetailsParamList } from "../navigation/SwipeStackNavigator";
+import { getProfileQueryOptions } from "../queries/profileQueries";
+import { RouteProp } from "@react-navigation/native";
+
+import Container from "../components/Container";
+
 type DetailsScreenRouteProp = RouteProp<DetailsParamList, "DetailsScreen">;
-type NavigationProp = StackNavigationProp<DetailsParamList, "DetailsScreen">;
 
-type DetailsScreenProps = {
-  route: DetailsScreenRouteProp;
-};
-
-export default function DetailsScreen({ route }: DetailsScreenProps) {
-  const swiperRef = useRef<Swiper<any>>(null);
+export default function DetailsScreen() {
+  const route = useRoute<DetailsScreenRouteProp>();
   const { profileId } = route.params;
+  const swiperRef = useRef<Swiper<any>>(null);
 
-  const [photos, setPhotos] = useState<Photo[]>([]);
-  const [profile, setProfile] = useState<UserProfile | RoomProfile | null>(
-    null
+  const { data: profile, isLoading } = useQuery(
+    getProfileQueryOptions(Number(profileId))
   );
-  const [loading, setLoading] = useState<boolean>(true);
-  const [tooltip, setTooltip] = useState<string | null>(null);
 
-  useEffect(() => {
-    dao.getProfile(parseInt(profileId)).then((profile) => {
-      setProfile(profile);
-      setPhotos(profile.photos || []);
-      setLoading(false);
-    });
-  }, [profileId]);
-
-  const toggleTooltip = (tag: string) => {
-    setTooltip(tooltip === tag ? null : tag);
-  };
+  const photos = profile?.photos || [];
 
   return (
-    <TouchableWithoutFeedback onPress={() => setTooltip(null)}>
-      <ScrollView style={styles.scrollContainer}>
-        {loading && <ActivityIndicator size="large" color={colors.white} />}
-
-        <View style={styles.portraitSwiper}>
-          {photos.length > 0 ? (
-            <Swiper
-              ref={swiperRef}
-              cards={photos}
-              renderCard={(photo: Photo, index: number) => (
-                <Portrait key={photo?.id || `photo-${index}`} photo={photo} />
-              )}
-              cardIndex={0}
-              backgroundColor={colors.background}
-              stackSize={Math.min(photos.length, 3)}
-              stackSeparation={0}
-              stackScale={0}
-              infinite={true}
-              animateOverlayLabelsOpacity
-              animateCardOpacity
-              verticalSwipe={false}
-              horizontalSwipe={true}
-            />
-          ) : (
-            <Center style={styles.portraitSwiper}>
-              <Heading style={styles.text}>No photos available</Heading>
-            </Center>
-          )}
-        </View>
-
-        <View style={styles.profileInfo}>
-          <View style={styles.tagArea}>
-            {profile && "cleanliness" in profile && profile.cleanliness && (
-              <Pressable onPress={() => toggleTooltip(profile.cleanliness)}>
-                <Text style={styles.cleanlinessTag}>
-                  {profile.cleanliness.replaceAll("_", " ")}
-                </Text>
-                {tooltip === profile.cleanliness && (
-                  <View style={styles.tooltip}>
-                    <Text style={styles.tooltipText}>
-                      {CleanlinessDescriptions[profile.cleanliness]}
-                    </Text>
-                  </View>
+    <Container>
+      {isLoading ? (
+        <ActivityIndicator size="large" color={colors.white} />
+      ) : (
+        <>
+          <View style={styles.portraitSwiper}>
+            {photos.length > 0 ? (
+              <Swiper
+                ref={swiperRef}
+                cards={photos}
+                renderCard={(photo, i) => (
+                  <Portrait key={photo.id || i} photo={photo} />
                 )}
-              </Pressable>
-            )}
-
-            {profile &&
-              "lifestyle" in profile &&
-              profile.lifestyle &&
-              profile.lifestyle.map((tag, index) => (
-                <Pressable key={index} onPress={() => toggleTooltip(tag)}>
-                  <Text
-                    style={{
-                      ...styles.tag,
-                      backgroundColor: renderTagBgColor(tag),
-                    }}
-                  >
-                    {tag.replaceAll("_", " ")}
-                  </Text>
-                  {tooltip === tag && (
-                    <View style={styles.tooltip}>
-                      <Text style={styles.tooltipText}>
-                        {LifestyleDescriptions[tag]}
-                      </Text>
-                    </View>
-                  )}
-                </Pressable>
-              ))}
-          </View>
-
-          <Text style={styles.bioText}>{profile?.bio}</Text>
-
-          <View style={styles.definitionBox}>
-            <View style={styles.definition}>
-              <Text style={styles.definition}>Age</Text>
-              <Text style={styles.definitionValue}>
-                {profile && "users" in profile
-                  ? profile.users.map((u) => u.age).join(", ")
-                  : profile?.user?.age}
-              </Text>
-            </View>
-            <View style={styles.definition}>
-              <Text style={styles.definition}>Gender</Text>
-              <Text style={styles.definitionValue}>
-                {profile && "users" in profile
-                  ? profile.users.map((u) => u.gender).join(", ")
-                  : profile?.user?.gender}
-              </Text>
-            </View>
-            {profile && "rent" in profile && (
-              <View style={styles.definition}>
-                <Text style={styles.definition}>Rent:</Text>
-                <Text style={styles.definitionValue}>{profile?.rent}</Text>
-              </View>
+                cardIndex={0}
+                backgroundColor={colors.background}
+                stackSize={Math.min(photos.length, 3)}
+                stackSeparation={0}
+                stackScale={0}
+                infinite
+                animateOverlayLabelsOpacity
+                animateCardOpacity
+                verticalSwipe={false}
+                horizontalSwipe
+              />
+            ) : (
+              <Center style={styles.portraitSwiper}>
+                <Heading style={styles.text}>No photos available</Heading>
+              </Center>
             )}
           </View>
-          {profile && "location" in profile && (
-            <>
-              <Text style={styles.subtitle}>Locations:</Text>
 
-              <View style={styles.tagArea}>
-                <Text style={styles.tag}>
+          <View style={styles.profileInfo}>
+            {/* Tags */}
+            <View
+              style={[
+                styles.tagArea,
+                { flexDirection: "row", flexWrap: "wrap", gap: 8 },
+              ]}
+            >
+              {"cleanliness" in profile! && profile!.cleanliness && (
+                <Text
+                  style={{
+                    ...styles.cleanlinessTag,
+                    height: 30,
+                    padding: 5,
+                    marginTop: 15,
+                  }}
+                >
+                  {profile!.cleanliness.replaceAll("_", " ")}
+                </Text>
+              )}
+
+              {/* Location */}
+              {"location" in profile! && (
+                <Text
+                  style={{
+                    ...styles.tag,
+                    height: 35,
+                    padding: 7,
+                    marginTop: 15,
+                  }}
+                >
                   {profile.location.replaceAll("_", " ")}
                 </Text>
-              </View>
-            </>
-          )}
-        </View>
+              )}
 
-        <StatusBar barStyle="light-content" />
-      </ScrollView>
-    </TouchableWithoutFeedback>
+              <TagArea profile={profile!} />
+            </View>
+
+            {/* General Info */}
+            {profile && "user" in profile ? (
+              <UserProfileDetailsCard profile={profile} />
+            ) : (
+              <RoomProfileDetailsCard profile={profile!} />
+            )}
+          </View>
+        </>
+      )}
+      <StatusBar barStyle="light-content" />
+    </Container>
   );
 }

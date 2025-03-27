@@ -92,22 +92,22 @@ const SwipeScreen: React.FC = () => {
         infinite={false}
         overlayLabels={{
           bottom: {
-            element: <Ionicons name="help-outline" size={300} color="blue" />,
+            element: <Ionicons name="help-outline" size={250} color="blue" />,
             title: "BLEAH",
             style: overlayStyle,
           },
           left: {
-            element: <Ionicons name="thumbs-down" size={300} color="red" />,
+            element: <Ionicons name="thumbs-down" size={250} color="red" />,
             title: "NOPE",
             style: overlayStyle,
           },
           right: {
-            element: <Ionicons name="thumbs-up" size={300} color="green" />,
+            element: <Ionicons name="thumbs-up" size={250} color="green" />,
             title: "LIKE",
             style: overlayStyle,
           },
           top: {
-            element: <Ionicons name="heart" size={300} color="red" />,
+            element: <Ionicons name="heart" size={250} color="red" />,
             title: "SUPER LIKE",
             style: overlayStyle,
           },

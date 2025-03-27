@@ -9,7 +9,6 @@ import {
   ActivityIndicator,
 } from "react-native";
 import styles from "../ui/styles";
-import { renderTagBgColor } from "../ui/colors";
 import { ProfileCard } from "../types/ProfileCard";
 import { getProfilePicture, getImageUrl } from "../helpers/helpers";
 import { useNavigation } from "@react-navigation/native";
@@ -80,7 +79,7 @@ const Card: React.FC<CardProps> = ({ card }) => {
           ) : (
             <View style={[styles.overlay, { width, height }]}>
               <ProfileTitle card={card} onPress={() => handleOpenDetails()} />
-              <TagArea card={card} />
+              <TagArea profile={card.profile} />
             </View>
           )}
         </ImageBackground>

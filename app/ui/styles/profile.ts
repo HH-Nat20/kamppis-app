@@ -53,7 +53,7 @@ const profile = StyleSheet.create({
     marginTop: 40,
     width: "100%",
     padding: 20,
-    backgroundColor: colors.background,
+    backgroundColor: "transparent",
     color: colors.text,
   },
   bioText: {

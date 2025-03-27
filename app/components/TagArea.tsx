@@ -1,6 +1,8 @@
 import React from "react";
 import { View, Text } from "react-native";
 import { ProfileCard } from "../types/ProfileCard";
+import { UserProfile } from "../types/responses/UserProfile";
+import { RoomProfile } from "../types/responses/RoomProfile";
 import styles from "../ui/styles";
 import { renderTagBgColor } from "../ui/colors";
 
@@ -9,16 +11,18 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import AntDesign from "@expo/vector-icons/AntDesign";
 
-const TagArea: React.FC<{ card: ProfileCard }> = ({ card }) => {
+const TagArea: React.FC<{ profile: UserProfile | RoomProfile }> = ({
+  profile,
+}) => {
   const tags: string[] = [];
 
-  const profileType = card?.profile?.type;
+  const profileType = profile?.type;
 
-  if (card.profile && "lifestyle" in card.profile) {
-    tags.push(...card.profile.lifestyle);
+  if ("lifestyle" in profile) {
+    tags.push(...profile.lifestyle);
   }
-  if (card.profile && "flat" in card.profile && card.profile.flat) {
-    tags.push(...card.profile.flat.flatUtilities);
+  if ("flat" in profile && profile.flat) {
+    tags.push(...profile.flat.flatUtilities);
   }
 
   const renderTag = (tag: string) => {
