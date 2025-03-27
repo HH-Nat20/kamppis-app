@@ -1,11 +1,9 @@
-import React, { createContext, useState, useContext, useEffect } from "react";
+import React, { createContext, useContext, useEffect, useRef } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Toast from "react-native-toast-message";
-import { User } from "../types/responses/User";
 import { MatchWithUser } from "../types/Match";
-import { Match } from "../types/Match";
-
-import dao from "../ajax/dao";
 import { useUser } from "./UserContext";
+import { getUserMatchesQueryOptions } from "../queries/matchQueries";
 
 interface MatchContextProps {
   matches: MatchWithUser[];
@@ -17,54 +15,38 @@ const MatchContext = createContext<MatchContextProps | undefined>(undefined);
 export const MatchProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [matches, setMatches] = useState<MatchWithUser[]>([]);
-  const [prevMatchesCount, setPrevMatchesCount] = useState(0);
   const { user } = useUser();
+  const userId = user?.id;
+  const queryClient = useQueryClient();
 
-  // Fetch matches from the backend every 50 seconds
+  const { data: matches = [], isSuccess } = useQuery(
+    getUserMatchesQueryOptions(userId ?? 0)
+  );
 
-  const fetchMatches = async () => {
-    if (!user?.id) return;
-    try {
-      const matchesResponse = await dao.getMatches(user.id);
+  const prevMatchCount = useRef(0);
 
-      const userMatches: MatchWithUser[] = await Promise.all(
-        matchesResponse.map(async (match: Match) => {
-          const otherUserId = match.userIds.find((id) => id !== user.id)!;
-          const userProfile = await dao.getUser(otherUserId);
-          return {
-            user: userProfile,
-            matchId: match.id,
-          };
-        })
-      );
+  // Show toast when new match is added
+  useEffect(() => {
+    if (!isSuccess || matches.length <= prevMatchCount.current) return;
 
-      setMatches(userMatches);
-    } catch (error) {
-      console.error("Error fetching matches:", error);
+    const newMatch = matches[matches.length - 1];
+    Toast.show({
+      type: "success",
+      text1: "New Match!",
+      text2: `${newMatch.user.firstName} matched with you 🎉`,
+    });
+
+    prevMatchCount.current = matches.length;
+  }, [matches, isSuccess]);
+
+  const refreshMatches = () => {
+    if (userId) {
+      queryClient.invalidateQueries({ queryKey: ["matches", userId] });
     }
   };
 
-  useEffect(() => {
-    console.log("Fetching matches for user:", user);
-    fetchMatches(); // Fetch on mount
-  }, [user]);
-
-  // Match Listener: Show Toast when a new match is added
-  useEffect(() => {
-    if (matches.length > prevMatchesCount) {
-      const newMatch = matches[matches.length - 1];
-      Toast.show({
-        type: "success",
-        text1: "New Match!",
-        text2: `${newMatch.user.firstName} matched with you 🎉`,
-      });
-    }
-    setPrevMatchesCount(matches.length);
-  }, [matches]);
-
   return (
-    <MatchContext.Provider value={{ matches, refreshMatches: fetchMatches }}>
+    <MatchContext.Provider value={{ matches, refreshMatches }}>
       {children}
     </MatchContext.Provider>
   );
@@ -72,6 +54,8 @@ export const MatchProvider: React.FC<{ children: React.ReactNode }> = ({
 
 export const useMatch = () => {
   const context = useContext(MatchContext);
-  if (!context) throw new Error("useMatch must be used within a MatchProvider");
+  if (!context) {
+    throw new Error("useMatch must be used within a MatchProvider");
+  }
   return context;
 };

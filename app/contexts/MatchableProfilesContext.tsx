@@ -1,14 +1,13 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
-
+import React, { createContext, useContext, ReactNode, useMemo } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { ProfileCard } from "../types/ProfileCard";
-import dao from "../ajax/dao";
 import { useUser } from "./UserContext";
-
 import { buildShuffledProfileCards } from "../helpers/profileCardBuilder";
+import { getMatchableProfilesQueryOptions } from "../queries/matchableProfilesQueries";
 
 interface MatchableProfilesContextProps {
   cards: ProfileCard[];
-  refreshMatchableProfiles: () => Promise<void>;
+  refreshMatchableProfiles: () => void;
   loading: boolean;
 }
 
@@ -19,68 +18,40 @@ const MatchableProfilesContext = createContext<
 export const MatchableProfilesProvider = ({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) => {
   const { user } = useUser();
-  const [cards, setCards] = useState<ProfileCard[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const queryClient = useQueryClient();
 
-  const fetchMatchableProfiles = async () => {
-    setLoading(true);
+  const { data, isLoading } = useQuery(
+    getMatchableProfilesQueryOptions(user?.id ?? 0)
+  );
 
-    if (!user?.id) {
-      console.warn("No logged-in user found");
-      setLoading(false);
-      return;
+  const cards: ProfileCard[] = useMemo(() => {
+    if (!data || !Array.isArray(data)) return [];
+
+    const filtered = data.filter((profile) => {
+      const isCurrentUsersUserProfile =
+        "userId" in profile && profile.userId === user?.id;
+      const isCurrentUsersRoomProfile =
+        "userIds" in profile && profile.userIds?.includes(user?.id!); // TODO: make sure ! doesn't crash the app (This should never be undefined)
+      return !isCurrentUsersUserProfile && !isCurrentUsersRoomProfile;
+    });
+
+    return buildShuffledProfileCards(filtered);
+  }, [data, user?.id]);
+
+  const refreshMatchableProfiles = () => {
+    if (user?.id) {
+      queryClient.invalidateQueries({
+        queryKey: ["matchableProfiles", user.id],
+      });
     }
-
-    try {
-      let profiles = await dao.getAllProfiles(); // dao.getPossibleMatches(user.id);
-
-      if (profiles.length === 0) {
-        setCards([]);
-        setLoading(false);
-        return;
-      }
-
-      // Filter out the current user
-      profiles =
-        profiles.filter &&
-        profiles.filter((profile) => {
-          const isCurrentUsersUserProfile =
-            "userId" in profile && profile.userId === user.id;
-          const isCurrentUsersRoomProfile =
-            "userIds" in profile && profile.userIds?.includes(user.id);
-          return !isCurrentUsersUserProfile && !isCurrentUsersRoomProfile;
-        });
-
-      if (!Array.isArray(profiles)) {
-        console.warn("No users received from API");
-        setLoading(false);
-        return;
-      }
-
-      const profileCards: ProfileCard[] = buildShuffledProfileCards(profiles);
-      setCards(profileCards);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching users:", error);
-    }
-
-    setLoading(false);
   };
-
-  const refreshMatchableProfiles = async () => {
-    await fetchMatchableProfiles();
-  };
-
-  useEffect(() => {
-    fetchMatchableProfiles();
-  }, [user]);
 
   return (
     <MatchableProfilesContext.Provider
-      value={{ cards, refreshMatchableProfiles, loading }}
+      value={{ cards, refreshMatchableProfiles, loading: isLoading }}
     >
       {children}
     </MatchableProfilesContext.Provider>
@@ -89,9 +60,10 @@ export const MatchableProfilesProvider = ({
 
 export const useMatchableProfiles = () => {
   const context = useContext(MatchableProfilesContext);
-  if (!context)
+  if (!context) {
     throw new Error(
       "useMatchableProfiles must be used within a MatchableProfilesProvider"
     );
+  }
   return context;
 };
