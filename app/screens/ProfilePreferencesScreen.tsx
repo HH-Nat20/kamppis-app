@@ -18,6 +18,8 @@ import { ButtonText } from "@/components/ui/button";
 
 import Slider from "react-native-a11y-slider";
 
+import ProfileDrawerLayout from "../components/ProfileDrawerLayout";
+
 export default function ProfilePreferencesScreen() {
   const {
     control,
@@ -28,27 +30,29 @@ export default function ProfilePreferencesScreen() {
   const { onSubmit, onError } = useProfileForm();
 
   return (
-    <VStack className="px-5 py-4 flex-1 dark:bg-black bg-white" space="xl">
-      <Heading className="mb-2">Preferences</Heading>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <VStack space="xl">
-          <AgeRangeSection control={control} errors={errors} />
-          <Divider />
-          <GenderPreferenceSection control={control} errors={errors} />
-          <Divider />
-          <LocationPreferenceSection control={control} errors={errors} />
-          <Divider />
-          <RentSection control={control} errors={errors} />
-        </VStack>
-        <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }} />
-      </ScrollView>
+    <ProfileDrawerLayout>
+      <VStack className="px-5 py-4 flex-1 dark:bg-black bg-white" space="xl">
+        <Heading className="mb-2">Preferences</Heading>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <VStack space="xl">
+            <AgeRangeSection control={control} errors={errors} />
+            <Divider />
+            <GenderPreferenceSection control={control} errors={errors} />
+            <Divider />
+            <LocationPreferenceSection control={control} errors={errors} />
+            <Divider />
+            <RentSection control={control} errors={errors} />
+          </VStack>
+          <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }} />
+        </ScrollView>
 
-      {isDirty && (
-        <Button onPress={handleSubmit(onSubmit, onError)}>
-          <ButtonText>Save Changes</ButtonText>
-        </Button>
-      )}
-    </VStack>
+        {isDirty && (
+          <Button onPress={handleSubmit(onSubmit, onError)}>
+            <ButtonText>Save Changes</ButtonText>
+          </Button>
+        )}
+      </VStack>
+    </ProfileDrawerLayout>
   );
 }
 

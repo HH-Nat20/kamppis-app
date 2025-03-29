@@ -24,6 +24,7 @@ import { User } from "../types/responses/User";
 import { UserProfile } from "../types/responses/UserProfile";
 
 import Container from "../components/Container";
+import { Heading } from "@/components/ui/heading";
 
 type ChatStackParamList = {
   Matches: undefined;
@@ -88,7 +89,7 @@ const MatchesScreen = () => {
         <ActivityIndicator size="large" color="#fff" />
       ) : matches.length === 0 ? (
         <View style={styles.emptyContainer}>
-          <Text style={styles.emptyText}>No matches yet. Keep swiping!</Text>
+          <Heading>No matches yet. Keep swiping!</Heading>
         </View>
       ) : (
         <FlatList

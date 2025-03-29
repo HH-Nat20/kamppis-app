@@ -16,23 +16,11 @@ const Stack = createStackNavigator<ChatStackParamList>();
 
 const ChatStackNavigator: React.FC = () => {
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerStyle: {
-          backgroundColor: colorSet.darkBlue,
-          height: 50,
-        },
-        headerTintColor: colorSet.white,
-        headerTitleStyle: {
-          fontWeight: "bold",
-          fontSize: 18,
-        },
-      }}
-    >
+    <Stack.Navigator>
       <Stack.Screen
         name="Matches"
         component={MatchesScreen}
-        options={{ headerShown: false }}
+        options={{ headerShown: true }}
       />
       <Stack.Screen
         name="ChatScreen"

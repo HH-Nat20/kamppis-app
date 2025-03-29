@@ -4,13 +4,13 @@ import { queryKeys } from "./queryKeys";
 
 import { UserProfileForm } from "../types/requests/UserProfileForm";
 import { UserProfile } from "../types/responses/UserProfile";
-import { RoomProfile } from "../types/responses/RoomProfile";
 
 export const useUpdateUserProfileMutation = (profileId: number | undefined) => {
   const queryClient = useQueryClient();
 
   if (!profileId) {
-    throw new Error("profileId is required to update user profile");
+    //throw new Error("profileId is required to update user profile");
+    return;
   }
 
   return useMutation({

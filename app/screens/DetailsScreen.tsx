@@ -22,13 +22,13 @@ import { Center } from "@/components/ui/center";
 import { UserProfileDetailsCard } from "../components/UserProfileDetailsCard";
 import { RoomProfileDetailsCard } from "../components/RoomProfileDetailsCard";
 
-import { DetailsParamList } from "../navigation/SwipeStackNavigator";
+import { RootParamList } from "../navigation/RootNavigator";
 import { getProfileQueryOptions } from "../queries/profileQueries";
 import { RouteProp } from "@react-navigation/native";
 
 import Container from "../components/Container";
 
-type DetailsScreenRouteProp = RouteProp<DetailsParamList, "DetailsScreen">;
+type DetailsScreenRouteProp = RouteProp<RootParamList, "DetailsScreen">;
 
 export default function DetailsScreen() {
   const route = useRoute<DetailsScreenRouteProp>();

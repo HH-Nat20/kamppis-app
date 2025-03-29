@@ -10,6 +10,8 @@ import { ProfileStackParamList } from "../navigation/ProfileStackNavigator";
 import { Fab, FabLabel, FabIcon } from "@/components/ui/fab";
 import { AddIcon } from "@/components/ui/icon";
 
+import ProfileDrawerLayout from "../components/ProfileDrawerLayout";
+
 import {
   Actionsheet,
   ActionsheetContent,
@@ -80,6 +82,7 @@ export default function ProfilePhotosScreen() {
         isProfilePhoto: p.id === photo.id ? value : false,
       }));
       setPhotos(updated);
+      refreshUser();
     });
   };
 
@@ -89,64 +92,68 @@ export default function ProfilePhotosScreen() {
   };
 
   return (
-    <VStack className="px-5 py-4 flex-1 bg-white dark:bg-black" space="xl">
-      <Heading className="mb-2">Your Photos</Heading>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 50 }}
-      >
-        <VStack space="xl">
-          {photos.map((photo, index) => (
-            <Box
-              key={index}
-              className="p-4 rounded-xl border border-border bg-info-900 dark:bg-info-100"
-            >
-              <Portrait photo={photo} />
-              <HStack className="justify-between items-center mt-4">
-                <HStack space="md" className="items-center">
-                  <Switch
-                    value={photo.isProfilePhoto}
-                    onValueChange={(value) => changeProfilePhoto(photo, value)}
-                  />
-                  <Text className="text-white">Profile Photo</Text>
+    <ProfileDrawerLayout>
+      <VStack className="px-5 py-4 flex-1 bg-white dark:bg-black" space="xl">
+        <Heading className="mb-2">Your Photos</Heading>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 50 }}
+        >
+          <VStack space="xl">
+            {photos.map((photo, index) => (
+              <Box
+                key={index}
+                className="p-4 rounded-xl border border-border bg-info-900 dark:bg-info-100"
+              >
+                <Portrait photo={photo} />
+                <HStack className="justify-between items-center mt-4">
+                  <HStack space="md" className="items-center">
+                    <Switch
+                      value={photo.isProfilePhoto}
+                      onValueChange={(value) =>
+                        changeProfilePhoto(photo, value)
+                      }
+                    />
+                    <Text className="text-white">Profile Photo</Text>
+                  </HStack>
+                  <Pressable onPress={() => handleDeletePress(photo)}>
+                    <Icon className="text-white" as={Trash2} />
+                  </Pressable>
                 </HStack>
-                <Pressable onPress={() => handleDeletePress(photo)}>
-                  <Icon className="text-white" as={Trash2} />
-                </Pressable>
-              </HStack>
-            </Box>
-          ))}
-        </VStack>
-      </ScrollView>
-      <Fab
-        className="absolute bottom-5 right-5 bg-success-500"
-        onPress={() => setShowActionsheet(true)}
-        size="md"
-        isHovered={false}
-        isDisabled={false}
-        isPressed={false}
-      >
-        <FabIcon className="text-white" as={AddIcon} />
-        <FabLabel className="text-white">Add Image</FabLabel>
-      </Fab>
+              </Box>
+            ))}
+          </VStack>
+        </ScrollView>
+        <Fab
+          className="absolute bottom-5 right-5 bg-success-500"
+          onPress={() => setShowActionsheet(true)}
+          size="md"
+          isHovered={false}
+          isDisabled={false}
+          isPressed={false}
+        >
+          <FabIcon className="text-white" as={AddIcon} />
+          <FabLabel className="text-white">Add Image</FabLabel>
+        </Fab>
 
-      <Actionsheet isOpen={showActionsheet} onClose={handleClose}>
-        <ActionsheetBackdrop />
-        <ActionsheetContent>
-          <ActionsheetDragIndicatorWrapper>
-            <ActionsheetDragIndicator />
-          </ActionsheetDragIndicatorWrapper>
-          <ActionsheetItem onPress={() => openUploader("gallery")}>
-            <ActionsheetItemText>Upload from gallery</ActionsheetItemText>
-          </ActionsheetItem>
-          <ActionsheetItem onPress={() => openUploader("camera")}>
-            <ActionsheetItemText>Use Camera</ActionsheetItemText>
-          </ActionsheetItem>
-          <ActionsheetItem onPress={handleClose}>
-            <ActionsheetItemText>Cancel</ActionsheetItemText>
-          </ActionsheetItem>
-        </ActionsheetContent>
-      </Actionsheet>
-    </VStack>
+        <Actionsheet isOpen={showActionsheet} onClose={handleClose}>
+          <ActionsheetBackdrop />
+          <ActionsheetContent>
+            <ActionsheetDragIndicatorWrapper>
+              <ActionsheetDragIndicator />
+            </ActionsheetDragIndicatorWrapper>
+            <ActionsheetItem onPress={() => openUploader("gallery")}>
+              <ActionsheetItemText>Upload from gallery</ActionsheetItemText>
+            </ActionsheetItem>
+            <ActionsheetItem onPress={() => openUploader("camera")}>
+              <ActionsheetItemText>Use Camera</ActionsheetItemText>
+            </ActionsheetItem>
+            <ActionsheetItem onPress={handleClose}>
+              <ActionsheetItemText>Cancel</ActionsheetItemText>
+            </ActionsheetItem>
+          </ActionsheetContent>
+        </Actionsheet>
+      </VStack>
+    </ProfileDrawerLayout>
   );
 }

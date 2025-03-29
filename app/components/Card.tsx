@@ -13,7 +13,7 @@ import { ProfileCard } from "../types/ProfileCard";
 import { getProfilePicture, getImageUrl } from "../helpers/helpers";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { DetailsParamList } from "../navigation/SwipeStackNavigator";
+import { RootParamList } from "../navigation/RootNavigator";
 
 import ProfileTitle from "./ProfileTitle";
 import TagArea from "./TagArea";
@@ -23,7 +23,7 @@ interface CardProps {
 }
 
 type DetailScreenNavigationProp = NativeStackNavigationProp<
-  DetailsParamList,
+  RootParamList,
   "DetailsScreen"
 >;
 

@@ -5,7 +5,7 @@ import { Text } from "@/components/ui/text";
 import { StackNavigationProp } from "@react-navigation/stack";
 
 import { User } from "../types/responses/User";
-import { DetailsParamList } from "../navigation/SwipeStackNavigator";
+import { RootParamList } from "../navigation/RootNavigator";
 import { getProfilePicture, getImageUrl } from "../helpers/helpers";
 
 interface RoommateListProps {
@@ -14,7 +14,7 @@ interface RoommateListProps {
 
 export const RoommateList = ({ roommates }: RoommateListProps) => {
   const navigation =
-    useNavigation<StackNavigationProp<DetailsParamList, "DetailsScreen">>();
+    useNavigation<StackNavigationProp<RootParamList, "DetailsScreen">>();
 
   if (!roommates || roommates.length === 0) return null;
 

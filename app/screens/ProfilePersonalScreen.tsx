@@ -20,6 +20,8 @@ import { Divider } from "@/components/ui/divider";
 import { Box } from "@/components/ui/box";
 import { Textarea, TextareaInput } from "@/components/ui/textarea";
 
+import ProfileDrawerLayout from "../components/ProfileDrawerLayout";
+
 export default function ProfilePersonalScreen() {
   const {
     control,
@@ -30,29 +32,31 @@ export default function ProfilePersonalScreen() {
   const { onSubmit, onError } = useProfileForm();
 
   return (
-    <VStack className="px-5 py-4 flex-1 dark:bg-black bg-white" space="xl">
-      <Heading className="mb-2">Personal Details</Heading>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <VStack space="xl">
-          <ProfileInputSection control={control} errors={errors} />
-          <Divider />
-          <GenderSection control={control} errors={errors} />
-          <Divider />
-          <LifestyleSection control={control} errors={errors} />
-          <Divider />
-          <CleanlinessSection control={control} errors={errors} />
-          <Divider />
-          <BioSection control={control} errors={errors} />
-        </VStack>
-        <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }} />
-      </ScrollView>
+    <ProfileDrawerLayout>
+      <VStack className="px-5 py-4 flex-1 dark:bg-black bg-white" space="xl">
+        <Heading className="mb-2">Personal Details</Heading>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <VStack space="xl">
+            <ProfileInputSection control={control} errors={errors} />
+            <Divider />
+            <GenderSection control={control} errors={errors} />
+            <Divider />
+            <LifestyleSection control={control} errors={errors} />
+            <Divider />
+            <CleanlinessSection control={control} errors={errors} />
+            <Divider />
+            <BioSection control={control} errors={errors} />
+          </VStack>
+          <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }} />
+        </ScrollView>
 
-      {isDirty && (
-        <Button onPress={handleSubmit(onSubmit, onError)}>
-          <ButtonText>Save Changes</ButtonText>
-        </Button>
-      )}
-    </VStack>
+        {isDirty && (
+          <Button onPress={handleSubmit(onSubmit, onError)}>
+            <ButtonText>Save Changes</ButtonText>
+          </Button>
+        )}
+      </VStack>
+    </ProfileDrawerLayout>
   );
 }
 

@@ -1,8 +1,8 @@
 import React from "react";
-import BottomTabNavigator from "./BottomTabNavigator";
+import RootNavigator from "./RootNavigator";
 
 const AppNavigator: React.FC = () => {
-  return <BottomTabNavigator />;
+  return <RootNavigator />;
 };
 
 export default AppNavigator;

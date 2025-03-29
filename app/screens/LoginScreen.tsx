@@ -1,57 +1,70 @@
-import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  Button,
-  TouchableOpacity,
-  ActionSheetIOS,
-  Modal,
-  FlatList,
-  Pressable,
-  Platform,
-} from "react-native";
+import React, { useEffect, useState } from "react";
+import { ActionSheetIOS, Platform, Modal, FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { getUsers } from "../ajax/dao_users";
-import { MatchUser } from "../types/Match";
-import { User } from "../types/responses/User";
-import styles from "../ui/styles";
-import { useUser } from "../contexts/UserContext";
-import { HomeStackParamList } from "../navigation/HomeStackNavigator";
+import { useQuery } from "@tanstack/react-query";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import { useUser } from "../contexts/UserContext";
+import { getUsers } from "../ajax/dao_users";
+import { User } from "../types/responses/User";
+import { HomeStackParamList } from "../navigation/HomeStackNavigator";
 import Container from "../components/Container";
 
-type HomeScreenNavigationProp = NativeStackNavigationProp<
-  HomeStackParamList,
-  "Home"
->;
+import { Button, ButtonText } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
+import { VStack } from "@/components/ui/vstack";
+import { Pressable } from "@/components/ui/pressable";
+import { Heading } from "@/components/ui/heading";
 
 export default function LoginScreen() {
-  const navigation = useNavigation<HomeScreenNavigationProp>();
-  const [loading, setLoading] = useState<boolean>(true);
-  const [users, setUsers] = useState<MatchUser[]>([]);
-  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
+  const navigation =
+    useNavigation<NativeStackNavigationProp<HomeStackParamList, "Home">>();
+
+  const { changeUser } = useUser();
   const [selectedUserLabel, setSelectedUserLabel] =
     useState<string>("Select a user");
   const [isAndroidPickerVisible, setAndroidPickerVisible] =
     useState<boolean>(false);
-  const { changeUser } = useUser();
 
-  useEffect(() => {
-    getUsers().then((users) => {
-      console.log("Users", users);
-      setUsers(users);
-      setLoading(false);
-    });
-  }, []);
+  /** This query key is not in queryKeys.ts because it's just for testing purposes */
+  const { data: users = [], isLoading } = useQuery<User[]>({
+    queryKey: ["users"],
+    queryFn: getUsers,
+  });
 
-  // iOS User Picker
+  const handleLogin = async (user: User) => {
+    try {
+      const response = await fetch(
+        `https://kamppis.hellmanstudios.fi/api/login?email=${encodeURIComponent(
+          user.email
+        )}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) throw new Error("Login failed");
+
+      const data = await response.json();
+      const token = data.token;
+      if (!token) throw new Error("No token received");
+
+      await AsyncStorage.setItem("jwtToken", token);
+      changeUser(user.id);
+
+      navigation.reset({ index: 0, routes: [{ name: "Home" }] });
+    } catch (error) {
+      console.error("Login error:", error);
+    }
+  };
+
   const openUserPickerIOS = () => {
-    if (users.length === 0) return;
-
-    const options = users.map((user) => user.email);
-    options.push("Cancel");
-
+    if (users?.length === 0) return;
+    const options = users?.map((user) => user.email).concat("Cancel");
     ActionSheetIOS.showActionSheetWithOptions(
       {
         options,
@@ -59,134 +72,55 @@ export default function LoginScreen() {
       },
       (buttonIndex) => {
         if (buttonIndex < users.length) {
-          setSelectedUserId(users[buttonIndex].id.toString());
-          setSelectedUserLabel(users[buttonIndex].email);
+          const user = users[buttonIndex];
+          setSelectedUserLabel(user.email);
+          handleLogin(user);
         }
       }
     );
   };
 
-  // Android User Picker
   const openUserPickerAndroid = () => {
     setAndroidPickerVisible(true);
   };
 
-  const selectUserAndroid = (user: MatchUser) => {
-    setSelectedUserId(user.id.toString());
+  const selectUserAndroid = (user: User) => {
     setSelectedUserLabel(user.email);
     setAndroidPickerVisible(false);
+    handleLogin(user);
   };
 
   return (
     <Container>
-      <Text style={styles.info}>Select a user to login</Text>
+      <VStack className="items-center gap-6 mt-10">
+        <Heading>Select a user to login</Heading>
 
-      {/* Button to Open Picker (iOS/Android) */}
-      <TouchableOpacity
-        style={styles.pickerInput}
-        onPress={
-          Platform.OS === "ios" ? openUserPickerIOS : openUserPickerAndroid
-        }
-      >
-        <Text style={styles.pickerItem}>{selectedUserLabel}</Text>
-      </TouchableOpacity>
-
-      {/* Android Modal Picker */}
-      {Platform.OS === "android" && (
-        <Modal
-          visible={isAndroidPickerVisible}
-          animationType="slide"
-          transparent={true}
-          onRequestClose={() => setAndroidPickerVisible(false)}
+        <Pressable
+          className="border rounded-md px-4 py-2"
+          onPress={
+            Platform.OS === "ios" ? openUserPickerIOS : openUserPickerAndroid
+          }
         >
-          <View style={styles.modalContainer}>
-            <View style={styles.modalContent}>
-              <Text style={styles.modalTitle}>Select a User</Text>
-              <FlatList
-                data={users}
-                keyExtractor={(user) => user.id.toString()}
-                renderItem={({ item }) => (
-                  <Pressable
-                    style={styles.modalItem}
-                    onPress={() => selectUserAndroid(item)}
-                  >
-                    <Text>{item.email}</Text>
-                  </Pressable>
-                )}
-              />
-              <Button
-                title="Cancel"
-                onPress={() => setAndroidPickerVisible(false)}
-              />
-            </View>
-          </View>
-        </Modal>
-      )}
+          <Text>{selectedUserLabel}</Text>
+        </Pressable>
 
-      {/* Login Button */}
-      <Button
-        title="Login"
-        onPress={async () => {
-          if (!selectedUserId) {
-            console.warn("No user selected");
-            return;
-          }
-          const selectedUser = users.find(
-            (user) => user.id.toString() === selectedUserId
-          );
-          if (!selectedUser) {
-            console.error("Selected user not found");
-            return;
-          }
-          console.log("Login as", selectedUser);
-
-          try {
-            const response = await fetch(
-              `https://kamppis.hellmanstudios.fi/api/login?email=${encodeURIComponent(
-                selectedUser.email
-              )}`,
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              }
-            );
-
-            if (!response.ok) {
-              console.error(
-                "Login failed",
-                response.status,
-                response.statusText
-              );
-              return;
-            }
-
-            const data = await response.json();
-            const token = data.token;
-
-            if (!token) {
-              console.error("No token received");
-              return;
-            }
-            console.log("Received JWT:", token);
-
-            // Store the token in AsyncStorage or SecureStore for later use
-            await AsyncStorage.setItem("jwtToken", token);
-
-            console.log("CHANGING USER TO", selectedUser.id);
-
-            changeUser(selectedUser.id);
-
-            navigation.reset({
-              index: 0,
-              routes: [{ name: "Home" }],
-            });
-          } catch (error) {
-            console.error("Login error:", error);
-          }
-        }}
-      />
+        {Platform.OS === "android" && isAndroidPickerVisible && (
+          <VStack className="w-full px-4">
+            {users.map((user) => (
+              <Pressable
+                key={user.id}
+                className="py-3 border-b border-gray-200"
+                onPress={() => selectUserAndroid(user)}
+              >
+                <Text>{user.email}</Text>
+              </Pressable>
+            ))}
+            <Button onPress={() => setAndroidPickerVisible(false)}>
+              <ButtonText>Cancel</ButtonText>
+            </Button>
+          </VStack>
+        )}
+      </VStack>
     </Container>
   );
 }

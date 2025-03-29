@@ -12,7 +12,7 @@ import { VStack } from "@/components/ui/vstack";
 import { RoomProfile } from "../types/responses/RoomProfile";
 import { getRoommateQueryOptions } from "../queries/roommateQuery";
 
-import { DetailsParamList } from "../navigation/SwipeStackNavigator";
+import { RootParamList } from "../navigation/RootNavigator";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RoommateList } from "./RoommateList";
 
@@ -22,7 +22,7 @@ export const RoomProfileDetailsCard = ({
   profile: RoomProfile;
 }) => {
   const navigation =
-    useNavigation<StackNavigationProp<DetailsParamList, "DetailsScreen">>();
+    useNavigation<StackNavigationProp<RootParamList, "DetailsScreen">>();
 
   const { data: roommateUsers = [] } = useQuery(
     getRoommateQueryOptions(profile.userIds!)

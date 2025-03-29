@@ -1,20 +1,13 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { RouteProp } from "@react-navigation/native";
 import SwipeScreen from "../screens/SwipeScreen";
-import DetailsScreen from "../screens/DetailsScreen";
-
 import colors from "../ui/colors";
 
-export type DetailsParamList = {
+export type SwipeParamList = {
   Swipe: undefined;
-  DetailsScreen: {
-    userName: string;
-    profileId: string;
-  };
 };
 
-const Stack = createStackNavigator<DetailsParamList>();
+const Stack = createStackNavigator<SwipeParamList>();
 
 const SwipeStackNavigator: React.FC = () => {
   return (
@@ -35,13 +28,6 @@ const SwipeStackNavigator: React.FC = () => {
         name="Swipe"
         component={SwipeScreen}
         options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="DetailsScreen"
-        component={DetailsScreen}
-        options={({ route }) => ({
-          title: route.params.userName || "Profile",
-        })}
       />
     </Stack.Navigator>
   );

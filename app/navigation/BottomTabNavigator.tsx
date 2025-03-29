@@ -1,19 +1,22 @@
 import React from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import colors from "tailwindcss/colors";
 
 import ChatStackNavigator from "./ChatStackNavigator";
 import HomeStackNavigator from "./HomeStackNavigator";
 import SwipeStackNavigator from "./SwipeStackNavigator";
 import ProfileStackNavigator from "./ProfileStackNavigator";
-
-import colors from "../ui/colors";
+import DetailsScreen from "../screens/DetailsScreen";
 
 const Tab = createBottomTabNavigator();
+
+const hiddenTabRoutes = ["Details"];
 
 const BottomTabNavigator: React.FC = () => {
   return (
     <Tab.Navigator
+      initialRouteName="Home"
       screenOptions={({ route }) => ({
         tabBarStyle: {
           backgroundColor: "transparent",
@@ -25,16 +28,16 @@ const BottomTabNavigator: React.FC = () => {
           paddingTop: 5,
         },
         headerStyle: {
-          backgroundColor: colors.background,
-          elevation: 0, // removes shadow on Android
+          backgroundColor: colors.transparent,
+          elevation: 0,
         },
-        headerShadowVisible: false, // removes shadow on iOS
+        headerShadowVisible: false,
         headerTitleStyle: {
-          color: colors.text,
+          color: colors.teal[900],
           fontSize: 18,
         },
-        tabBarActiveTintColor: colors.active,
-        tabBarInactiveTintColor: colors.inactive,
+        tabBarActiveTintColor: colors.teal[500],
+        tabBarInactiveTintColor: colors.gray[500],
         tabBarIcon: ({ color, size }) => {
           let iconName: keyof typeof Ionicons.glyphMap = "home";
 
@@ -51,7 +54,7 @@ const BottomTabNavigator: React.FC = () => {
       <Tab.Screen
         name="Home"
         component={HomeStackNavigator}
-        options={{ headerShown: false }}
+        options={{ headerShown: false, tabBarLabel: "Home" }}
       />
       <Tab.Screen
         name="Profile"
@@ -66,7 +69,15 @@ const BottomTabNavigator: React.FC = () => {
       <Tab.Screen
         name="Chat"
         component={ChatStackNavigator}
-        options={{ tabBarLabel: "Matches", headerTitle: "Matches" }}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="Details"
+        component={DetailsScreen}
+        options={{
+          headerShown: true,
+          tabBarItemStyle: { display: "none" },
+        }}
       />
     </Tab.Navigator>
   );
