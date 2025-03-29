@@ -81,6 +81,31 @@ const DrawerLayoutContent = ({ children }: { children: React.ReactNode }) => {
     });
   }, [navigation, user]);
 
+  const currentRoute = navigation.getState().routes.at(-1)?.name;
+
+  const handleDrawerItemPress = (target: string) => {
+    closeDrawer();
+
+    if (target === currentRoute) return;
+
+    setTimeout(() => {
+      if (target === "ProfileScreen") {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: "ProfileScreen" }],
+        });
+      } else {
+        navigation.reset({
+          index: 1,
+          routes: [
+            { name: "ProfileScreen" },
+            { name: target as keyof ProfileStackParamList },
+          ],
+        });
+      }
+    }, 100);
+  };
+
   return (
     <>
       {children}
@@ -109,28 +134,32 @@ const DrawerLayoutContent = ({ children }: { children: React.ReactNode }) => {
 
           <Divider className="my-4" />
           <DrawerBody contentContainerClassName="gap-2">
-            {drawerItems.map((item, idx) => (
-              <Pressable
-                key={idx}
-                onPress={() => {
-                  if (item.href) {
-                    navigation.reset({
-                      index: 0,
-                      routes: [{ name: item.href as any }],
-                    });
-                    closeDrawer();
-                  }
-                }}
-                className="gap-3 flex-row items-center hover:bg-background-50 p-2 rounded-md"
-              >
-                <Icon
-                  as={item.icon}
-                  size="lg"
-                  className="text-typography-600"
-                />
-                <Text>{item.label}</Text>
-              </Pressable>
-            ))}
+            {drawerItems.map((item, idx) => {
+              const isActive = currentRoute === item.href;
+
+              return (
+                <Pressable
+                  key={idx}
+                  onPress={() => item.href && handleDrawerItemPress(item.href)}
+                  className={`flex-row items-center gap-3 px-4 py-3 rounded-md ${
+                    isActive ? "bg-background-100" : "hover:bg-background-50"
+                  }`}
+                >
+                  <Icon
+                    as={item.icon}
+                    size="lg"
+                    className="text-typography-900 dark:text-typography-100"
+                  />
+                  <Text
+                    className={`text-base ${
+                      isActive ? "font-semibold" : ""
+                    } text-typography-900 dark:text-typography-100`}
+                  >
+                    {item.label}
+                  </Text>
+                </Pressable>
+              );
+            })}
           </DrawerBody>
 
           <DrawerFooter>

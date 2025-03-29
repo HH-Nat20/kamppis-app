@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { KeyboardAvoidingView, ScrollView } from "react-native";
 import { Controller, useFormContext } from "react-hook-form";
-import { useProfileForm } from "../contexts/ProfileFormContext";
-import { User } from "../types/responses/User";
-import { UserProfileForm } from "../types/requests/UserProfileForm";
+import { usePersonalInfoForm } from "../contexts/PersonalInfoFormContext";
+import { PersonalInfoForm } from "../validation/personalInfoSchema";
 import { Gender } from "../types/enums/GenderEnum";
 import { Lifestyle } from "../types/enums/LifestyleEnum";
 import { Cleanliness } from "../types/enums/CLeanlinessEnum";
@@ -27,9 +26,14 @@ export default function ProfilePersonalScreen() {
     control,
     handleSubmit,
     formState: { errors, isDirty },
-  } = useFormContext<UserProfileForm>();
+    getValues,
+  } = useFormContext<PersonalInfoForm>();
 
-  const { onSubmit, onError } = useProfileForm();
+  const { onSubmit, onError } = usePersonalInfoForm();
+
+  useEffect(() => {
+    console.log("👀 FORM VALUES:", getValues());
+  }, []);
 
   return (
     <ProfileDrawerLayout>
@@ -93,14 +97,14 @@ const ProfileInputSection = ({ control, errors }: any) => (
 const GenderSection = ({ control, errors }: any) => (
   <VStack space="md">
     <Heading size="sm">Gender</Heading>
-    <HStack space="sm" className="flex-wrap">
-      {Object.values(Gender).map((g) => (
-        <Controller
-          key={g}
-          control={control}
-          name="gender"
-          render={({ field: { onChange, value } }) => (
+    <Controller
+      control={control}
+      name="gender"
+      render={({ field: { onChange, value } }) => (
+        <HStack space="sm" className="flex-wrap">
+          {Object.values(Gender).map((g) => (
             <Pressable
+              key={g}
               className={`px-4 py-2 rounded-full border ${
                 value === g
                   ? "bg-success-900 dark:bg-success-100 border-primary-500"
@@ -116,10 +120,10 @@ const GenderSection = ({ control, errors }: any) => (
                 {g === "NOT_IMPORTANT" ? "PREFER NOT TO SAY" : g}
               </Text>
             </Pressable>
-          )}
-        />
-      ))}
-    </HStack>
+          ))}
+        </HStack>
+      )}
+    />
     {errors.gender && (
       <Text className="text-error-500">{errors.gender.message}</Text>
     )}

@@ -1,9 +1,8 @@
 import React from "react";
 import { KeyboardAvoidingView, ScrollView } from "react-native";
 import { Controller, useFormContext } from "react-hook-form";
-import { useProfileForm } from "../contexts/ProfileFormContext";
-import { User } from "../types/responses/User";
-import { UserProfileForm } from "../types/requests/UserProfileForm";
+import { usePreferencesForm } from "../contexts/PreferencesFormContext";
+import { PreferencesForm } from "../validation/preferencesSchema";
 import { Gender } from "../types/enums/GenderEnum";
 import { Location } from "../types/enums/LocationEnum";
 
@@ -25,9 +24,9 @@ export default function ProfilePreferencesScreen() {
     control,
     handleSubmit,
     formState: { errors, isDirty },
-  } = useFormContext<UserProfileForm>();
+  } = useFormContext<PreferencesForm>();
 
-  const { onSubmit, onError } = useProfileForm();
+  const { onSubmit, onError } = usePreferencesForm();
 
   return (
     <ProfileDrawerLayout>

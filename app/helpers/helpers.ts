@@ -35,7 +35,7 @@ const getProfilePicture = (photos?: Photo[]): Photo | undefined => {
     //console.log("Found some photos...", photos);
     const profilePicture = photos.find((photo) => photo.isProfilePhoto);
     if (profilePicture) {
-      console.log("Found a profile picture...", profilePicture);
+      //console.log("Found a profile picture...", profilePicture);
       return profilePicture;
     }
   }
@@ -51,9 +51,9 @@ const getImageUrl = (
   let url =
     "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png";
 
-  console.log("Photo:", photo);
-  console.log("Return type:", returnType);
-  console.log("Override profile ID:", overrideProfileId);
+  //console.log("Photo:", photo);
+  //console.log("Return type:", returnType);
+  //console.log("Override profile ID:", overrideProfileId);
 
   if (photo?.url) {
     if (photo.url.startsWith("http")) {
@@ -75,7 +75,7 @@ const getImageUrl = (
     }
   }
 
-  console.log("Returning IMAGE URL:", url);
+  //console.log("Returning IMAGE URL:", url);
   return url;
 };
 

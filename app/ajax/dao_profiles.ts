@@ -1,10 +1,9 @@
 import { UserProfile } from "../types/responses/UserProfile";
 import { RoomProfile } from "../types/responses/RoomProfile";
 
-import { User } from "../types/responses/User";
-
 import { get, update } from "./request";
 import { UserProfileForm } from "../types/requests/UserProfileForm";
+import { PersonalInfoForm } from "../validation/personalInfoSchema";
 
 const ENDPOINT = "profiles";
 
@@ -65,5 +64,29 @@ export const updateProfile = async (
   const response = await update(`${ENDPOINT}/${profileId}`, profileForm);
   const profile: UserProfile = await response.json();
   console.log(`Updated profile: `, profile);
+  return profile;
+};
+
+/**
+ * Update a user profile
+ */
+export const updateUserProfile = async (
+  profileId: number,
+  profileForm: PersonalInfoForm
+) => {
+  console.log("Updating user profile with form: ", profileForm);
+
+  const body = {
+    type: "userProfile",
+    id: profileId,
+    bio: profileForm.bio,
+    cleanliness: profileForm.cleanliness,
+    lifestyle: profileForm.lifestyle,
+    photos: [], // TODO: Add photos or remove this field from the backend
+  };
+
+  const response = await update(`${ENDPOINT}/${profileId}`, body); // TODO: Check URL
+  const profile: UserProfile = await response.json();
+  console.log(`Updated user profile: `, profile);
   return profile;
 };
