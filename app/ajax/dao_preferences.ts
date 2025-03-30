@@ -4,7 +4,7 @@ import { RoommatePreferences } from "../types/responses/RoommatePreferences";
 import { User } from "../types/responses/User";
 import { UserProfile } from "../types/responses/UserProfile";
 
-const ENDPOINT = "preferences";
+const ENDPOINT = "user";
 
 /**
  * Fetch a user's preferences by ID
@@ -15,7 +15,7 @@ const ENDPOINT = "preferences";
 export const getPreferences = async (
   userId: number
 ): Promise<RoommatePreferences> => {
-  const response = await get(`${ENDPOINT}/${userId}`);
+  const response = await get(`${ENDPOINT}/${userId}/preferences`);
   const preferences: RoommatePreferences = await response.json();
   return preferences;
 };
@@ -31,7 +31,10 @@ export const updatePreferences = async (
   userId: number,
   preferences: PreferencesForm
 ): Promise<RoommatePreferences> => {
-  const response = await update(`${ENDPOINT}/${userId}`, preferences);
+  const response = await update(
+    `${ENDPOINT}/${userId}/preferences`,
+    preferences
+  );
   const updatedPreferences: RoommatePreferences = await response.json();
   return updatedPreferences;
 };

@@ -3,7 +3,7 @@ import { RoomPreferences } from "./RoomPreferences";
 
 export interface Preferences {
   id: number;
-  roomPreference: RoomPreferences;
-  roommatePreference: RoommatePreferences;
+  roomPreference: RoomPreferences | null;
+  roommatePreference: RoommatePreferences | undefined;
   // userId: number;
 }

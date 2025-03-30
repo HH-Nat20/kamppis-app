@@ -20,12 +20,10 @@ import { VStack } from "@/components/ui/vstack";
 import { Button, ButtonIcon, ButtonText } from "@/components/ui/button";
 import {
   LogOut,
-  Home,
-  ShoppingCart,
   User,
-  Wallet,
   UserCog,
   Settings,
+  BriefcaseBusiness,
   Images,
 } from "lucide-react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -52,6 +50,11 @@ const drawerItems: ProfileStackNavItem[] = [
     href: "Match Preferences",
   },
   { icon: Images, label: "Photos", href: "Photos" },
+  {
+    icon: BriefcaseBusiness,
+    label: "Privacy Settings",
+    href: "Privacy Settings",
+  },
 ];
 
 const ProfileDrawerLayout = ({ children }: { children: React.ReactNode }) => {
