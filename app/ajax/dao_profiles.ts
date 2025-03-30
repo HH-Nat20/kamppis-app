@@ -3,7 +3,7 @@ import { RoomProfile } from "../types/responses/RoomProfile";
 
 import { get, update } from "./request";
 import { UserProfileForm } from "../types/requests/UserProfileForm";
-import { PersonalInfoForm } from "../validation/personalInfoSchema";
+import { ProfileForm } from "../validation/profileFormSchema";
 
 const ENDPOINT = "profiles";
 
@@ -72,7 +72,7 @@ export const updateProfile = async (
  */
 export const updateUserProfile = async (
   profileId: number,
-  profileForm: PersonalInfoForm
+  profileForm: ProfileForm
 ) => {
   console.log("Updating user profile with form: ", profileForm);
 
@@ -82,7 +82,6 @@ export const updateUserProfile = async (
     bio: profileForm.bio,
     cleanliness: profileForm.cleanliness,
     lifestyle: profileForm.lifestyle,
-    photos: [], // TODO: Add photos or remove this field from the backend
   };
 
   const response = await update(`${ENDPOINT}/${profileId}`, body); // TODO: Check URL

@@ -2,7 +2,7 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import ImageUpload from "../screens/ImageUpload";
 import { ProfileFormProvider } from "../contexts/ProfileFormContext";
-import { PersonalInfoFormProvider } from "../contexts/PersonalInfoFormContext";
+import { UserFormProvider } from "../contexts/UserFormContext";
 import { PreferencesFormProvider } from "../contexts/PreferencesFormContext";
 import ProfileScreen from "../screens/ProfileScreen";
 import ProfilePersonalScreen from "../screens/ProfilePersonalScreen";
@@ -40,17 +40,17 @@ const ProfileStackNavigator: React.FC = () => {
 
         <Stack.Screen name="Personal Info" options={{ headerShown: true }}>
           {() => (
-            <PersonalInfoFormProvider>
+            <UserFormProvider>
               <ProfilePersonalScreen />
-            </PersonalInfoFormProvider>
+            </UserFormProvider>
           )}
         </Stack.Screen>
 
         <Stack.Screen name="Lifestyle" options={{ headerShown: true }}>
           {() => (
-            <PersonalInfoFormProvider>
+            <ProfileFormProvider>
               <ProfileLifestyleScreen />
-            </PersonalInfoFormProvider>
+            </ProfileFormProvider>
           )}
         </Stack.Screen>
 

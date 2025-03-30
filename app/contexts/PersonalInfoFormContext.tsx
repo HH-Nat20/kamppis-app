@@ -34,7 +34,7 @@ export const PersonalInfoFormProvider = ({
 
   const defaultValues = React.useMemo(
     () => ({
-      firstName: "Jonne",
+      firstName: "",
       lastName: "",
       age: 18,
       gender: Gender.NOT_IMPORTANT,

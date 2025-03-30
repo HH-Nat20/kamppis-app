@@ -1,59 +1,41 @@
-import React, { createContext, useContext } from "react";
-import { useForm, FormProvider, FieldErrors } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { ActivityIndicator } from "react-native";
+import React, { createContext, useContext, useEffect, useRef } from "react";
+import { useForm, FormProvider } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Toast from "react-native-toast-message";
-
+import { ActivityIndicator } from "react-native";
 import { useUser } from "./UserContext";
-import { useMatchableProfiles } from "./MatchableProfilesContext";
-import { useQueries } from "@tanstack/react-query";
-import { getUserPreferencesQueryOptions } from "../queries/userQueries";
-import { getProfileQueryOptions } from "../queries/profileQueries";
+import { useQuery } from "@tanstack/react-query";
 import { useUpdateUserProfileMutation } from "../queries/profileMutations";
-
-import { Gender, GenderLabels } from "../types/enums/GenderEnum";
-import { Lifestyle } from "../types/enums/LifestyleEnum";
-import { Location } from "../types/enums/LocationEnum";
+import { getUserProfileQueryOptions } from "../queries/profileQueries";
+import {
+  ProfileForm,
+  profileFormSchema,
+} from "../validation/profileFormSchema";
 import { Cleanliness } from "../types/enums/CLeanlinessEnum";
-import { UserProfileForm } from "../types/requests/UserProfileForm";
-import { UserFormSchema, profileSchema } from "../validation/profileSchema";
+import { Lifestyle } from "../types/enums/LifestyleEnum";
 
-interface ProfileFormContextProps {
-  loading: boolean;
-  onSubmit: (data: UserProfileForm) => Promise<void>;
-  onError?: (errors: any) => void;
-  formState: { errors: FieldErrors<UserProfileForm> };
-}
-
-const ProfileFormContext = createContext<ProfileFormContextProps | undefined>(
-  undefined
-);
+const ProfileFormContext = createContext<any>(undefined);
 
 export const ProfileFormProvider = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
+  const isMounted = useRef(false);
   const { user } = useUser();
-  const { refreshMatchableProfiles } = useMatchableProfiles();
-
   const profileId = user?.userProfile.id;
-  const mutation = useUpdateUserProfileMutation(profileId);
 
-  const methods = useForm<UserFormSchema>({
-    resolver: yupResolver(profileSchema),
+  const mutation = useUpdateUserProfileMutation(profileId);
+  const { isPending, data: profile } = useQuery(
+    getUserProfileQueryOptions(profileId)
+  );
+
+  const methods = useForm<ProfileForm>({
+    resolver: zodResolver(profileFormSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      age: 18,
-      gender: Gender.OTHER,
-      maxRent: 1000,
-      lifestyle: [],
       bio: "",
-      minAgePreference: 18,
-      maxAgePreference: 99,
-      genderPreferences: [],
-      locationPreferences: [],
+      cleanliness: Cleanliness.TIDY,
+      lifestyle: [],
     },
   });
 
@@ -63,100 +45,41 @@ export const ProfileFormProvider = ({
     formState: { errors },
   } = methods;
 
-  const results = useQueries({
-    queries: [
-      getProfileQueryOptions(profileId),
-      getUserPreferencesQueryOptions(user?.id),
-    ],
-  });
-
-  const isLoading = results.some((q) => q.isLoading);
-  const [profileRes, prefRes] = results;
-
-  React.useEffect(() => {
-    if (
-      profileRes?.data &&
-      "lifestyle" in profileRes.data &&
-      prefRes?.data &&
-      user
-    ) {
-      const updatedProfile: UserProfileForm = {
-        firstName: user.firstName ?? "",
-        lastName: user.lastName ?? "",
-        gender: user.gender ?? Gender.NOT_IMPORTANT,
-        age: user.age ?? 18,
-        maxRent: prefRes.data.roomPreference?.maxRent ?? 1000,
-        lifestyle: profileRes.data.lifestyle ?? [],
-        cleanliness: profileRes.data.cleanliness ?? Cleanliness.TIDY,
-        bio: profileRes.data.bio ?? "",
-        minAgePreference:
-          prefRes.data.roommatePreference?.minAgePreference ?? 21,
-        maxAgePreference:
-          prefRes.data.roommatePreference?.maxAgePreference ?? 44,
-        genderPreferences: prefRes.data.roommatePreference
-          ?.genderPreferences ?? [Gender.NOT_IMPORTANT],
-        locationPreferences: prefRes.data.roommatePreference
-          ?.locationPreferences ?? [
-          Location.HELSINKI,
-          Location.ESPOO,
-          Location.VANTAA,
-        ],
-      };
-
-      reset(updatedProfile);
+  useEffect(() => {
+    if (profile) {
+      reset({
+        bio: profile.bio ?? "",
+        cleanliness: profile.cleanliness ?? Cleanliness.TIDY,
+        lifestyle: profile.lifestyle ?? ([] as Lifestyle[]),
+      });
     }
-  }, [profileRes.data, prefRes.data, reset, user]);
+  }, [profile]);
 
-  const onSubmit = async (data: UserProfileForm) => {
-    if (!user) return;
+  useEffect(() => {
+    isMounted.current = true;
+  }, []);
 
+  const onSubmit = async (data: ProfileForm) => {
     try {
-      if (Object.keys(errors).length > 0) {
-        Toast.show({
-          type: "info",
-          text1: "Invalid Input",
-          text2: "Cannot submit this shit.",
-        });
-        return;
-      }
-
-      await mutation.mutateAsync(data);
-      reset(data);
+      await mutation!.mutateAsync(data);
       Toast.show({
         type: "success",
-        text1: "Profile Updated",
-        text2: "Your changes have been saved.",
+        text1: "Saved",
+        text2: "Lifestyle info updated",
       });
-      refreshMatchableProfiles();
-    } catch (error) {
-      console.error("Update failed", error);
+    } catch (err) {
       Toast.show({
         type: "error",
-        text1: "Update Failed",
-        text2: "Something went wrong. Please try again.",
+        text1: "Error",
+        text2: "Could not update lifestyle info",
       });
     }
-  };
-
-  const onError = (errors: any) => {
-    Toast.show({
-      type: "error",
-      text1: "Invalid Input",
-      text2: "Please fix the errors before submitting.",
-    });
   };
 
   return (
-    <ProfileFormContext.Provider
-      value={{
-        loading: isLoading || mutation.isPending,
-        onSubmit,
-        onError,
-        formState: { errors },
-      }}
-    >
+    <ProfileFormContext.Provider value={{ onSubmit, formState: { errors } }}>
       <FormProvider {...methods}>
-        {isLoading ? <ActivityIndicator size="large" color="#fff" /> : children}
+        {isPending ? <ActivityIndicator size="large" color="#fff" /> : children}
       </FormProvider>
     </ProfileFormContext.Provider>
   );
@@ -164,8 +87,7 @@ export const ProfileFormProvider = ({
 
 export const useProfileForm = () => {
   const context = useContext(ProfileFormContext);
-  if (!context) {
-    throw new Error("useProfileForm must be used within a ProfileFormProvider");
-  }
+  if (!context)
+    throw new Error("useProfileForm must be used within ProfileFormProvider");
   return context;
 };

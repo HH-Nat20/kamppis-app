@@ -2,7 +2,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import dao from "../ajax/dao";
 import { queryKeys } from "./queryKeys";
 
-import { PersonalInfoForm } from "../validation/personalInfoSchema";
+import {
+  ProfileForm,
+  profileFormSchema,
+} from "../validation/profileFormSchema";
+
 import { UserProfile } from "../types/responses/UserProfile";
 
 export const useUpdateUserProfileMutation = (profileId: number | undefined) => {
@@ -16,7 +20,7 @@ export const useUpdateUserProfileMutation = (profileId: number | undefined) => {
   }
 
   return useMutation({
-    mutationFn: async (profile: PersonalInfoForm) =>
+    mutationFn: async (profile: ProfileForm) =>
       dao.updateUserProfile(profileId, profile),
     onSuccess: (updatedProfile: UserProfile) => {
       queryClient.setQueryData(queryKeys.profile(profileId), updatedProfile);

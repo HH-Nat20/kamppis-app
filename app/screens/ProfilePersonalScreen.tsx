@@ -1,8 +1,9 @@
 import React from "react";
 import { KeyboardAvoidingView, ScrollView } from "react-native";
 import { useFormContext } from "react-hook-form";
-import { usePersonalInfoForm } from "../contexts/PersonalInfoFormContext";
-import { PersonalInfoForm } from "../validation/personalInfoSchema";
+
+import { UserForm } from "../validation/userFormSchema";
+import { useUserForm } from "../contexts/UserFormContext";
 
 import { VStack } from "@/components/ui/vstack";
 import { Heading } from "@/components/ui/heading";
@@ -20,9 +21,9 @@ export default function ProfilePersonalScreen() {
     control,
     handleSubmit,
     formState: { errors, isDirty },
-  } = useFormContext<PersonalInfoForm>();
+  } = useFormContext<UserForm>();
 
-  const { onSubmit, onError } = usePersonalInfoForm();
+  const { onSubmit, onError } = useUserForm();
 
   return (
     <ProfileDrawerLayout>
