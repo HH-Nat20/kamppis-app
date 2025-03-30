@@ -10,12 +10,6 @@ export const getUser = async (id: number) => {
   return user;
 };
 
-export const getUserPreferences = async (id: number) => {
-  const response = await get(`${ENDPOINT}/${id}/preferences`);
-  const preferences = await response.json();
-  return preferences;
-};
-
 export const createUser = async (newUser: User) => {
   const response = await create(`${ENDPOINT}`, newUser);
   return response;

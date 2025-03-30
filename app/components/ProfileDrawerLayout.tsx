@@ -45,6 +45,11 @@ const drawerItems: ProfileStackNavItem[] = [
     href: "Personal Info",
   },
   {
+    icon: StarIcon,
+    label: "Lifestyle",
+    href: "Lifestyle",
+  },
+  {
     icon: Settings,
     label: "Match Preferences",
     href: "Match Preferences",

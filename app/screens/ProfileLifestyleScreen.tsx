@@ -6,16 +6,15 @@ import { PersonalInfoForm } from "../validation/personalInfoSchema";
 
 import { VStack } from "@/components/ui/vstack";
 import { Heading } from "@/components/ui/heading";
-import { Button } from "@/components/ui/button";
-import { ButtonText } from "@/components/ui/button";
 import { Divider } from "@/components/ui/divider";
+import { Button, ButtonText } from "@/components/ui/button";
 
+import LifestyleSection from "./sections/LifestyleSection";
+import CleanlinessSection from "./sections/CleanlinessSection";
+import BioSection from "./sections/BioSection";
 import ProfileDrawerLayout from "../components/ProfileDrawerLayout";
 
-import ProfileInputSection from "./sections/ProfileInputSection";
-import GenderSection from "./sections/GenderSection";
-
-export default function ProfilePersonalScreen() {
+export default function ProfileLifestyleScreen() {
   const {
     control,
     handleSubmit,
@@ -27,12 +26,14 @@ export default function ProfilePersonalScreen() {
   return (
     <ProfileDrawerLayout>
       <VStack className="px-5 py-4 flex-1 dark:bg-black bg-white" space="xl">
-        <Heading className="mb-2">Personal Info</Heading>
+        <Heading className="mb-2">Lifestyle</Heading>
         <ScrollView showsVerticalScrollIndicator={false}>
           <VStack space="xl">
-            <ProfileInputSection control={control} errors={errors} />
+            <LifestyleSection control={control} errors={errors} />
             <Divider />
-            <GenderSection control={control} errors={errors} />
+            <CleanlinessSection control={control} errors={errors} />
+            <Divider />
+            <BioSection control={control} errors={errors} />
           </VStack>
           <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }} />
         </ScrollView>

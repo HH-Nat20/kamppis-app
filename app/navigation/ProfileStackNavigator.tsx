@@ -9,12 +9,14 @@ import ProfilePersonalScreen from "../screens/ProfilePersonalScreen";
 import ProfilePreferencesScreen from "../screens/ProfilePreferencesScreen";
 import ProfilePhotosScreen from "../screens/ProfilePhotosScreen";
 import PrivacySettingsScreen from "../screens/PrivacySettingsScreen";
+import ProfileLifestyleScreen from "../screens/ProfileLifestyleScreen";
 
 import { ProfileDrawerProvider } from "../contexts/ProfileDrawerContext";
 
 export type ProfileStackParamList = {
   ProfileScreen: undefined;
   "Personal Info": undefined;
+  Lifestyle: undefined;
   "Match Preferences": undefined;
   "Privacy Settings": undefined;
   Photos: undefined;
@@ -40,6 +42,14 @@ const ProfileStackNavigator: React.FC = () => {
           {() => (
             <PersonalInfoFormProvider>
               <ProfilePersonalScreen />
+            </PersonalInfoFormProvider>
+          )}
+        </Stack.Screen>
+
+        <Stack.Screen name="Lifestyle" options={{ headerShown: true }}>
+          {() => (
+            <PersonalInfoFormProvider>
+              <ProfileLifestyleScreen />
             </PersonalInfoFormProvider>
           )}
         </Stack.Screen>
