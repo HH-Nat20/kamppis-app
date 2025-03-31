@@ -109,41 +109,72 @@ const AgeRangeSection = ({ control, errors }: any) => (
 const GenderPreferenceSection = ({ control, errors }: any) => (
   <VStack space="md">
     <Heading size="sm">Preferred Genders</Heading>
-    <HStack space="sm" className="flex-wrap">
-      {Object.values(Gender).map((g) => (
-        <Controller
-          key={g}
-          control={control}
-          name="genderPreferences"
-          render={({ field: { onChange, value } }) => (
-            <Pressable
-              className={`px-4 py-2 rounded-full border ${
-                value?.includes(g)
-                  ? "bg-success-900 dark:bg-success-100 border-primary-500"
-                  : "border-gray-300"
-              }`}
-              onPress={() => {
-                if (value?.includes(g)) {
-                  onChange(value.filter((v: string) => v !== g));
-                } else {
-                  onChange([...(value || []), g]);
-                }
-              }}
-            >
-              <Text
-                className={
-                  value?.includes(g)
-                    ? "text-white"
-                    : "text-black dark:text-white"
-                }
-              >
-                {g}
-              </Text>
-            </Pressable>
-          )}
-        />
-      ))}
-    </HStack>
+    <Controller
+      control={control}
+      name="genderPreferences"
+      render={({ field: { onChange, value = [] } }) => {
+        const options = Object.values(Gender);
+        const isAny = (g: string) => g === Gender.NOT_IMPORTANT;
+
+        const handlePress = (selected: string) => {
+          if (isAny(selected)) {
+            // Selecting "ANY" clears all others
+            onChange([Gender.NOT_IMPORTANT]);
+            return;
+          }
+
+          // Remove "ANY" if it's in current selection
+          const filtered = value.filter(
+            (v: string) => v !== Gender.NOT_IMPORTANT
+          );
+
+          // Toggle selection
+          const alreadySelected = filtered.includes(selected);
+          const newSelection = alreadySelected
+            ? filtered.filter((v: string) => v !== selected)
+            : [...filtered, selected];
+
+          // If all options are selected, replace with "ANY"
+          const realOptions = options.filter((g) => !isAny(g));
+          const allSelected =
+            realOptions.every((opt) => newSelection.includes(opt)) &&
+            newSelection.length === realOptions.length;
+
+          if (allSelected) {
+            onChange([Gender.NOT_IMPORTANT]);
+          } else {
+            onChange(newSelection);
+          }
+        };
+
+        return (
+          <HStack space="sm" className="flex-wrap">
+            {options.map((g) => {
+              const isSelected = value.includes(g);
+              return (
+                <Pressable
+                  key={g}
+                  onPress={() => handlePress(g)}
+                  className={`px-4 py-2 rounded-full border ${
+                    isSelected
+                      ? "bg-success-900 dark:bg-success-100 border-primary-500"
+                      : "border-gray-300"
+                  }`}
+                >
+                  <Text
+                    className={
+                      isSelected ? "text-white" : "text-black dark:text-white"
+                    }
+                  >
+                    {g === Gender.NOT_IMPORTANT ? "ANY" : g}
+                  </Text>
+                </Pressable>
+              );
+            })}
+          </HStack>
+        );
+      }}
+    />
     {errors.genderPreferences && (
       <Text className="text-error-500">{errors.genderPreferences.message}</Text>
     )}

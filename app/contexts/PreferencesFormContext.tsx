@@ -50,6 +50,7 @@ export const PreferencesFormProvider = ({
 
   useEffect(() => {
     if (preferences) {
+      console.log("Preferences", preferences);
       const roomPref = preferences.roomPreference;
       const roommatePref = preferences.roommatePreference;
 

@@ -3,7 +3,7 @@ import { PreferencesForm } from "../validation/preferencesSchema";
 import { Preferences } from "../types/responses/Preferences";
 import { PreferencesRequest } from "../types/requests/PreferencesRequest";
 
-const ENDPOINT = "user";
+const ENDPOINT = "users";
 
 /**
  * Fetch a user's preferences by ID
