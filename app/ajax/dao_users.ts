@@ -25,12 +25,23 @@ export const updateUser = async (userId: number, updatedUser: UserForm) => {
 
 export const removeUser = async (id: number) => {
   const response = await remove(`${ENDPOINT}/${id}`);
-  const user: User = await response.json();
-  return user; // TODO: Check if this is correct
+  return response.status === 204;
 };
 
 export const getUsers = async () => {
   const response = await get(`${ENDPOINT}`);
   const users: User[] = await response.json();
   return users;
+};
+
+export const changePassword = async (
+  userId: number,
+  oldPassword: string,
+  newPassword: string
+) => {
+  const response = await update(`${ENDPOINT}/${userId}/password`, {
+    oldPassword,
+    newPassword,
+  });
+  return response.status === 204;
 };
