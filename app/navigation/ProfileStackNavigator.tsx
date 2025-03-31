@@ -8,6 +8,7 @@ import ProfileScreen from "../screens/ProfileScreen";
 import ProfilePersonalScreen from "../screens/ProfilePersonalScreen";
 import ProfilePreferencesScreen from "../screens/ProfilePreferencesScreen";
 import ProfilePhotosScreen from "../screens/ProfilePhotosScreen";
+import ProfilePhotosScreenTest from "../screens/ProfilePhotosScreenTest";
 import PrivacySettingsScreen from "../screens/PrivacySettingsScreen";
 import ProfileLifestyleScreen from "../screens/ProfileLifestyleScreen";
 
@@ -69,7 +70,7 @@ const ProfileStackNavigator: React.FC = () => {
         />
         <Stack.Screen
           name="Photos"
-          component={ProfilePhotosScreen}
+          component={ProfilePhotosScreenTest}
           options={{ headerShown: true }}
         />
         <Stack.Screen

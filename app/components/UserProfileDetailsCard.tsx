@@ -23,14 +23,6 @@ export const UserProfileDetailsCard = ({
   return (
     <Card className="p-6 rounded-lg max-w-[360px] m-3">
       <Box className="flex-row mb-4">
-        <Avatar className="mr-4">
-          <AvatarFallbackText>Room</AvatarFallbackText>
-          <AvatarImage
-            source={{
-              uri: getImageUrl(getProfilePicture(profile.photos)),
-            }}
-          />
-        </Avatar>
         <VStack>
           <Heading size="md" className="mb-1">
             {profile.user.firstName}
