@@ -18,10 +18,10 @@ const TagArea: React.FC<{ profile: UserProfile | RoomProfile }> = ({
 
   const profileType = profile?.type;
 
-  if ("lifestyle" in profile) {
+  if (profile && "lifestyle" in profile) {
     tags.push(...profile.lifestyle);
   }
-  if ("flat" in profile && profile.flat) {
+  if (profile && "flat" in profile && profile.flat) {
     tags.push(...profile.flat.flatUtilities);
   }
 

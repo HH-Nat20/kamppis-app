@@ -1,4 +1,5 @@
 import { User } from "../types/responses/User";
+import { UserForm } from "../validation/userFormSchema";
 
 import { get, create, update, remove } from "./request";
 
@@ -12,17 +13,20 @@ export const getUser = async (id: number) => {
 
 export const createUser = async (newUser: User) => {
   const response = await create(`${ENDPOINT}`, newUser);
-  return response;
+  const user: User = await response.json();
+  return user;
 };
 
-export const updateUser = async (updatedUser: User) => {
-  const response = await update(`${ENDPOINT}/${updatedUser.id}`, updatedUser);
-  return response;
+export const updateUser = async (userId: number, updatedUser: UserForm) => {
+  const response = await update(`${ENDPOINT}/${userId}`, updatedUser);
+  const user: User = await response.json();
+  return user;
 };
 
 export const removeUser = async (id: number) => {
   const response = await remove(`${ENDPOINT}/${id}`);
-  return response;
+  const user: User = await response.json();
+  return user; // TODO: Check if this is correct
 };
 
 export const getUsers = async () => {

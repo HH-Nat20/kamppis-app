@@ -2,20 +2,23 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import dao from "../ajax/dao";
 import { queryKeys } from "./queryKeys";
 import { PreferencesForm } from "../validation/preferencesSchema";
-import { RoommatePreferences } from "../types/responses/RoommatePreferences";
+import { Preferences } from "../types/responses/Preferences";
 
 export const useUpdatePreferencesMutation = (userId: number | undefined) => {
   const queryClient = useQueryClient();
 
-  if (!userId) {
-    //throw new Error("userId is required to update user preferences");
-    return;
-  }
-
   return useMutation({
-    mutationFn: (preferences: PreferencesForm) =>
-      dao.updatePreferences(userId, preferences),
-    onSuccess: (updatedPreferences: RoommatePreferences) => {
+    mutationFn: async (preferences: PreferencesForm) => {
+      if (!userId) {
+        console.error("User ID is required to update preferences.");
+        return Promise.reject(new Error("Missing userId"));
+      }
+      return dao.updatePreferences(userId, preferences);
+    },
+    onSuccess: (updatedPreferences: Preferences) => {
+      if (!userId) {
+        throw new Error("User ID is required to update preferences.");
+      }
       queryClient.setQueryData(
         queryKeys.preferences(userId),
         updatedPreferences

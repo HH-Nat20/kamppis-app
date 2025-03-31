@@ -25,7 +25,7 @@ export const ProfileFormProvider = ({
   const { user } = useUser();
   const profileId = user?.userProfile.id;
 
-  const mutation = useUpdateUserProfileMutation(profileId);
+  const mutation = useUpdateUserProfileMutation(profileId, user?.id);
   const { isPending, data: profile } = useQuery(
     getUserProfileQueryOptions(profileId)
   );

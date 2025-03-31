@@ -7,16 +7,16 @@ import { RoomProfile } from "../types/responses/RoomProfile";
 
 export const getProfileQueryOptions = (profileId: number | undefined) =>
   queryOptions<UserProfile | RoomProfile, Error>({
-    queryKey: queryKeys.profile(profileId || 0), // 0 shouldn't be called because of the enabled below
-    queryFn: async () => await dao.getProfile(profileId || 0),
+    queryKey: queryKeys.profile(profileId!),
+    queryFn: async () => await dao.getProfile(profileId!),
     enabled: !!profileId,
   });
 
 export const getUserProfileQueryOptions = (profileId: number | undefined) =>
   queryOptions<UserProfile, Error>({
-    queryKey: queryKeys.profile(profileId || 0), // 0 shouldn't be called because of the enabled below
+    queryKey: queryKeys.profile(profileId!),
     queryFn: async () => {
-      const profile = await dao.getProfile(profileId || 0);
+      const profile = await dao.getProfile(profileId!);
       if ("user" in profile) {
         return profile as UserProfile;
       }
@@ -27,9 +27,9 @@ export const getUserProfileQueryOptions = (profileId: number | undefined) =>
 
 export const getRoomProfileQueryOptions = (profileId: number | undefined) =>
   queryOptions<RoomProfile, Error>({
-    queryKey: queryKeys.profile(profileId || 0), // 0 shouldn't be called because of the enabled below
+    queryKey: queryKeys.profile(profileId!),
     queryFn: async () => {
-      const profile = await dao.getProfile(profileId || 0);
+      const profile = await dao.getProfile(profileId!);
       if ("room" in profile) {
         return profile as RoomProfile;
       }

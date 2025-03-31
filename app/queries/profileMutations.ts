@@ -2,27 +2,29 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import dao from "../ajax/dao";
 import { queryKeys } from "./queryKeys";
 
-import {
-  ProfileForm,
-  profileFormSchema,
-} from "../validation/profileFormSchema";
+import { ProfileForm } from "../validation/profileFormSchema";
 
 import { UserProfile } from "../types/responses/UserProfile";
 
-export const useUpdateUserProfileMutation = (profileId: number | undefined) => {
+export const useUpdateUserProfileMutation = (
+  profileId: number | undefined,
+  userId: number | undefined
+) => {
   const queryClient = useQueryClient();
 
   console.log("useUpdateUserProfileMutation", profileId);
-
-  if (!profileId) {
-    //throw new Error("profileId is required to update user profile");
-    return;
-  }
-
   return useMutation({
-    mutationFn: async (profile: ProfileForm) =>
-      dao.updateUserProfile(profileId, profile),
+    mutationFn: async (profile: ProfileForm) => {
+      if (!profileId || !userId) {
+        console.error(
+          "Profile ID and User ID is required to update user profile"
+        );
+        return Promise.reject(new Error("Missing profileId"));
+      }
+      return dao.updateUserProfile(userId, profileId, profile);
+    },
     onSuccess: (updatedProfile: UserProfile) => {
+      if (!profileId) return;
       queryClient.setQueryData(queryKeys.profile(profileId), updatedProfile);
       queryClient.invalidateQueries({ queryKey: queryKeys.profile(profileId) });
       queryClient.invalidateQueries({

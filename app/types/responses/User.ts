@@ -1,14 +1,17 @@
 import { UserProfile } from "./UserProfile";
 import { RoomProfile } from "./RoomProfile";
 import { Gender } from "../enums/GenderEnum";
+import { LookingFor } from "../enums/LookingForEnum";
 
 interface User {
   id: number;
   firstName: string;
   lastName: string;
   email: string;
+  dateOfBirth: [number, number, number];
   age: number;
   gender: Gender;
+  lookingFor: LookingFor;
   status: "ACTIVE" | "INACTIVE";
   isOnline: boolean;
   //dateOfBirth: string;

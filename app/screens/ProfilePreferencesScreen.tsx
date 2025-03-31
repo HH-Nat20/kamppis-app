@@ -41,6 +41,10 @@ export default function ProfilePreferencesScreen() {
             <LocationPreferenceSection control={control} errors={errors} />
             <Divider />
             <RentSection control={control} errors={errors} />
+            <Divider />
+            <PrivateRoomSection control={control} errors={errors} />
+            <Divider />
+            <MaxRoommatesSection control={control} errors={errors} />
           </VStack>
           <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }} />
         </ScrollView>
@@ -213,6 +217,70 @@ const RentSection = ({ control, errors }: any) => (
     />
     {errors.maxRent && (
       <Text className="text-error-500">{errors.maxRent.message}</Text>
+    )}
+  </VStack>
+);
+
+const PrivateRoomSection = ({ control, errors }: any) => (
+  <VStack space="md">
+    <Heading size="sm">Must have a Private Room</Heading>
+    <Controller
+      control={control}
+      name="hasPrivateRoom"
+      render={({ field: { onChange, value } }) => (
+        <HStack space="sm">
+          {["Yes", "No"].map((label) => {
+            const selected = (label === "Yes") === value;
+            return (
+              <Pressable
+                key={label}
+                onPress={() => onChange(label === "Yes")}
+                className={`px-4 py-2 rounded-full border ${
+                  selected
+                    ? "bg-info-900 dark:bg-info-200 border-primary-500"
+                    : "border-gray-300"
+                }`}
+              >
+                <Text
+                  className={
+                    selected ? "text-white" : "text-black dark:text-white"
+                  }
+                >
+                  {label}
+                </Text>
+              </Pressable>
+            );
+          })}
+        </HStack>
+      )}
+    />
+    {errors.hasPrivateRoom && (
+      <Text className="text-error-500">{errors.hasPrivateRoom.message}</Text>
+    )}
+  </VStack>
+);
+
+const MaxRoommatesSection = ({ control, errors }: any) => (
+  <VStack space="md">
+    <Heading size="sm">Max Roommates</Heading>
+    <Controller
+      control={control}
+      name="maxRoommates"
+      render={({ field: { onChange, value } }) => (
+        <>
+          <Slider
+            min={0}
+            max={10}
+            increment={1}
+            values={[value ?? 2]}
+            onChange={(values: number[]) => onChange(values[0])}
+          />
+          <Text>Selected: {value}</Text>
+        </>
+      )}
+    />
+    {errors.maxRoommates && (
+      <Text className="text-error-500">{errors.maxRoommates.message}</Text>
     )}
   </VStack>
 );

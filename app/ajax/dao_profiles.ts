@@ -71,6 +71,7 @@ export const updateProfile = async (
  * Update a user profile
  */
 export const updateUserProfile = async (
+  userId: number,
   profileId: number,
   profileForm: ProfileForm
 ) => {
@@ -78,7 +79,7 @@ export const updateUserProfile = async (
 
   const body = {
     type: "userProfile",
-    id: profileId,
+    userId: userId,
     bio: profileForm.bio,
     cleanliness: profileForm.cleanliness,
     lifestyle: profileForm.lifestyle,

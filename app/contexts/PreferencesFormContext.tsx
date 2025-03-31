@@ -24,7 +24,9 @@ export const PreferencesFormProvider = ({
   children: React.ReactNode;
 }) => {
   const { user } = useUser();
-  const query = useQuery(getUserPreferencesQueryOptions(user?.id));
+  const { isPending, data: preferences } = useQuery(
+    getUserPreferencesQueryOptions(user?.id)
+  );
   const mutation = useUpdatePreferencesMutation(user?.id);
 
   const methods = useForm<PreferencesForm>({
@@ -35,6 +37,8 @@ export const PreferencesFormProvider = ({
       maxAgePreference: 99,
       genderPreferences: [Gender.NOT_IMPORTANT],
       locationPreferences: [Location.HELSINKI],
+      hasPrivateRoom: true,
+      maxRoommates: 1,
     },
   });
 
@@ -45,9 +49,9 @@ export const PreferencesFormProvider = ({
   } = methods;
 
   useEffect(() => {
-    if (query.data) {
-      const roomPref = query.data.roomPreference;
-      const roommatePref = query.data.roommatePreference;
+    if (preferences) {
+      const roomPref = preferences.roomPreference;
+      const roommatePref = preferences.roommatePreference;
 
       reset({
         maxRent: roomPref?.maxRent ?? 1000,
@@ -59,13 +63,15 @@ export const PreferencesFormProvider = ({
         locationPreferences: roommatePref?.locationPreferences ?? [
           Location.HELSINKI,
         ],
+        hasPrivateRoom: roomPref?.hasPrivateRoom ?? true,
+        maxRoommates: roomPref?.maxRoommates ?? 1,
       });
     }
-  }, [query.data]);
+  }, [preferences]);
 
   const onSubmit = async (data: PreferencesForm) => {
     try {
-      await mutation?.mutateAsync(data!);
+      await mutation!.mutateAsync(data!);
       Toast.show({
         type: "success",
         text1: "Saved",
@@ -85,11 +91,7 @@ export const PreferencesFormProvider = ({
       value={{ onSubmit, formState: { errors } }}
     >
       <FormProvider {...methods}>
-        {query.isLoading ? (
-          <ActivityIndicator size="large" color="#fff" />
-        ) : (
-          children
-        )}
+        {isPending ? <ActivityIndicator size="large" color="#fff" /> : children}
       </FormProvider>
     </PreferencesFormContext.Provider>
   );

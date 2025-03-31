@@ -15,6 +15,9 @@ import ProfileDrawerLayout from "../components/ProfileDrawerLayout";
 
 import ProfileInputSection from "./sections/ProfileInputSection";
 import GenderSection from "./sections/GenderSection";
+import LookingForSection from "./sections/LookingForSection";
+import EmailSection from "./sections/EmailSection";
+import DateOfBirthSection from "./sections/DateOfBirthSection";
 
 export default function ProfilePersonalScreen() {
   const {
@@ -33,7 +36,13 @@ export default function ProfilePersonalScreen() {
           <VStack space="xl">
             <ProfileInputSection control={control} errors={errors} />
             <Divider />
+            <EmailSection control={control} errors={errors} />
+            <Divider />
             <GenderSection control={control} errors={errors} />
+            <Divider />
+            <LookingForSection control={control} errors={errors} />
+            <Divider />
+            <DateOfBirthSection control={control} errors={errors} />
           </VStack>
           <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }} />
         </ScrollView>

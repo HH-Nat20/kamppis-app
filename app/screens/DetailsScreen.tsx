@@ -48,7 +48,7 @@ export default function DetailsScreen() {
       ) : (
         <>
           <View style={styles.portraitSwiper}>
-            {photos.length > 0 ? (
+            {photos?.length > 0 ? (
               <Swiper
                 ref={swiperRef}
                 cards={photos}

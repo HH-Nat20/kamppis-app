@@ -27,7 +27,8 @@ export const MatchProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // Show toast when new match is added
   useEffect(() => {
-    if (!isSuccess || matches.length <= prevMatchCount.current) return;
+    if (!matches || !isSuccess || matches.length <= prevMatchCount.current)
+      return;
 
     const newMatch = matches[matches.length - 1];
     Toast.show({

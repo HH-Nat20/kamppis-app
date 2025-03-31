@@ -16,7 +16,7 @@ export function buildShuffledProfileCards(
   }
 
   // Shuffle the profileCards array using Fisher-Yates algorithm
-  for (let i = profileCards.length - 1; i > 0; i--) {
+  for (let i = profileCards?.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [profileCards[i], profileCards[j]] = [profileCards[j], profileCards[i]];
   }

@@ -1,8 +1,7 @@
 import { get, update } from "./request";
 import { PreferencesForm } from "../validation/preferencesSchema";
-import { RoommatePreferences } from "../types/responses/RoommatePreferences";
-import { User } from "../types/responses/User";
-import { UserProfile } from "../types/responses/UserProfile";
+import { Preferences } from "../types/responses/Preferences";
+import { PreferencesRequest } from "../types/requests/PreferencesRequest";
 
 const ENDPOINT = "user";
 
@@ -12,11 +11,9 @@ const ENDPOINT = "user";
  * @param {number} userId
  * @returns {Promise<RoommatePreferences>}
  */
-export const getPreferences = async (
-  userId: number
-): Promise<RoommatePreferences> => {
+export const getPreferences = async (userId: number): Promise<Preferences> => {
   const response = await get(`${ENDPOINT}/${userId}/preferences`);
-  const preferences: RoommatePreferences = await response.json();
+  const preferences: Preferences = await response.json();
   return preferences;
 };
 
@@ -25,16 +22,31 @@ export const getPreferences = async (
  *
  * @param {number} userId
  * @param {PreferencesForm} preferences
- * @returns {Promise<RoommatePreferences>}
+ * @returns {Promise<Preferences>}
  */
 export const updatePreferences = async (
   userId: number,
-  preferences: PreferencesForm
-): Promise<RoommatePreferences> => {
+  formData: PreferencesForm
+): Promise<Preferences> => {
+  const preferences: PreferencesRequest = {
+    roomPreference: {
+      maxRent: formData.maxRent,
+      hasPrivateRoom: formData.hasPrivateRoom,
+      maxRoommates: formData.maxRoommates,
+      locationPreferences: formData.locationPreferences,
+    },
+    roommatePreference: {
+      minAgePreference: formData.minAgePreference,
+      maxAgePreference: formData.maxAgePreference,
+      genderPreferences: formData.genderPreferences,
+      locationPreferences: formData.locationPreferences,
+    },
+  };
+
   const response = await update(
     `${ENDPOINT}/${userId}/preferences`,
     preferences
   );
-  const updatedPreferences: RoommatePreferences = await response.json();
+  const updatedPreferences: Preferences = await response.json();
   return updatedPreferences;
 };

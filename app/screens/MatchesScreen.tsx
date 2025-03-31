@@ -87,7 +87,7 @@ const MatchesScreen = () => {
 
       {loading ? (
         <ActivityIndicator size="large" color="#fff" />
-      ) : matches.length === 0 ? (
+      ) : matches?.length === 0 ? (
         <View style={styles.emptyContainer}>
           <Heading>No matches yet. Keep swiping!</Heading>
         </View>
