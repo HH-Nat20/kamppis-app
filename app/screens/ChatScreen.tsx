@@ -168,8 +168,7 @@ export default function ChatScreen({ route }: ChatScreenProps) {
         placeholder="Enter Your Message"
         placeholderColor="gray"
         backgroundImage={
-          "https://picsum.photos/200/300?random=" + // TODO: Something nicer
-          Math.floor(Math.random() * 100)
+          "https://images.unsplash.com/photo-1610730260505-0b9ed7f06293?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         }
         //showEmoji={true}
         //onPressEmoji={() => console.log("Emoji Button Pressed..")}
