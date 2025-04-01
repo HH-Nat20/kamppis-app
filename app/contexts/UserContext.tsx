@@ -29,23 +29,21 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     error,
   } = useQuery(getUserQueryOptions(userId));
 
-  const contextValue = useMemo(() => {
-    const changeUser = (newId: number) => {
-      console.log("Changing user to", newId);
-      setUserId(newId);
-    };
+  const changeUser = (newId: number) => {
+    console.log("Changing user to", newId);
+    setUserId(newId);
+  };
 
-    const refreshUser = () => {
-      console.log("Refreshing user", userId);
-      refetch();
-    };
+  const refreshUser = () => {
+    console.log("Refreshing user", userId);
+    refetch();
+  };
 
-    return { user, changeUser, refreshUser };
-  }, [user, userId, refetch]);
-
-  if (isError) {
-    console.error("Error fetching user:", error);
-  }
+  const contextValue = {
+    user,
+    changeUser,
+    refreshUser,
+  };
 
   return (
     <UserContext.Provider value={contextValue}>{children}</UserContext.Provider>
