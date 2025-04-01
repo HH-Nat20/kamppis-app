@@ -28,6 +28,8 @@ const linking = {
   config: {
     screens: {
       home: "",
+      login: "login",
+      redirect: "redirect",
       profiles: {
         path: "profiles/:user",
       },
@@ -39,21 +41,28 @@ export default function RootLayout() {
   const queryClient = new QueryClient();
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <UserProvider>
-          <MatchableProfilesProvider>
-            <MatchProvider>
-              <SafeAreaProvider>
-                <GluestackUIProvider mode={"system"}>
-                  <Slot />
-                  <Toast />
-                </GluestackUIProvider>
-              </SafeAreaProvider>
-            </MatchProvider>
-          </MatchableProfilesProvider>
-        </UserProvider>
-      </GestureHandlerRootView>
-    </QueryClientProvider>
+    <NavigationIndependentTree>
+      <NavigationContainer
+        linking={linking}
+        fallback={<ExpoRoot context={require.context("./", true, /\.tsx?$/)} />}
+      >
+        <QueryClientProvider client={queryClient}>
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <UserProvider>
+              <MatchableProfilesProvider>
+                <MatchProvider>
+                  <SafeAreaProvider>
+                    <GluestackUIProvider mode={"system"}>
+                      <Slot />
+                      <Toast />
+                    </GluestackUIProvider>
+                  </SafeAreaProvider>
+                </MatchProvider>
+              </MatchableProfilesProvider>
+            </UserProvider>
+          </GestureHandlerRootView>
+        </QueryClientProvider>
+      </NavigationContainer>
+    </NavigationIndependentTree>
   );
 }

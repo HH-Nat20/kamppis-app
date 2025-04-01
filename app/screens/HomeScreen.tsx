@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { ActivityIndicator } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -22,6 +22,7 @@ import { Center } from "@/components/ui/center";
 
 import { router } from "expo-router";
 import * as Linking from "expo-linking";
+import GitHubAuthButton from "../components/GitHubAuthButton";
 
 const HomeScreen = () => {
   const navigation =
@@ -49,6 +50,13 @@ const HomeScreen = () => {
   const handleOpenLogin = () => {
     navigation.navigate("Login");
   };
+
+    const [authCode, setAuthCode] = useState<string | null>(null);
+
+    const handleCodeReceived = (code: string) => {
+      console.log("Received GitHub auth code:", code);
+      setAuthCode(code); // Store the code in state or send it to your backend
+    };
 
   return (
     <Container>
@@ -121,6 +129,7 @@ const HomeScreen = () => {
         </Button>
 
         <TestJWTButton />
+        <GitHubAuthButton onCodeReceived={handleCodeReceived} />
       </VStack>
     </Container>
   );
