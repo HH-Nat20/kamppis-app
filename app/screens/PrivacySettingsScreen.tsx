@@ -24,7 +24,8 @@ import ConfirmationDialog from "../components/ConfirmationDialog";
 
 import dao from "../ajax/dao";
 
-import { useNavigation } from "expo-router";
+import { router, useNavigation } from "expo-router";
+import * as Linking from "expo-linking";
 
 import Toast from "react-native-toast-message";
 
@@ -69,7 +70,9 @@ const PrivacySettingsScreen = () => {
       action: () => {
         if (user?.id) {
           const url = `https://kamppis.hellmanstudios.fi/api/users/${user.id}/copy`;
-          window.open(url, "_blank");
+          Linking.openURL(url).catch((err) =>
+            console.error("An error occurred", err)
+          );
         }
       },
     },
