@@ -26,39 +26,40 @@ import {
   BriefcaseBusiness,
   Images,
 } from "lucide-react-native";
-import { useNavigation } from "@react-navigation/native";
-import { useUser } from "../../contexts/UserContext";
-import { useProfileDrawer } from "../../contexts/ProfileDrawerContext";
+import { useNavigation, router, RelativePathString } from "expo-router";
+import { useUser } from "@/contexts/UserContext";
+import { useProfileDrawer } from "@/contexts/ProfileDrawerContext";
 
-import { getProfilePicture, getImageUrl } from "../../helpers/helpers";
+import { getProfilePicture, getImageUrl } from "@/helpers/helpers";
 
-import { ProfileStackParamList } from "../../navigation/ProfileStackNavigator";
-import { StackNavigationProp } from "@react-navigation/stack";
-
-import { ProfileStackNavItem } from "../../types/ProfileStackNavItem";
+import { ProfileStackNavItem } from "@/types/ProfileStackNavItem";
 
 const drawerItems: ProfileStackNavItem[] = [
-  { icon: User, label: "My Profile", href: "ProfileScreen" },
+  { icon: User, label: "My Profile", href: "/profile" as RelativePathString },
   {
     icon: UserCog,
     label: "Personal Info",
-    href: "Personal Info",
+    href: "/profile/personal" as RelativePathString,
   },
   {
     icon: StarIcon,
-    label: "Lifestyle",
-    href: "Lifestyle",
+    label: "Bio",
+    href: "/profile/bio" as RelativePathString,
   },
   {
     icon: Settings,
     label: "Match Preferences",
-    href: "Match Preferences",
+    href: "/profile/preference" as RelativePathString,
   },
-  { icon: Images, label: "Photos", href: "Photos" },
+  {
+    icon: Images,
+    label: "Photos",
+    href: "/profile/photos" as RelativePathString,
+  },
   {
     icon: BriefcaseBusiness,
     label: "Privacy Settings",
-    href: "Privacy Settings",
+    href: "/profile/privacy" as RelativePathString,
   },
 ];
 
@@ -68,8 +69,7 @@ const ProfileDrawerLayout = ({ children }: { children: React.ReactNode }) => {
 
 const DrawerLayoutContent = ({ children }: { children: React.ReactNode }) => {
   const { isOpen, openDrawer, closeDrawer } = useProfileDrawer();
-  const navigation =
-    useNavigation<StackNavigationProp<ProfileStackParamList>>();
+  const navigation = useNavigation();
   const { user } = useUser();
 
   useLayoutEffect(() => {
@@ -89,28 +89,15 @@ const DrawerLayoutContent = ({ children }: { children: React.ReactNode }) => {
     });
   }, [navigation, user]);
 
-  const currentRoute = navigation.getState().routes.at(-1)?.name;
+  const currentRoute = navigation.getState()?.routes.at(-1)?.name;
 
-  const handleDrawerItemPress = (target: string) => {
+  const handleDrawerItemPress = (target: RelativePathString) => {
     closeDrawer();
 
     if (target === currentRoute) return;
 
     setTimeout(() => {
-      if (target === "ProfileScreen") {
-        navigation.reset({
-          index: 0,
-          routes: [{ name: "ProfileScreen" }],
-        });
-      } else {
-        navigation.reset({
-          index: 1,
-          routes: [
-            { name: "ProfileScreen" },
-            { name: target as keyof ProfileStackParamList },
-          ],
-        });
-      }
+      router.navigate(target);
     }, 100);
   };
 

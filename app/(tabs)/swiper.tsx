@@ -4,17 +4,17 @@ import Swiper from "react-native-deck-swiper";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Toast from "react-native-toast-message";
 
-import { useUser } from "../../contexts/UserContext";
-import { useMatch } from "../../contexts/MatchContext";
-import { useMatchableProfiles } from "../../contexts/MatchableProfilesContext";
-import { useSwipeMutation } from "../../api/queries/swipeMutations";
+import { useUser } from "@/contexts/UserContext";
+import { useMatch } from "@/contexts/MatchContext";
+import { useMatchableProfiles } from "@/contexts/MatchableProfilesContext";
+import { useSwipeMutation } from "@/api/queries/swipeMutations";
 
-import { SwipeRequest } from "../../types/requests/SwipeRequest";
-import { ProfileCard } from "../types/ProfileCard";
-import Card from "../../components/custom/Card";
-import styles from "../../assets/styles/styles";
+import { SwipeRequest } from "@/types/requests/SwipeRequest";
+import { ProfileCard } from "@/types/ProfileCard";
+import Card from "@/components/custom/Card";
+import styles from "@/assets/styles/styles";
 
-import Container from "../../components/common/Container";
+import Container from "@/components/common/Container";
 
 const SwipeScreen: React.FC = () => {
   const swiperRef = useRef<Swiper<any>>(null);

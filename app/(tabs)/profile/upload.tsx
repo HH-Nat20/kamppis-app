@@ -4,17 +4,17 @@ import { View, Text, Button, Platform, ActivityIndicator } from "react-native";
 
 import Toast from "react-native-toast-message";
 
-import Portrait from "../../components/common/Portrait";
+import Portrait from "@/components/common/Portrait";
 
 import * as ImagePicker from "expo-image-picker";
 
-import { useUser } from "../../contexts/UserContext";
+import { useUser } from "@/contexts/UserContext";
 import { useNavigation, RouteProp, useRoute } from "@react-navigation/native";
-import { ProfileStackParamList } from "../../navigation/ProfileStackNavigator";
+import { ProfileStackParamList } from "@/navigation/ProfileStackNavigator";
 
-import dao from "../../api/dao";
+import dao from "@/api/dao";
 
-import styles from "../../assets/styles/styles";
+import styles from "@/assets/styles/styles";
 
 type UploadScreenRouteProp = RouteProp<ProfileStackParamList, "Upload">;
 

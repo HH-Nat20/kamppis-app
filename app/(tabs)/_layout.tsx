@@ -1,0 +1,86 @@
+import React from "react";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import colors from "tailwindcss/colors";
+
+import { Tabs } from "expo-router";
+
+import { ProfileDrawerProvider } from "@/contexts/ProfileDrawerContext";
+
+const TabsLayout = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <ProfileDrawerProvider>
+      <Tabs
+        initialRouteName="index"
+        screenOptions={({ route }) => ({
+          tabBarStyle: {
+            backgroundColor: "transparent",
+            borderTopWidth: 0,
+            elevation: 0,
+            shadowOpacity: 0,
+            paddingBottom: 5,
+            height: 60,
+            paddingTop: 5,
+          },
+          headerStyle: {
+            backgroundColor: colors.transparent,
+            elevation: 0,
+          },
+          headerShadowVisible: false,
+          headerTitleStyle: {
+            color: colors.teal[900],
+            fontSize: 18,
+          },
+          tabBarActiveTintColor: colors.teal[500],
+          tabBarInactiveTintColor: colors.gray[500],
+        })}
+      >
+        <Tabs.Screen
+          name="index"
+          options={{
+            headerShown: false,
+            tabBarLabel: "Home", // Shown below the tab icon
+            title: "Home", // Shown in the header
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="home" size={size} color={color} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="profile"
+          options={{
+            headerShown: false,
+            tabBarLabel: "Profile",
+            title: "Profile",
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="person" size={size} color={color} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="swiper"
+          options={{
+            headerShown: false,
+            tabBarLabel: "Swipe",
+            title: "Swipe",
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="heart" size={size} color={color} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="matches"
+          options={{
+            headerShown: true,
+            tabBarLabel: "Matches",
+            title: "Matches",
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="people" size={size} color={color} />
+            ),
+          }}
+        />
+      </Tabs>
+    </ProfileDrawerProvider>
+  );
+};
+
+export default TabsLayout;

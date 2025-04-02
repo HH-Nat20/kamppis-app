@@ -1,16 +1,21 @@
-import React, { useState, useEffect } from "react";
-import { Alert, ScrollView } from "react-native";
+import React, { useState, useEffect, useRef } from "react";
+import { Alert, ScrollView, Dimensions, View } from "react-native";
+import { useSharedValue } from "react-native-reanimated";
+import Carousel, {
+  ICarouselInstance,
+  Pagination,
+} from "react-native-reanimated-carousel";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { useUser } from "../../contexts/UserContext";
+import { useUser } from "@/contexts/UserContext";
 
-import { Photo } from "../../types/responses/Photo";
-import { ProfileStackParamList } from "../../navigation/ProfileStackNavigator";
+import { Photo } from "@/types/responses/Photo";
+import { ProfileStackParamList } from "@/navigation/ProfileStackNavigator";
 
 import { Fab, FabLabel, FabIcon } from "@/components/ui/fab";
 import { AddIcon } from "@/components/ui/icon";
 
-import ProfileDrawerLayout from "../../components/custom/ProfileDrawerLayout";
+import ProfileDrawerLayout from "@/components/custom/ProfileDrawerLayout";
 
 import {
   Actionsheet,
@@ -32,13 +37,15 @@ import { Icon } from "@/components/ui/icon";
 import { Pressable } from "@/components/ui/pressable";
 import { Plus, Trash2 } from "lucide-react-native";
 
-import dao from "../../api/dao";
-import Portrait from "../../components/common/Portrait";
+import dao from "@/api/dao";
+import Portrait from "@/components/common/Portrait";
 
 type ProfilePhotosNavigationProp = StackNavigationProp<
   ProfileStackParamList,
   "Upload"
 >;
+
+const width = Dimensions.get("window").width;
 
 export default function ProfilePhotosScreen() {
   const [showActionsheet, setShowActionsheet] = useState(false);
@@ -46,6 +53,19 @@ export default function ProfilePhotosScreen() {
   const { user, refreshUser } = useUser();
   const [photos, setPhotos] = useState<Photo[]>([]);
   const navigation = useNavigation<ProfilePhotosNavigationProp>();
+  const ref = React.useRef<ICarouselInstance>(null);
+  const progress = useSharedValue<number>(0);
+
+  const onPressPagination = (index: number) => {
+    ref.current?.scrollTo({
+      /**
+       * Calculate the difference between the current index and the target index
+       * to ensure that the carousel scrolls to the nearest index
+       */
+      count: index - progress.value,
+      animated: true,
+    });
+  };
 
   useEffect(() => {
     if (user) {
@@ -100,28 +120,44 @@ export default function ProfilePhotosScreen() {
           contentContainerStyle={{ paddingBottom: 50 }}
         >
           <VStack space="xl">
-            {photos.map((photo, index) => (
-              <Box
-                key={index}
-                className="p-4 rounded-xl border border-border bg-info-900 dark:bg-info-100"
-              >
-                <Portrait photo={photo} />
-                <HStack className="justify-between items-center mt-4">
-                  <HStack space="md" className="items-center">
-                    <Switch
-                      value={photo.isProfilePhoto}
-                      onValueChange={(value) =>
-                        changeProfilePhoto(photo, value)
-                      }
-                    />
-                    <Text className="text-white">Profile Photo</Text>
-                  </HStack>
-                  <Pressable onPress={() => handleDeletePress(photo)}>
-                    <Icon className="text-white" as={Trash2} />
-                  </Pressable>
-                </HStack>
-              </Box>
-            ))}
+            <Box className="p-4 rounded-xl border border-border bg-info-900 dark:bg-info-100">
+              <Carousel
+                width={width * 0.85}
+                height={width}
+                ref={ref}
+                data={photos}
+                onProgressChange={progress}
+                renderItem={({ item: photo }: { item: Photo }) => (
+                  <>
+                    <Portrait photo={photo} />
+                    <HStack className="justify-between items-center mt-4">
+                      <HStack space="md" className="items-center">
+                        <Switch
+                          value={photo.isProfilePhoto}
+                          onValueChange={(value) =>
+                            changeProfilePhoto(photo, value)
+                          }
+                        />
+                        <Text className="text-white">Profile Photo</Text>
+                      </HStack>
+                      <Pressable onPress={() => handleDeletePress(photo)}>
+                        <Icon className="text-white" as={Trash2} />
+                      </Pressable>
+                    </HStack>
+                  </>
+                )}
+              />
+            </Box>
+            <Pagination.Basic
+              progress={progress}
+              data={photos}
+              dotStyle={{
+                backgroundColor: "rgba(0,0,0,0.2)",
+                borderRadius: 50,
+              }}
+              containerStyle={{ gap: 5, marginTop: 10 }}
+              onPress={onPressPagination}
+            />
           </VStack>
         </ScrollView>
         <Fab

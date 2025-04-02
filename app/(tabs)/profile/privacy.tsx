@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
-import { useUser } from "../../contexts/UserContext";
+import { useUser } from "@/contexts/UserContext";
 
-import Container from "../../components/common/Container";
+import Container from "@/components/common/Container";
 
 import { FlashList } from "@shopify/flash-list";
 
@@ -20,9 +20,9 @@ import {
 import { Input, InputField } from "@/components/ui/input";
 import { Button, ButtonText } from "@/components/ui/button";
 
-import ConfirmationDialog from "../../components/common/ConfirmationDialog";
+import ConfirmationDialog from "@/components/common/ConfirmationDialog";
 
-import dao from "../../api/dao";
+import dao from "@/api/dao";
 
 import { router, useNavigation } from "expo-router";
 import * as Linking from "expo-linking";

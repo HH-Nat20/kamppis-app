@@ -2,8 +2,8 @@ import React from "react";
 import { KeyboardAvoidingView, ScrollView } from "react-native";
 import { useFormContext } from "react-hook-form";
 
-import { UserForm } from "../../validation/userFormSchema";
-import { useUserForm } from "../../contexts/UserFormContext";
+import { UserForm } from "@/validation/userFormSchema";
+import { useUserForm } from "@/contexts/UserFormContext";
 
 import { VStack } from "@/components/ui/vstack";
 import { Heading } from "@/components/ui/heading";
@@ -11,15 +11,25 @@ import { Button } from "@/components/ui/button";
 import { ButtonText } from "@/components/ui/button";
 import { Divider } from "@/components/ui/divider";
 
-import ProfileDrawerLayout from "../../components/custom/ProfileDrawerLayout";
+import { UserFormProvider } from "@/contexts/UserFormContext";
 
-import ProfileInputSection from "../../components/forms/ProfileInputSection";
-import GenderSection from "../../components/forms/GenderSection";
-import LookingForSection from "../../components/forms/LookingForSection";
-import EmailSection from "../../components/forms/EmailSection";
-import DateOfBirthSection from "../../components/forms/DateOfBirthSection";
+import ProfileDrawerLayout from "@/components/custom/ProfileDrawerLayout";
 
-export default function ProfilePersonalScreen() {
+import ProfileInputSection from "@/components/forms/ProfileInputSection";
+import GenderSection from "@/components/forms/GenderSection";
+import LookingForSection from "@/components/forms/LookingForSection";
+import EmailSection from "@/components/forms/EmailSection";
+import DateOfBirthSection from "@/components/forms/DateOfBirthSection";
+
+const Personal = () => {
+  return (
+    <UserFormProvider>
+      <ProfilePersonalScreen />
+    </UserFormProvider>
+  );
+};
+
+const ProfilePersonalScreen = () => {
   const {
     control,
     handleSubmit,
@@ -55,4 +65,6 @@ export default function ProfilePersonalScreen() {
       </VStack>
     </ProfileDrawerLayout>
   );
-}
+};
+
+export default Personal;

@@ -1,10 +1,10 @@
 import React from "react";
 import { KeyboardAvoidingView, ScrollView } from "react-native";
 import { Controller, useFormContext } from "react-hook-form";
-import { usePreferencesForm } from "../../contexts/PreferencesFormContext";
-import { PreferencesForm } from "../../validation/preferencesSchema";
-import { Gender } from "../../types/enums/GenderEnum";
-import { Location } from "../../types/enums/LocationEnum";
+import { usePreferencesForm } from "@/contexts/PreferencesFormContext";
+import { PreferencesForm } from "@/validation/preferencesSchema";
+import { Gender } from "@/types/enums/GenderEnum";
+import { Location } from "@/types/enums/LocationEnum";
 
 import { VStack } from "@/components/ui/vstack";
 import { HStack } from "@/components/ui/hstack";
@@ -17,7 +17,7 @@ import { ButtonText } from "@/components/ui/button";
 
 import Slider from "react-native-a11y-slider";
 
-import ProfileDrawerLayout from "../../components/custom/ProfileDrawerLayout";
+import ProfileDrawerLayout from "@/components/custom/ProfileDrawerLayout";
 
 export default function ProfilePreferencesScreen() {
   const {

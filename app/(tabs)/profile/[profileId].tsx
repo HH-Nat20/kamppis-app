@@ -14,35 +14,32 @@ import Carousel, {
 } from "react-native-reanimated-carousel";
 
 import Swiper from "react-native-deck-swiper";
-import { useRoute } from "@react-navigation/native";
 import { useQuery } from "@tanstack/react-query";
 
-import styles from "../../assets/styles/styles";
-import colors from "../../assets/styles/colors";
+import styles from "@/assets/styles/styles";
+import colors from "@/assets/styles/colors";
 
-import Portrait from "../../components/common/Portrait";
-import TagArea from "../../components/common/TagArea";
+import Portrait from "@/components/common/Portrait";
+import TagArea from "@/components/common/TagArea";
 import { Heading } from "@/components/ui/heading";
 import { Center } from "@/components/ui/center";
 
-import { UserProfileDetailsCard } from "../../components/custom/UserProfileDetailsCard";
-import { RoomProfileDetailsCard } from "../../components/custom/RoomProfileDetailsCard";
+import { UserProfileDetailsCard } from "@/components/custom/UserProfileDetailsCard";
+import { RoomProfileDetailsCard } from "@/components/custom/RoomProfileDetailsCard";
 
-import { RootParamList } from "../../navigation/RootNavigator";
-import { getProfileQueryOptions } from "../../api/queries/profileQueries";
-import { RouteProp } from "@react-navigation/native";
+import { getProfileQueryOptions } from "@/api/queries/profileQueries";
 
-import Container from "../../components/common/Container";
+import Container from "@/components/common/Container";
 
-import { Photo } from "../../types/responses/Photo";
+import { Photo } from "@/types/responses/Photo";
 
-type DetailsScreenRouteProp = RouteProp<RootParamList, "DetailsScreen">;
+import { useLocalSearchParams } from "expo-router";
 
 const width = Dimensions.get("window").width;
 
 export default function DetailsScreen() {
-  const route = useRoute<DetailsScreenRouteProp>();
-  const { profileId } = route.params;
+  const { profileId } = useLocalSearchParams();
+
   const swiperRef = useRef<Swiper<any>>(null);
 
   const ref = React.useRef<ICarouselInstance>(null);

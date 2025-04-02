@@ -1,7 +1,7 @@
-import { ProfileStackParamList } from "../navigation/ProfileStackNavigator";
+import { RelativePathString } from "expo-router";
 
 export type ProfileStackNavItem = {
   icon: any;
   label: string;
-  href: keyof ProfileStackParamList;
+  href: RelativePathString;
 };

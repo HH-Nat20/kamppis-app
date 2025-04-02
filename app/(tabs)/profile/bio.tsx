@@ -2,20 +2,30 @@ import React from "react";
 import { KeyboardAvoidingView, ScrollView } from "react-native";
 import { useFormContext } from "react-hook-form";
 
-import { useProfileForm } from "../../contexts/ProfileFormContext";
-import { ProfileForm } from "../../validation/profileFormSchema";
+import { useProfileForm } from "@/contexts/ProfileFormContext";
+import { ProfileForm } from "@/validation/profileFormSchema";
 
 import { VStack } from "@/components/ui/vstack";
 import { Heading } from "@/components/ui/heading";
 import { Divider } from "@/components/ui/divider";
 import { Button, ButtonText } from "@/components/ui/button";
 
-import LifestyleSection from "../../components/forms/LifestyleSection";
-import CleanlinessSection from "../../components/forms/CleanlinessSection";
-import BioSection from "../../components/forms/BioSection";
-import ProfileDrawerLayout from "../../components/custom/ProfileDrawerLayout";
+import LifestyleSection from "@/components/forms/LifestyleSection";
+import CleanlinessSection from "@/components/forms/CleanlinessSection";
+import BioSection from "@/components/forms/BioSection";
+import ProfileDrawerLayout from "@/components/custom/ProfileDrawerLayout";
 
-export default function ProfileLifestyleScreen() {
+import { ProfileFormProvider } from "@/contexts/ProfileFormContext";
+
+const Bio = () => {
+  return (
+    <ProfileFormProvider>
+      <ProfileLifestyleScreen />
+    </ProfileFormProvider>
+  );
+};
+
+const ProfileLifestyleScreen = () => {
   const {
     control,
     handleSubmit,
@@ -27,7 +37,7 @@ export default function ProfileLifestyleScreen() {
   return (
     <ProfileDrawerLayout>
       <VStack className="px-5 py-4 flex-1 dark:bg-black bg-white" space="xl">
-        <Heading className="mb-2">Lifestyle</Heading>
+        <Heading className="mb-2">Bio</Heading>
         <ScrollView showsVerticalScrollIndicator={false}>
           <VStack space="xl">
             <LifestyleSection control={control} errors={errors} />
@@ -47,4 +57,6 @@ export default function ProfileLifestyleScreen() {
       </VStack>
     </ProfileDrawerLayout>
   );
-}
+};
+
+export default Bio;

@@ -44,7 +44,17 @@ export default function RootLayout() {
             <MatchProvider>
               <SafeAreaProvider>
                 <GluestackUIProvider mode={"system"}>
-                  <Stack screenOptions={{ headerShown: false }} />
+                  <Stack screenOptions={{ headerShown: false }}>
+                    <Stack.Screen name="(tabs)" options={{}} />
+                    <Stack.Screen name="(auth)" options={{}} />
+                    <Stack.Screen
+                      name="modal"
+                      options={{
+                        presentation: "modal",
+                        headerShown: false,
+                      }}
+                    />
+                  </Stack>
                   <Toast />
                 </GluestackUIProvider>
               </SafeAreaProvider>

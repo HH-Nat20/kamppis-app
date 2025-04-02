@@ -13,17 +13,17 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
 import { LinearGradient } from "expo-linear-gradient";
 
-import { useMatch } from "../../contexts/MatchContext";
-import { getProfilePicture, getImageUrl } from "../../helpers/helpers";
+import { useMatch } from "@/contexts/MatchContext";
+import { getProfilePicture, getImageUrl } from "@/helpers/helpers";
 
-import styles from "../../assets/styles/styles";
-import { bgGradient } from "../../assets/styles/colors";
+import styles from "@/assets/styles/styles";
+import { bgGradient } from "@/assets/styles/colors";
 
-import { useUser } from "../../contexts/UserContext";
-import { User } from "../../types/responses/User";
-import { UserProfile } from "../../types/responses/UserProfile";
+import { useUser } from "@/contexts/UserContext";
+import { User } from "@/types/responses/User";
+import { UserProfile } from "@/types/responses/UserProfile";
 
-import Container from "../../components/common/Container";
+import Container from "@/components/common/Container";
 import { Heading } from "@/components/ui/heading";
 
 type ChatStackParamList = {

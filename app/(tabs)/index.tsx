@@ -1,32 +1,27 @@
 import React, { useState } from "react";
 import { ActivityIndicator } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useQueries } from "@tanstack/react-query";
 
-import { useUser } from "../../contexts/UserContext";
-import { HomeStackParamList } from "../../navigation/HomeStackNavigator";
+import { useUser } from "@/contexts/UserContext";
 import {
   getServerHealthQuery,
   getDatabaseHealthQuery,
-} from "../../api/queries/healthQueries";
+} from "@/api/queries/healthQueries";
 
-import TestJWTButton from "../../components/common/TestJWTButton";
-import Container from "../../components/common/Container";
+import TestJWTButton from "@/components/common/TestJWTButton";
+import Container from "@/components/common/Container";
 
 import { VStack } from "@/components/ui/vstack";
 import { Text } from "@/components/ui/text";
 import { Button, ButtonText } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
-import { Center } from "@/components/ui/center";
+
+import * as Linking from "expo-linking";
+import GitHubAuthButton from "@/components/common/GitHubAuthButton";
 
 import { router } from "expo-router";
-import * as Linking from "expo-linking";
-import GitHubAuthButton from "../../components/common/GitHubAuthButton";
 
 const HomeScreen = () => {
-  const navigation =
-    useNavigation<NativeStackNavigationProp<HomeStackParamList, "Home">>();
   const { user } = useUser();
 
   const url = Linking.useURL();
@@ -48,7 +43,9 @@ const HomeScreen = () => {
   const [serverHealth, dbHealth] = results;
 
   const handleOpenLogin = () => {
-    navigation.navigate("Login");
+    router.push({
+      pathname: "/login",
+    });
   };
 
   const [authCode, setAuthCode] = useState<string | null>(null);
@@ -108,7 +105,7 @@ const HomeScreen = () => {
         <Button
           onPress={() =>
             router.push({
-              pathname: "/screens/LoginScreen",
+              pathname: "/login",
             })
           }
           className="mt-6"
@@ -119,8 +116,8 @@ const HomeScreen = () => {
         <Button
           onPress={() =>
             router.push({
-              pathname: "/profile/[user]",
-              params: { user: 1 },
+              pathname: "/profile/[profileId]",
+              params: { profileId: 1 },
             })
           }
           className="mt-6"

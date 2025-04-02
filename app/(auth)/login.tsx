@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { ActionSheetIOS, Platform, Modal, FlatList } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { ActionSheetIOS, Platform } from "react-native";
 import { useQuery } from "@tanstack/react-query";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { useUser } from "../../contexts/UserContext";
-import { getUsers } from "../../api/dao_users";
-import { User } from "../../types/responses/User";
-import { HomeStackParamList } from "../../navigation/HomeStackNavigator";
-import Container from "../../components/common/Container";
+import { useUser } from "@/contexts/UserContext";
+import { getUsers } from "@/api/dao_users";
+import { User } from "@/types/responses/User";
+import Container from "@/components/common/Container";
 
 import { Button, ButtonText } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
@@ -17,10 +14,9 @@ import { VStack } from "@/components/ui/vstack";
 import { Pressable } from "@/components/ui/pressable";
 import { Heading } from "@/components/ui/heading";
 
-export default function LoginScreen() {
-  const navigation =
-    useNavigation<NativeStackNavigationProp<HomeStackParamList, "Home">>();
+import { router } from "expo-router";
 
+export default function LoginScreen() {
   const { changeUser } = useUser();
   const [selectedUserLabel, setSelectedUserLabel] =
     useState<string>("Select a user");
@@ -56,7 +52,7 @@ export default function LoginScreen() {
       await AsyncStorage.setItem("jwtToken", token);
       changeUser(user.id);
 
-      navigation.reset({ index: 0, routes: [{ name: "Home" }] });
+      router.push("/");
     } catch (error) {
       console.error("Login error:", error);
     }

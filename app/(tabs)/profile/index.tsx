@@ -1,36 +1,31 @@
 import React from "react";
 import { Avatar, AvatarImage, AvatarBadge } from "@/components/ui/avatar";
 
-import ProfileDrawerLayout from "../../components/custom/ProfileDrawerLayout";
+import ProfileDrawerLayout from "@/components/custom/ProfileDrawerLayout";
 
 import { Button, ButtonText, ButtonIcon } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
 import { Edit } from "lucide-react-native";
 import { Center } from "@/components/ui/center";
-import { Box } from "@/components/ui/box";
 import { Pressable } from "@/components/ui/pressable";
-import { Heading } from "@/components/ui/heading";
-import Image from "@unitools/image";
 
 import { Card } from "@/components/ui/card";
 
 import colors from "tailwindcss/colors";
 
-import { useProfileDrawer } from "../../contexts/ProfileDrawerContext";
+import { useProfileDrawer } from "@/contexts/ProfileDrawerContext";
 
-import { useUser } from "../../contexts/UserContext";
-import { getImageUrl, getProfilePicture } from "../../helpers/helpers";
+import { useUser } from "@/contexts/UserContext";
+import { getImageUrl, getProfilePicture } from "@/helpers/helpers";
 
-import { useNavigation } from "expo-router";
-import { ProfileStackParamList } from "../../navigation/ProfileStackNavigator";
-import { StackNavigationProp } from "@react-navigation/stack";
-import TagArea from "../../components/common/TagArea";
+import { useNavigation, router } from "expo-router";
+
+import TagArea from "@/components/common/TagArea";
 
 export default function ProfileScreen() {
   const { openDrawer } = useProfileDrawer();
   const { user } = useUser();
-  const navigator = useNavigation<StackNavigationProp<ProfileStackParamList>>();
 
   return (
     <ProfileDrawerLayout>
@@ -39,7 +34,7 @@ export default function ProfileScreen() {
           <VStack space="lg" className="items-center mt-4 py-4">
             <Pressable
               onPress={() => {
-                navigator.navigate("Photos");
+                router.push("/profile/photos");
               }}
             >
               <Avatar size="2xl" className="bg-primary-600">
