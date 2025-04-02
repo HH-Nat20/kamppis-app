@@ -12,6 +12,9 @@ import { useMatch } from "@/contexts/MatchContext";
 import styles from "@/assets/styles/styles";
 import colors from "@/assets/styles/colors";
 
+import { Badge, BadgeIcon, BadgeText } from "@/components/ui/badge";
+import { BadgeCheckIcon } from "lucide-react-native";
+
 import { useLocalSearchParams, router, useNavigation } from "expo-router";
 
 const mapMessageDTOToChatMessage = (dto: MessageDTO): ChatMessage => {
@@ -31,10 +34,35 @@ export default function ChatScreen() {
   const { user } = useUser();
   const { matches } = useMatch();
 
-  const { matchId, recipient } = useLocalSearchParams();
+  const { matchId } = useLocalSearchParams();
+
+  const [recipientIds, setRecipientIds] = useState<number[]>([]);
+  const [recipients, setRecipients] = useState<User[]>([]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
+      headerRight: () => {
+        return (
+          <>
+            {recipients[0]?.isOnline ? (
+              <Badge
+                size="sm"
+                variant="solid"
+                action="success"
+                className="ml-1"
+              >
+                <BadgeText>Online</BadgeText>
+                <BadgeIcon as={BadgeCheckIcon} className="ml-1" />
+              </Badge>
+            ) : (
+              <Badge size="sm" variant="solid" action="error" className="ml-1">
+                <BadgeText>Offline</BadgeText>
+                <BadgeIcon as={BadgeCheckIcon} className="ml-1" />
+              </Badge>
+            )}
+          </>
+        );
+      },
       headerTitle: () => {
         return (
           <Text
@@ -44,14 +72,26 @@ export default function ChatScreen() {
               color: colors.black,
             }}
           >
-            {recipient}
+            Chat with {recipients?.map((recipient) => recipient.firstName)}
           </Text>
         );
       },
     });
-  }, [navigation, matchId, recipient]);
+  }, [navigation, matchId, matches, recipients]);
 
   useEffect(() => {
+    console.log("ChatScreen mounted with matchId:", matchId);
+
+    const relevantMatches = matches.filter(
+      (match) => String(match.matchId) === String(matchId)
+    );
+    if (relevantMatches.length > 0) {
+      const match = relevantMatches[0];
+      setRecipientIds([match.user.id]);
+      setRecipients([match.user]);
+    } else {
+      console.warn("No relevant matches found for matchId:", matchId);
+    }
     if (user?.id !== DUMMY_LOGGED_IN_USER) {
       console.warn("User changed, redirecting to Matches screen");
       router.push({
@@ -74,10 +114,10 @@ export default function ChatScreen() {
   }, [user]);
 
   useEffect(() => {
-    if (!recipient || !user) return;
+    if (!matches || !user) return;
     setYou(user);
     setMessages([]);
-  }, [recipient, user]);
+  }, [matches, user]);
 
   useEffect(() => {
     if (!matchId || !you?.email) return;
@@ -132,7 +172,7 @@ export default function ChatScreen() {
     }
 
     client.subscribe(
-      `/user/matches/${recipient?.id}/messages`,
+      `/user/matches/${recipientIds[0]}/messages`,
       (message: IMessage) => {
         console.log("Received message as IMessage:", message.body);
         const messageDTO: MessageDTO = JSON.parse(message.body);
@@ -150,7 +190,7 @@ export default function ChatScreen() {
     );
   };
 
-  if (!recipient || !you) {
+  if (!matches || !you) {
     return (
       <SafeAreaView style={styles.container}>
         <ActivityIndicator size="large" color={colors.white} />

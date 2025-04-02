@@ -9,6 +9,9 @@ import {
   ActivityIndicator,
 } from "react-native";
 
+import { Badge, BadgeIcon, BadgeText } from "@/components/ui/badge";
+import { BadgeCheckIcon } from "lucide-react-native";
+
 import { StatusBar } from "expo-status-bar";
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -40,7 +43,7 @@ const MatchesScreen = () => {
     console.log("Opening chat with user:", user.id);
     router.push({
       pathname: "/chat/[matchId]",
-      params: { matchId, recipient: user.id },
+      params: { matchId },
     });
   };
 
@@ -53,6 +56,28 @@ const MatchesScreen = () => {
         style={styles.matchItem}
         onPress={() => handleOpenChat(item.matchId, item.user)}
       >
+        {item.user.isOnline ? (
+          <Badge
+            size="sm"
+            variant="solid"
+            action="success"
+            className="absolute top-2 left-2 z-10 ml-1"
+          >
+            <BadgeText>Online</BadgeText>
+            <BadgeIcon as={BadgeCheckIcon} className="ml-1" />
+          </Badge>
+        ) : (
+          <Badge
+            size="sm"
+            variant="solid"
+            action="error"
+            className="absolute top-2 left-2 z-10 ml-1"
+          >
+            <BadgeText>Offline</BadgeText>
+            <BadgeIcon as={BadgeCheckIcon} className="ml-1" />
+          </Badge>
+        )}
+
         {userPhoto ? (
           <Image
             source={{ uri: getImageUrl(userPhoto, "thumbnail", item.id) }}
