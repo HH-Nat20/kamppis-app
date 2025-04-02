@@ -3,7 +3,6 @@ import {
   StatusBar,
   View,
   Text,
-  ScrollView,
   ActivityIndicator,
   Dimensions,
 } from "react-native";
@@ -105,7 +104,7 @@ export default function DetailsScreen() {
                 { flexDirection: "row", flexWrap: "wrap", gap: 8 },
               ]}
             >
-              {"cleanliness" in profile! && profile!.cleanliness && (
+              {profile && "cleanliness" in profile! && profile!.cleanliness && (
                 <Text
                   style={{
                     ...styles.cleanlinessTag,
@@ -119,7 +118,7 @@ export default function DetailsScreen() {
               )}
 
               {/* Location */}
-              {"location" in profile! && (
+              {profile && "location" in profile! && (
                 <Text
                   style={{
                     ...styles.tag,

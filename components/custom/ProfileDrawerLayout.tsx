@@ -35,7 +35,7 @@ import { getProfilePicture, getImageUrl } from "@/helpers/helpers";
 import { ProfileStackNavItem } from "@/types/ProfileStackNavItem";
 
 const drawerItems: ProfileStackNavItem[] = [
-  { icon: User, label: "My Profile", href: "/profile" as RelativePathString },
+  { icon: User, label: "My Profile", href: "profile" as RelativePathString },
   {
     icon: UserCog,
     label: "Personal Info",
@@ -49,7 +49,7 @@ const drawerItems: ProfileStackNavItem[] = [
   {
     icon: Settings,
     label: "Match Preferences",
-    href: "/profile/preference" as RelativePathString,
+    href: "/profile/preferences" as RelativePathString,
   },
   {
     icon: Images,
@@ -97,7 +97,7 @@ const DrawerLayoutContent = ({ children }: { children: React.ReactNode }) => {
     if (target === currentRoute) return;
 
     setTimeout(() => {
-      router.navigate(target);
+      router.replace(target);
     }, 100);
   };
 

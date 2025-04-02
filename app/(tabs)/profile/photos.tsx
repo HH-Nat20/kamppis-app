@@ -1,21 +1,21 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Alert, ScrollView, Dimensions, View } from "react-native";
+import React, { useState, useEffect } from "react";
+import { Alert, ScrollView, Dimensions } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 import Carousel, {
   ICarouselInstance,
   Pagination,
 } from "react-native-reanimated-carousel";
-import { useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
+
 import { useUser } from "@/contexts/UserContext";
 
 import { Photo } from "@/types/responses/Photo";
-import { ProfileStackParamList } from "@/navigation/ProfileStackNavigator";
 
 import { Fab, FabLabel, FabIcon } from "@/components/ui/fab";
 import { AddIcon } from "@/components/ui/icon";
 
 import ProfileDrawerLayout from "@/components/custom/ProfileDrawerLayout";
+
+import { router } from "expo-router";
 
 import {
   Actionsheet,
@@ -40,11 +40,6 @@ import { Plus, Trash2 } from "lucide-react-native";
 import dao from "@/api/dao";
 import Portrait from "@/components/common/Portrait";
 
-type ProfilePhotosNavigationProp = StackNavigationProp<
-  ProfileStackParamList,
-  "Upload"
->;
-
 const width = Dimensions.get("window").width;
 
 export default function ProfilePhotosScreen() {
@@ -52,7 +47,6 @@ export default function ProfilePhotosScreen() {
   const handleClose = () => setShowActionsheet(false);
   const { user, refreshUser } = useUser();
   const [photos, setPhotos] = useState<Photo[]>([]);
-  const navigation = useNavigation<ProfilePhotosNavigationProp>();
   const ref = React.useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
 
@@ -108,7 +102,11 @@ export default function ProfilePhotosScreen() {
 
   const openUploader = (mode: string) => {
     setShowActionsheet(false);
-    navigation.navigate("Upload", { mode });
+    router.push({
+      pathname: "/profile/upload",
+      params: { mode },
+    });
+    //navigation.navigate("Upload", { mode });
   };
 
   return (

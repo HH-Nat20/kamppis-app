@@ -1,15 +1,15 @@
 import React from "react";
 import { Text } from "react-native";
 
-import { UserProfile } from "../../types/responses/UserProfile";
-import { RoomProfile } from "../../types/responses/RoomProfile";
-import { ProfileCard } from "../../app/types/ProfileCard";
+import { UserProfile } from "@/types/responses/UserProfile";
+import { RoomProfile } from "@/types/responses/RoomProfile";
+import { ProfileCard } from "@/types/ProfileCard";
 
-import { formatCity } from "../../helpers/helpers";
+import { formatCity } from "@/helpers/helpers";
 import Entypo from "@expo/vector-icons/Entypo";
 
-import styles from "../../assets/styles/styles";
-import colors from "../../assets/styles/colors";
+import styles from "@/assets/styles/styles";
+import colors from "@/assets/styles/colors";
 
 interface ProfileTitleProps {
   card: ProfileCard;

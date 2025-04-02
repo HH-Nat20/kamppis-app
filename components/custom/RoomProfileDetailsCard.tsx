@@ -1,5 +1,4 @@
 import React from "react";
-import { useNavigation } from "@react-navigation/native";
 import { useQuery } from "@tanstack/react-query";
 
 import { Box } from "@/components/ui/box";
@@ -12,8 +11,6 @@ import { VStack } from "@/components/ui/vstack";
 import { RoomProfile } from "../../types/responses/RoomProfile";
 import { getRoommateQueryOptions } from "../../api/queries/roommateQuery";
 
-import { RootParamList } from "../../navigation/RootNavigator";
-import { StackNavigationProp } from "@react-navigation/stack";
 import { RoommateList } from "../common/RoommateList";
 
 export const RoomProfileDetailsCard = ({
@@ -21,8 +18,9 @@ export const RoomProfileDetailsCard = ({
 }: {
   profile: RoomProfile;
 }) => {
-  const navigation =
-    useNavigation<StackNavigationProp<RootParamList, "DetailsScreen">>();
+  if (!profile) {
+    return null;
+  }
 
   const { data: roommateUsers = [] } = useQuery(
     getRoommateQueryOptions(profile.userIds!)

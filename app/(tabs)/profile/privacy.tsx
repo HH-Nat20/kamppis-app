@@ -21,18 +21,17 @@ import { Input, InputField } from "@/components/ui/input";
 import { Button, ButtonText } from "@/components/ui/button";
 
 import ConfirmationDialog from "@/components/common/ConfirmationDialog";
+import ProfileDrawerLayout from "@/components/custom/ProfileDrawerLayout";
 
 import dao from "@/api/dao";
 
-import { router, useNavigation } from "expo-router";
+import { router } from "expo-router";
 import * as Linking from "expo-linking";
 
 import Toast from "react-native-toast-message";
 
 const PrivacySettingsScreen = () => {
   const { user } = useUser();
-
-  const navigation = useNavigation();
 
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
@@ -88,10 +87,7 @@ const PrivacySettingsScreen = () => {
           text1: "Account Deleted",
           text2: "Your account has been successfully deleted.",
         });
-        navigation.reset({
-          index: 0,
-          routes: [{ name: "Home" as never }],
-        });
+        router.replace("/login");
       } else {
         Toast.show({
           type: "error",
@@ -105,29 +101,30 @@ const PrivacySettingsScreen = () => {
 
   return (
     <>
-      <Container>
-        <View className="flex-1 items-center justify-center">
-          <Text>Privacy Settings Screen</Text>
-          <Text>User ID: {user?.id}</Text>
-          <Text>User Name: {user?.firstName}</Text>
-        </View>
-        <FlashList
-          data={operations}
-          keyExtractor={(item: Operation) => item.id.toString()}
-          renderItem={({ item }: { item: Operation }) => (
-            <Pressable onPress={item.action}>
-              <View className="p-4 border-b border-gray-200">
-                <Text className="text-lg font-semibold">{item.name}</Text>
-                <Text className="text-gray-500">{item.description}</Text>
-              </View>
-            </Pressable>
-          )}
-          estimatedItemSize={50}
-          className="w-full"
-          contentContainerStyle={{ paddingBottom: 20 }}
-        />
-      </Container>
-
+      <ProfileDrawerLayout>
+        <Container>
+          <View className="flex-1 items-center justify-center">
+            <Text>Privacy Settings Screen</Text>
+            <Text>User ID: {user?.id}</Text>
+            <Text>User Name: {user?.firstName}</Text>
+          </View>
+          <FlashList
+            data={operations}
+            keyExtractor={(item: Operation) => item.id.toString()}
+            renderItem={({ item }: { item: Operation }) => (
+              <Pressable onPress={item.action}>
+                <View className="p-4 border-b border-gray-200">
+                  <Text className="text-lg font-semibold">{item.name}</Text>
+                  <Text className="text-gray-500">{item.description}</Text>
+                </View>
+              </Pressable>
+            )}
+            estimatedItemSize={50}
+            className="w-full"
+            contentContainerStyle={{ paddingBottom: 20 }}
+          />
+        </Container>
+      </ProfileDrawerLayout>
       <ConfirmationDialog
         isOpen={showDeleteConfirmation}
         onClose={() => setShowDeleteConfirmation(false)}
@@ -138,6 +135,7 @@ const PrivacySettingsScreen = () => {
         cancelText="Cancel"
       />
 
+      {/* TODO: Move this modal to the router navigation root */}
       <Modal
         isOpen={showPasswordModal}
         onClose={() => setShowPasswordModal(false)}

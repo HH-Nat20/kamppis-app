@@ -1,7 +1,10 @@
 import React from "react";
 import { KeyboardAvoidingView, ScrollView } from "react-native";
 import { Controller, useFormContext } from "react-hook-form";
-import { usePreferencesForm } from "@/contexts/PreferencesFormContext";
+import {
+  PreferencesFormProvider,
+  usePreferencesForm,
+} from "@/contexts/PreferencesFormContext";
 import { PreferencesForm } from "@/validation/preferencesSchema";
 import { Gender } from "@/types/enums/GenderEnum";
 import { Location } from "@/types/enums/LocationEnum";
@@ -19,7 +22,15 @@ import Slider from "react-native-a11y-slider";
 
 import ProfileDrawerLayout from "@/components/custom/ProfileDrawerLayout";
 
-export default function ProfilePreferencesScreen() {
+const Preferences = () => {
+  return (
+    <PreferencesFormProvider>
+      <ProfilePreferencesScreen />
+    </PreferencesFormProvider>
+  );
+};
+
+const ProfilePreferencesScreen = () => {
   const {
     control,
     handleSubmit,
@@ -57,7 +68,7 @@ export default function ProfilePreferencesScreen() {
       </VStack>
     </ProfileDrawerLayout>
   );
-}
+};
 
 const AgeRangeSection = ({ control, errors }: any) => (
   <VStack space="md">
@@ -315,3 +326,5 @@ const MaxRoommatesSection = ({ control, errors }: any) => (
     )}
   </VStack>
 );
+
+export default Preferences;

@@ -9,18 +9,15 @@ import Portrait from "@/components/common/Portrait";
 import * as ImagePicker from "expo-image-picker";
 
 import { useUser } from "@/contexts/UserContext";
-import { useNavigation, RouteProp, useRoute } from "@react-navigation/native";
-import { ProfileStackParamList } from "@/navigation/ProfileStackNavigator";
+
+import { useLocalSearchParams, router } from "expo-router";
 
 import dao from "@/api/dao";
 
 import styles from "@/assets/styles/styles";
 
-type UploadScreenRouteProp = RouteProp<ProfileStackParamList, "Upload">;
-
 const ImageUpload = () => {
-  const route = useRoute<UploadScreenRouteProp>();
-  const mode = route.params?.mode || "gallery";
+  const { mode } = useLocalSearchParams() ?? "gallery";
 
   type Image = {
     uri: string;
@@ -38,8 +35,6 @@ const ImageUpload = () => {
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [uploadSuccess, setUploadSuccess] = useState(false);
 
-  const navigation = useNavigation();
-
   const pickImage = async () => {
     let result;
 
@@ -52,7 +47,7 @@ const ImageUpload = () => {
           text1: "Permission Denied",
           text2: "Camera access is required.",
         });
-        navigation.goBack();
+        router.back();
         return;
       }
 
@@ -71,7 +66,7 @@ const ImageUpload = () => {
     }
 
     if (result.canceled) {
-      navigation.goBack();
+      router.back();
       return;
     }
 
@@ -117,6 +112,7 @@ const ImageUpload = () => {
         text1: "Image Uploaded",
         text2: `A new image uploaded soccessfully 🖼️`,
       });
+      router.back();
     } catch (error) {
       setUploading(false);
       setUploadError("Failed to upload image");
@@ -145,7 +141,7 @@ const ImageUpload = () => {
               flexDirection: "row",
             }}
           >
-            <Button title="Cancel" onPress={() => navigation.goBack()} />
+            <Button title="Cancel" onPress={() => router.back()} />
             <Button title="Upload image" onPress={() => uploadImage()} />
           </View>
           {uploading && (
