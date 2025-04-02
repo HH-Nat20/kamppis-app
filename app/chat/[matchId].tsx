@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { SafeAreaView, ActivityIndicator } from "react-native";
-import { RouteProp, useNavigation } from "@react-navigation/native";
-import { ChatStackParamList } from "@/navigation/ChatStackNavigator";
+import React, { useState, useEffect, useLayoutEffect } from "react";
+import { SafeAreaView, ActivityIndicator, Text } from "react-native";
 
 import { User } from "@/types/responses/User";
 import { MessageDTO, ChatMessage } from "@/types/Chat";
@@ -11,15 +9,10 @@ import { IMessage } from "@stomp/stompjs";
 import Chat from "@codsod/react-native-chat";
 import { useUser } from "@/contexts/UserContext";
 import { useMatch } from "@/contexts/MatchContext";
-import { StackNavigationProp } from "@react-navigation/stack";
 import styles from "@/assets/styles/styles";
 import colors from "@/assets/styles/colors";
 
-type ChatScreenRouteProp = RouteProp<ChatStackParamList, "ChatScreen">;
-
-type ChatScreenProps = {
-  route: ChatScreenRouteProp;
-};
+import { useLocalSearchParams, router, useNavigation } from "expo-router";
 
 const mapMessageDTOToChatMessage = (dto: MessageDTO): ChatMessage => {
   return {
@@ -33,24 +26,43 @@ const mapMessageDTOToChatMessage = (dto: MessageDTO): ChatMessage => {
   };
 };
 
-export default function ChatScreen({ route }: ChatScreenProps) {
+export default function ChatScreen() {
+  const navigation = useNavigation();
   const { user } = useUser();
   const { matches } = useMatch();
 
-  const navigation = useNavigation<StackNavigationProp<ChatStackParamList>>();
+  const { matchId, recipient } = useLocalSearchParams();
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: () => {
+        return (
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: "bold",
+              color: colors.black,
+            }}
+          >
+            {recipient}
+          </Text>
+        );
+      },
+    });
+  }, [navigation, matchId, recipient]);
 
   useEffect(() => {
     if (user?.id !== DUMMY_LOGGED_IN_USER) {
       console.warn("User changed, redirecting to Matches screen");
-      navigation.navigate("Matches"); // Redirect to Matches screen
+      router.push({
+        pathname: "/matches",
+      }); // Redirect to Matches screen
     }
   }, [user]);
 
   const [DUMMY_LOGGED_IN_USER, setDUMMY_LOGGED_IN_USER] = useState<number>(
     user?.id || 1
   );
-
-  const { matchId, user: recipent } = route.params;
 
   const [you, setYou] = useState<User>();
 
@@ -62,10 +74,10 @@ export default function ChatScreen({ route }: ChatScreenProps) {
   }, [user]);
 
   useEffect(() => {
-    if (!recipent || !user) return;
+    if (!recipient || !user) return;
     setYou(user);
     setMessages([]);
-  }, [recipent, user]);
+  }, [recipient, user]);
 
   useEffect(() => {
     if (!matchId || !you?.email) return;
@@ -120,7 +132,7 @@ export default function ChatScreen({ route }: ChatScreenProps) {
     }
 
     client.subscribe(
-      `/user/matches/${recipent?.id}/messages`,
+      `/user/matches/${recipient?.id}/messages`,
       (message: IMessage) => {
         console.log("Received message as IMessage:", message.body);
         const messageDTO: MessageDTO = JSON.parse(message.body);
@@ -138,7 +150,7 @@ export default function ChatScreen({ route }: ChatScreenProps) {
     );
   };
 
-  if (!recipent || !you) {
+  if (!recipient || !you) {
     return (
       <SafeAreaView style={styles.container}>
         <ActivityIndicator size="large" color={colors.white} />

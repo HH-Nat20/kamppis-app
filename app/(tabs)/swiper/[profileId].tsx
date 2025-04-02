@@ -1,10 +1,11 @@
-import React, { useRef } from "react";
+import React, { useRef, useLayoutEffect } from "react";
 import {
   StatusBar,
   View,
   Text,
   ActivityIndicator,
   Dimensions,
+  BackHandler,
 } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 import Carousel, {
@@ -32,14 +33,15 @@ import Container from "@/components/common/Container";
 
 import { Photo } from "@/types/responses/Photo";
 
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useNavigation } from "expo-router";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 const width = Dimensions.get("window").width;
 
 export default function DetailsScreen() {
-  const { profileId } = useLocalSearchParams();
+  const navigation = useNavigation();
 
-  const swiperRef = useRef<Swiper<any>>(null);
+  const { profileId } = useLocalSearchParams();
 
   const ref = React.useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
@@ -47,6 +49,25 @@ export default function DetailsScreen() {
   const { data: profile, isLoading } = useQuery(
     getProfileQueryOptions(Number(profileId))
   );
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: () => {
+        return (
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: "bold",
+              color: colors.black,
+            }}
+          >
+            {profile && "user" in profile && String(profile.user.firstName)}
+            {profile && "flat" in profile && String(profile.flat.name)}
+          </Text>
+        );
+      },
+    });
+  }, [navigation, profile]);
 
   const photos = profile?.photos || [];
 
@@ -81,7 +102,7 @@ export default function DetailsScreen() {
               />
             ) : (
               <Center style={styles.portraitSwiper}>
-                <Heading size="lg">No photos available</Heading>
+                <Heading size="lg">No photos yet</Heading>
               </Center>
             )}
             <Pagination.Basic

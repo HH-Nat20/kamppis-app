@@ -8,8 +8,8 @@ import { Heading } from "@/components/ui/heading";
 import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
 
-import { RoomProfile } from "../../types/responses/RoomProfile";
-import { getRoommateQueryOptions } from "../../api/queries/roommateQuery";
+import { RoomProfile } from "@/types/responses/RoomProfile";
+import { getRoommateQueryOptions } from "@/api/queries/roommateQuery";
 
 import { RoommateList } from "../common/RoommateList";
 
@@ -50,7 +50,7 @@ export const RoomProfileDetailsCard = ({
         <Divider orientation="horizontal" className="my-2 bg-background-300" />
         <VStack className="flex-row gap-2 pb-2">
           <Heading size="xs">Utilities</Heading>
-          <Text size="xs">{profile.roomUtilities.join(", ")}</Text>
+          <Text size="xs">{profile.roomUtilities?.join(", ")}</Text>
         </VStack>
         <Divider orientation="horizontal" className="my-2 bg-background-300" />
         <VStack className="flex-row gap-2 pb-2">

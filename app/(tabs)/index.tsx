@@ -116,7 +116,7 @@ const HomeScreen = () => {
         <Button
           onPress={() =>
             router.push({
-              pathname: "/profile/[profileId]",
+              pathname: "/swiper/[profileId]",
               params: { profileId: 1 },
             })
           }

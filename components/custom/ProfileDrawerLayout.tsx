@@ -97,7 +97,7 @@ const DrawerLayoutContent = ({ children }: { children: React.ReactNode }) => {
     if (target === currentRoute) return;
 
     setTimeout(() => {
-      router.replace(target);
+      router.push(target);
     }, 100);
   };
 

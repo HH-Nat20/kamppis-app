@@ -8,42 +8,30 @@ import {
   Dimensions,
   ActivityIndicator,
 } from "react-native";
-import styles from "../../assets/styles/styles";
-import { ProfileCard } from "../../app/types/ProfileCard";
-import { getProfilePicture, getImageUrl } from "../../helpers/helpers";
-import { useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { RootParamList } from "../../navigation/RootNavigator";
+import styles from "@/assets/styles/styles";
+import { ProfileCard } from "@/types/ProfileCard";
+import { getProfilePicture, getImageUrl } from "@/helpers/helpers";
 
 import ProfileTitle from "../common/ProfileTitle";
 import TagArea from "../common/TagArea";
 
+import { router } from "expo-router";
+
 interface CardProps {
   card: ProfileCard;
 }
-
-type DetailScreenNavigationProp = NativeStackNavigationProp<
-  RootParamList,
-  "DetailsScreen"
->;
 
 const Card: React.FC<CardProps> = ({ card }) => {
   const [tapped, setTapped] = useState<boolean>(false);
   const [imageLoaded, setImageLoaded] = useState<boolean>(false);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
 
-  const navigation = useNavigation<DetailScreenNavigationProp>();
   const { width, height } = Dimensions.get("window");
 
   const handleOpenDetails = () => {
-    navigation.navigate("DetailsScreen", {
-      userName:
-        "flat" in card.profile
-          ? card.profile.flat.name
-          : "firstName" in card.user
-          ? card.user.firstName
-          : "",
-      profileId: card.profile!.id.toString(),
+    router.push({
+      pathname: "/swiper/[profileId]",
+      params: { profileId: card.profile.id },
     });
   };
 

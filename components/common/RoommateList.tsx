@@ -1,21 +1,16 @@
 import React from "react";
 import { View, Image, Pressable } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import { Text } from "@/components/ui/text";
-import { StackNavigationProp } from "@react-navigation/stack";
+import { User } from "@/types/responses/User";
+import { getProfilePicture, getImageUrl } from "@/helpers/helpers";
 
-import { User } from "../../types/responses/User";
-import { RootParamList } from "../../navigation/RootNavigator";
-import { getProfilePicture, getImageUrl } from "../../helpers/helpers";
+import { router } from "expo-router";
 
 interface RoommateListProps {
   roommates: User[];
 }
 
 export const RoommateList = ({ roommates }: RoommateListProps) => {
-  const navigation =
-    useNavigation<StackNavigationProp<RootParamList, "DetailsScreen">>();
-
   if (!roommates || roommates.length === 0) return null;
 
   return (
@@ -26,9 +21,9 @@ export const RoommateList = ({ roommates }: RoommateListProps) => {
           <Pressable
             key={user.id}
             onPress={() => {
-              navigation.navigate("DetailsScreen", {
-                userName: user.firstName,
-                profileId: user.userProfile.id.toString(),
+              router.push({
+                pathname: "/swiper/[profileId]",
+                params: { profileId: user.id },
               });
             }}
             className="relative w-20 h-20 rounded-md overflow-hidden bg-gray-300"

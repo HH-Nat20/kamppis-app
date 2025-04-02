@@ -4,16 +4,23 @@ import { Stack } from "expo-router";
 
 import { ProfileDrawerProvider } from "@/contexts/ProfileDrawerContext";
 
-const ProfileLayout = ({ children }: { children: React.ReactNode }) => {
+import { router } from "expo-router";
+
+const SwiperLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <ProfileDrawerProvider>
       <Stack>
         <Stack.Screen
           name="index"
           options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="[profileId]"
+          options={{
             headerShown: true,
-            headerTitle: "Profile",
-            headerLeft: () => <></>,
+            headerTitle: "", // This will be set in the ProfileDrawer
           }}
         />
       </Stack>
@@ -21,4 +28,4 @@ const ProfileLayout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default ProfileLayout;
+export default SwiperLayout;

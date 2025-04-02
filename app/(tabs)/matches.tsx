@@ -8,8 +8,7 @@ import {
   Image,
   ActivityIndicator,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+
 import { StatusBar } from "expo-status-bar";
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -21,23 +20,14 @@ import { bgGradient } from "@/assets/styles/colors";
 
 import { useUser } from "@/contexts/UserContext";
 import { User } from "@/types/responses/User";
-import { UserProfile } from "@/types/responses/UserProfile";
 
-import Container from "@/components/common/Container";
 import { Heading } from "@/components/ui/heading";
 
-type ChatStackParamList = {
-  Matches: undefined;
-  ChatScreen: { matchId: number; userName: string; user: User };
-};
-
-type MatchesScreenNavigationProp =
-  NativeStackNavigationProp<ChatStackParamList>;
+import { router } from "expo-router";
 
 const MatchesScreen = () => {
   const { matches } = useMatch();
   const { user } = useUser();
-  const navigation = useNavigation<MatchesScreenNavigationProp>();
 
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -48,10 +38,9 @@ const MatchesScreen = () => {
 
   const handleOpenChat = (matchId: number, user: User) => {
     console.log("Opening chat with user:", user.id);
-    navigation.navigate("ChatScreen", {
-      matchId,
-      userName: user.firstName,
-      user,
+    router.push({
+      pathname: "/chat/[matchId]",
+      params: { matchId, recipient: user.id },
     });
   };
 
