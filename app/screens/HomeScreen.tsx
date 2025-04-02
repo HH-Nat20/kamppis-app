@@ -4,15 +4,15 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useQueries } from "@tanstack/react-query";
 
-import { useUser } from "../contexts/UserContext";
-import { HomeStackParamList } from "../navigation/HomeStackNavigator";
+import { useUser } from "../../contexts/UserContext";
+import { HomeStackParamList } from "../../navigation/HomeStackNavigator";
 import {
   getServerHealthQuery,
   getDatabaseHealthQuery,
-} from "../queries/healthQueries";
+} from "../../api/queries/healthQueries";
 
-import TestJWTButton from "../components/TestJWTButton";
-import Container from "../components/Container";
+import TestJWTButton from "../../components/common/TestJWTButton";
+import Container from "../../components/common/Container";
 
 import { VStack } from "@/components/ui/vstack";
 import { Text } from "@/components/ui/text";
@@ -22,7 +22,7 @@ import { Center } from "@/components/ui/center";
 
 import { router } from "expo-router";
 import * as Linking from "expo-linking";
-import GitHubAuthButton from "../components/GitHubAuthButton";
+import GitHubAuthButton from "../../components/common/GitHubAuthButton";
 
 const HomeScreen = () => {
   const navigation =
@@ -51,12 +51,12 @@ const HomeScreen = () => {
     navigation.navigate("Login");
   };
 
-    const [authCode, setAuthCode] = useState<string | null>(null);
+  const [authCode, setAuthCode] = useState<string | null>(null);
 
-    const handleCodeReceived = (code: string) => {
-      console.log("Received GitHub auth code:", code);
-      setAuthCode(code); // Store the code in state or send it to your backend
-    };
+  const handleCodeReceived = (code: string) => {
+    console.log("Received GitHub auth code:", code);
+    setAuthCode(code); // Store the code in state or send it to your backend
+  };
 
   return (
     <Container>

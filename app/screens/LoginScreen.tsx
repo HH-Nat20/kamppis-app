@@ -5,11 +5,11 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useQuery } from "@tanstack/react-query";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { useUser } from "../contexts/UserContext";
-import { getUsers } from "../ajax/dao_users";
-import { User } from "../types/responses/User";
-import { HomeStackParamList } from "../navigation/HomeStackNavigator";
-import Container from "../components/Container";
+import { useUser } from "../../contexts/UserContext";
+import { getUsers } from "../../api/dao_users";
+import { User } from "../../types/responses/User";
+import { HomeStackParamList } from "../../navigation/HomeStackNavigator";
+import Container from "../../components/common/Container";
 
 import { Button, ButtonText } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";

@@ -1,22 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { SafeAreaView, ActivityIndicator } from "react-native";
 import { RouteProp, useNavigation } from "@react-navigation/native";
-import { ChatStackParamList } from "../navigation/ChatStackNavigator";
+import { ChatStackParamList } from "../../navigation/ChatStackNavigator";
 
-import dao from "../ajax/dao";
-
-import { Match, MatchUser } from "../types/Match";
-import { User } from "../types/responses/User";
-import { MessageDTO, ChatMessage } from "../types/Chat";
+import { User } from "../../types/responses/User";
+import { MessageDTO, ChatMessage } from "../../types/Chat";
 
 import * as Stomp from "@stomp/stompjs";
 import { IMessage } from "@stomp/stompjs";
 import Chat from "@codsod/react-native-chat";
-import { useUser } from "../contexts/UserContext";
-import { useMatch } from "../contexts/MatchContext";
+import { useUser } from "../../contexts/UserContext";
+import { useMatch } from "../../contexts/MatchContext";
 import { StackNavigationProp } from "@react-navigation/stack";
-import styles from "../ui/styles";
-import colors from "../ui/colors";
+import styles from "../../assets/styles/styles";
+import colors from "../../assets/styles/colors";
 
 type ChatScreenRouteProp = RouteProp<ChatStackParamList, "ChatScreen">;
 

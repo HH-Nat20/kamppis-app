@@ -2,15 +2,15 @@ import React, { useState, useEffect } from "react";
 import { Alert, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { useUser } from "../contexts/UserContext";
+import { useUser } from "../../contexts/UserContext";
 
-import { Photo } from "../types/responses/Photo";
-import { ProfileStackParamList } from "../navigation/ProfileStackNavigator";
+import { Photo } from "../../types/responses/Photo";
+import { ProfileStackParamList } from "../../navigation/ProfileStackNavigator";
 
 import { Fab, FabLabel, FabIcon } from "@/components/ui/fab";
 import { AddIcon } from "@/components/ui/icon";
 
-import ProfileDrawerLayout from "../components/ProfileDrawerLayout";
+import ProfileDrawerLayout from "../../components/custom/ProfileDrawerLayout";
 
 import {
   Actionsheet,
@@ -32,8 +32,8 @@ import { Icon } from "@/components/ui/icon";
 import { Pressable } from "@/components/ui/pressable";
 import { Plus, Trash2 } from "lucide-react-native";
 
-import dao from "../ajax/dao";
-import Portrait from "../components/Portrait";
+import dao from "../../api/dao";
+import Portrait from "../../components/common/Portrait";
 
 type ProfilePhotosNavigationProp = StackNavigationProp<
   ProfileStackParamList,

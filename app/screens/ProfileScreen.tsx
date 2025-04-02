@@ -1,7 +1,7 @@
 import React from "react";
 import { Avatar, AvatarImage, AvatarBadge } from "@/components/ui/avatar";
 
-import ProfileDrawerLayout from "../components/ProfileDrawerLayout";
+import ProfileDrawerLayout from "../../components/custom/ProfileDrawerLayout";
 
 import { Button, ButtonText, ButtonIcon } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
@@ -17,15 +17,15 @@ import { Card } from "@/components/ui/card";
 
 import colors from "tailwindcss/colors";
 
-import { useProfileDrawer } from "../contexts/ProfileDrawerContext";
+import { useProfileDrawer } from "../../contexts/ProfileDrawerContext";
 
-import { useUser } from "../contexts/UserContext";
-import { getImageUrl, getProfilePicture } from "../helpers/helpers";
+import { useUser } from "../../contexts/UserContext";
+import { getImageUrl, getProfilePicture } from "../../helpers/helpers";
 
 import { useNavigation } from "expo-router";
-import { ProfileStackParamList } from "../navigation/ProfileStackNavigator";
+import { ProfileStackParamList } from "../../navigation/ProfileStackNavigator";
 import { StackNavigationProp } from "@react-navigation/stack";
-import TagArea from "../components/TagArea";
+import TagArea from "../../components/common/TagArea";
 
 export default function ProfileScreen() {
   const { openDrawer } = useProfileDrawer();

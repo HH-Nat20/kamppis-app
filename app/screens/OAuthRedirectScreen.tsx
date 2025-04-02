@@ -8,9 +8,9 @@ import React from "react";
 import { useEffect } from "react";
 import { ActivityIndicator, View, Text } from "react-native";
 import Toast from "react-native-toast-message";
-import styles from "../ui/styles";
+import styles from "../../assets/styles/styles";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { HomeStackParamList } from "../navigation/HomeStackNavigator";
+import { HomeStackParamList } from "../../navigation/HomeStackNavigator";
 
 type OAuthRedirectParams = {
   redirect: {

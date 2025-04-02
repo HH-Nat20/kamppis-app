@@ -2,18 +2,18 @@ import React from "react";
 import { KeyboardAvoidingView, ScrollView } from "react-native";
 import { useFormContext } from "react-hook-form";
 
-import { useProfileForm } from "../contexts/ProfileFormContext";
-import { ProfileForm } from "../validation/profileFormSchema";
+import { useProfileForm } from "../../contexts/ProfileFormContext";
+import { ProfileForm } from "../../validation/profileFormSchema";
 
 import { VStack } from "@/components/ui/vstack";
 import { Heading } from "@/components/ui/heading";
 import { Divider } from "@/components/ui/divider";
 import { Button, ButtonText } from "@/components/ui/button";
 
-import LifestyleSection from "./sections/LifestyleSection";
-import CleanlinessSection from "./sections/CleanlinessSection";
-import BioSection from "./sections/BioSection";
-import ProfileDrawerLayout from "../components/ProfileDrawerLayout";
+import LifestyleSection from "../../components/forms/LifestyleSection";
+import CleanlinessSection from "../../components/forms/CleanlinessSection";
+import BioSection from "../../components/forms/BioSection";
+import ProfileDrawerLayout from "../../components/custom/ProfileDrawerLayout";
 
 export default function ProfileLifestyleScreen() {
   const {

@@ -2,8 +2,8 @@ import React from "react";
 import { KeyboardAvoidingView, ScrollView } from "react-native";
 import { useFormContext } from "react-hook-form";
 
-import { UserForm } from "../validation/userFormSchema";
-import { useUserForm } from "../contexts/UserFormContext";
+import { UserForm } from "../../validation/userFormSchema";
+import { useUserForm } from "../../contexts/UserFormContext";
 
 import { VStack } from "@/components/ui/vstack";
 import { Heading } from "@/components/ui/heading";
@@ -11,13 +11,13 @@ import { Button } from "@/components/ui/button";
 import { ButtonText } from "@/components/ui/button";
 import { Divider } from "@/components/ui/divider";
 
-import ProfileDrawerLayout from "../components/ProfileDrawerLayout";
+import ProfileDrawerLayout from "../../components/custom/ProfileDrawerLayout";
 
-import ProfileInputSection from "./sections/ProfileInputSection";
-import GenderSection from "./sections/GenderSection";
-import LookingForSection from "./sections/LookingForSection";
-import EmailSection from "./sections/EmailSection";
-import DateOfBirthSection from "./sections/DateOfBirthSection";
+import ProfileInputSection from "../../components/forms/ProfileInputSection";
+import GenderSection from "../../components/forms/GenderSection";
+import LookingForSection from "../../components/forms/LookingForSection";
+import EmailSection from "../../components/forms/EmailSection";
+import DateOfBirthSection from "../../components/forms/DateOfBirthSection";
 
 export default function ProfilePersonalScreen() {
   const {
