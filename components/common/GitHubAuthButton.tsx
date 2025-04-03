@@ -24,7 +24,7 @@ export default function GitHubAuthButton({
       clientId: "Ov23lih1jrZvsLs8CGUC",
       scopes: ["identity"],
       redirectUri: makeRedirectUri({
-        scheme: "myapp",
+        scheme: "kamppis-app",
         path: "redirect",
       }),
     },

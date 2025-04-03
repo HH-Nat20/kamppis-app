@@ -9,8 +9,7 @@ import { useEffect } from "react";
 import { ActivityIndicator, View, Text } from "react-native";
 import Toast from "react-native-toast-message";
 import styles from "@/assets/styles/styles";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { HomeStackParamList } from "@/navigation/HomeStackNavigator";
+import { router } from "expo-router";
 
 type OAuthRedirectParams = {
   redirect: {
@@ -19,8 +18,6 @@ type OAuthRedirectParams = {
 };
 
 export default function OAuthRedirectScreen() {
-  const navigation =
-    useNavigation<NativeStackNavigationProp<HomeStackParamList, "Home">>();
   const route = useRoute<RouteProp<OAuthRedirectParams, "redirect">>();
   // This screen is used to handle the redirect from the OAuth provider
   // and extract the authorization code from the URL.
@@ -43,7 +40,9 @@ export default function OAuthRedirectScreen() {
 
     // Redirect to the home screen after showing the toast
     setTimeout(() => {
-      navigation.navigate("Home");
+      router.push({
+        pathname: "/login",
+      });
     }, 3000);
   }, [route.params]);
 
