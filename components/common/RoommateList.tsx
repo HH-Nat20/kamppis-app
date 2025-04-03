@@ -22,7 +22,7 @@ export const RoommateList = ({ roommates }: RoommateListProps) => {
             key={user.id}
             onPress={() => {
               router.push({
-                pathname: "/swiper/[profileId]",
+                pathname: "/[profileId]",
                 params: { profileId: user.id },
               });
             }}

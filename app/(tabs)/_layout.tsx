@@ -10,7 +10,7 @@ const TabsLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <ProfileDrawerProvider>
       <Tabs
-        initialRouteName="index"
+        initialRouteName="(home)"
         screenOptions={({ route }) => ({
           tabBarStyle: {
             backgroundColor: "transparent",
@@ -35,11 +35,10 @@ const TabsLayout = ({ children }: { children: React.ReactNode }) => {
         })}
       >
         <Tabs.Screen
-          name="index"
+          name="(home)"
           options={{
             headerShown: false,
-            tabBarLabel: "Home", // Shown below the tab icon
-            title: "Home", // Shown in the header
+            tabBarLabel: "Home",
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="home" size={size} color={color} />
             ),
@@ -50,18 +49,17 @@ const TabsLayout = ({ children }: { children: React.ReactNode }) => {
           options={{
             headerShown: false,
             tabBarLabel: "Profile",
-            title: "Profile",
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="person" size={size} color={color} />
             ),
           }}
         />
         <Tabs.Screen
-          name="swiper"
+          name="(swiper)"
           options={{
             headerShown: false,
-            tabBarLabel: "Swipe",
-            title: "Swipe",
+            tabBarLabel: "Swiper",
+            title: "Swiper",
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="heart" size={size} color={color} />
             ),

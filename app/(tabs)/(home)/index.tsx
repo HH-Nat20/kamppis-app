@@ -19,7 +19,7 @@ import { Heading } from "@/components/ui/heading";
 import * as Linking from "expo-linking";
 import GitHubAuthButton from "@/components/common/GitHubAuthButton";
 
-import { router } from "expo-router";
+import { Link, RelativePathString, router } from "expo-router";
 
 const HomeScreen = () => {
   const { user } = useUser();
@@ -63,7 +63,6 @@ const HomeScreen = () => {
       <VStack className="items-center justify-center gap-4 mt-4 py-4">
         <Heading>App started</Heading>
         <Text>User: {user?.email}</Text>
-
         <VStack className="items-center gap-2 mt-4">
           <Text>Checking server status...</Text>
           {serverHealth.isLoading ? (
@@ -80,7 +79,6 @@ const HomeScreen = () => {
             </Text>
           )}
         </VStack>
-
         <VStack className="items-center gap-2 mt-4">
           <Text>Checking DB status...</Text>
           {dbHealth.isLoading ? (
@@ -97,34 +95,14 @@ const HomeScreen = () => {
             </Text>
           )}
         </VStack>
-
         <Button onPress={handleOpenLogin} className="mt-6">
           <ButtonText>Login as different user</ButtonText>
         </Button>
-
-        <Button
-          onPress={() =>
-            router.push({
-              pathname: "/login",
-            })
-          }
-          className="mt-6"
-        >
-          <ButtonText>Login Using Router</ButtonText>
-        </Button>
-
-        <Button
-          onPress={() =>
-            router.push({
-              pathname: "/swiper/[profileId]",
-              params: { profileId: 1 },
-            })
-          }
-          className="mt-6"
-        >
-          <ButtonText>Go to Test Route</ButtonText>
-        </Button>
-
+        {/** withAnchor is necessary for the swiper to still work after using this link, */}
+        {/** if used before the swiper is loaded */}
+        <Link href={`/1`} withAnchor>
+          Test Link to Profile 1
+        </Link>
         <TestJWTButton />
         <GitHubAuthButton onCodeReceived={handleCodeReceived} />
       </VStack>
