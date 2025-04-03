@@ -30,7 +30,7 @@ const Card: React.FC<CardProps> = ({ card }) => {
 
   const handleOpenDetails = () => {
     router.push({
-      pathname: "/swiper/[profileId]",
+      pathname: "/[profileId]",
       params: { profileId: card.profile.id },
     });
   };
