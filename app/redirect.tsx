@@ -1,10 +1,20 @@
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { SafeAreaView, Text } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect } from "react";
 import styles from "@/assets/styles/styles";
 
 export default function RedirectScreen() {
+   const { code } = useLocalSearchParams(); // Get ?code= from URL
+
   useEffect(() => {
+     if (code) {
+      // Store the code before redirecting
+      AsyncStorage.setItem("githubAuthCode", code as string).then(() => {
+        console.log("GitHub Auth Code Saved:", code);
+      });
+    }
+
     const timeout = setTimeout(() => {
       router.push({
         pathname: "/",

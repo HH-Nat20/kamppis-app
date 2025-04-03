@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ActivityIndicator } from "react-native";
 import { useQueries } from "@tanstack/react-query";
 
@@ -20,6 +20,9 @@ import * as Linking from "expo-linking";
 import GitHubAuthButton from "@/components/common/GitHubAuthButton";
 
 import { router } from "expo-router";
+import Toast from "react-native-toast-message";
+import TestGitHubCodeButton from "@/components/common/TestGitHubCodeButton";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const HomeScreen = () => {
   const { user } = useUser();
@@ -50,9 +53,27 @@ const HomeScreen = () => {
 
   const [authCode, setAuthCode] = useState<string | null>(null);
 
+  useEffect(() => {
+    // Fetch the stored GitHub auth code
+    const getAuthCode = async () => {
+      const storedCode = await AsyncStorage.getItem("githubAuthCode");
+      if (storedCode) {
+        console.log("Retrieved GitHub Code:", storedCode);
+        setAuthCode(storedCode);
+      }
+    };
+
+    getAuthCode();
+  }, []);
+
   const handleCodeReceived = (code: string) => {
     console.log("Received GitHub auth code:", code);
     setAuthCode(code); // Store the code in state or send it to your backend
+    Toast.show({
+      type: "success",
+      text1: "Authentication successful",
+      text2: `GitHub Code: ${code}`,
+    });
   };
 
   return (
@@ -127,6 +148,18 @@ const HomeScreen = () => {
 
         <TestJWTButton />
         <GitHubAuthButton onCodeReceived={handleCodeReceived} />
+        <TestGitHubCodeButton code={authCode} />
+
+        <Button
+          onPress={() =>
+            router.push({
+              pathname: "/(auth)/signup",
+            })
+          }
+          className="mt-6"
+        >
+          <ButtonText>Sign up</ButtonText>
+        </Button>
       </VStack>
     </Container>
   );
