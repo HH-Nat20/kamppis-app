@@ -6,7 +6,7 @@
     "owner": "nat20",
     "orientation": "portrait",
     "icon": "./assets/images/kamppis-app-icon.png",
-    "scheme": "myapp",
+    "scheme": "kamppis-app",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
