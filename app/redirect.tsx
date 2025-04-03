@@ -12,7 +12,7 @@ export default function RedirectScreen() {
     }, 1000); // Redirect after 1 second
 
     return () => clearTimeout(timeout);
-  }, []);
+  });
 
   return (
     <SafeAreaView className="flex-1 bg-white dark:bg-gray-800">
