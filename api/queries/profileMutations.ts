@@ -30,6 +30,9 @@ export const useUpdateUserProfileMutation = (
       queryClient.invalidateQueries({
         queryKey: queryKeys.user(updatedProfile.user.id),
       });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.matchableProfiles(updatedProfile.user.id),
+      });
     },
   });
 };

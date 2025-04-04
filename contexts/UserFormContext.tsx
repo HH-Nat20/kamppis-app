@@ -23,7 +23,7 @@ export const UserFormProvider = ({
 
   const mutation = useUpdateUserMutation(user?.id);
 
-  const { isPending, data: person } = useQuery(getUserQueryOptions(user!.id));
+  const { isPending, data: person } = useQuery(getUserQueryOptions(user?.id));
 
   const formatDateArray = (arr?: number[]) => {
     if (!arr || arr.length !== 3) return "";

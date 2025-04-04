@@ -14,13 +14,40 @@ const ENDPOINT = "profiles";
  * @returns {Promise<UserProfile[] | RoomProfile[]>}
  */
 export const getPossibleMatches = async (userId: number) => {
-  const response = await get(`${ENDPOINT}/${userId}/query`);
-  if (response.status == 204) {
-    return [];
+  const profiles = [];
+
+  console.log("Fetching possible matches for user: ", userId);
+
+  let responseBody1, responseBody2;
+
+  try {
+    const res1 = await get(`room-profiles/${userId}/query`);
+    responseBody1 = await res1.json();
+  } catch (err) {
+    console.log("Error parsing room profiles response:", err);
   }
-  const responseBody = await response.json();
-  //console.log(`Found ${responseBody.length} profiles: `, responseBody);
-  const profiles: UserProfile[] | RoomProfile[] = responseBody;
+
+  try {
+    const res2 = await get(`user-profiles/${userId}/query`);
+    responseBody2 = await res2.json();
+  } catch (err) {
+    console.log("Error parsing user profiles response:", err);
+  }
+
+  if (responseBody1?.status === 404) {
+    console.log("No room profiles found");
+  } else if (Array.isArray(responseBody1)) {
+    console.log(`Found ${responseBody1.length} room profiles: `, responseBody1);
+    profiles.push(...responseBody1);
+  }
+
+  if (!responseBody2) {
+    console.log("No user profiles found");
+  } else if (Array.isArray(responseBody2)) {
+    console.log(`Found ${responseBody2.length} user profiles: `, responseBody2);
+    profiles.push(...responseBody2);
+  }
+
   return profiles;
 };
 

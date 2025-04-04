@@ -1,6 +1,6 @@
 import React, { createContext, useContext, ReactNode, useMemo } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { ProfileCard } from "../app/types/ProfileCard";
+import { ProfileCard } from "@/types/ProfileCard";
 import { useUser } from "./UserContext";
 import { buildShuffledProfileCards } from "../helpers/profileCardBuilder";
 import { getMatchableProfilesQueryOptions } from "../api/queries/matchableProfilesQueries";
@@ -34,7 +34,7 @@ export const MatchableProfilesProvider = ({
       const isCurrentUsersUserProfile =
         "userId" in profile && profile.userId === user?.id;
       const isCurrentUsersRoomProfile =
-        "userIds" in profile && profile.userIds?.includes(user?.id!); // TODO: make sure ! doesn't crash the app (This should never be undefined)
+        "userIds" in profile && profile.userIds?.includes(user?.id!);
       return !isCurrentUsersUserProfile && !isCurrentUsersRoomProfile;
     });
 

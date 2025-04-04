@@ -9,8 +9,8 @@ import { queryKeys } from "./queryKeys";
 export const getMatchableProfilesQueryOptions = (userId: number) =>
   queryOptions({
     queryKey: queryKeys.matchableProfiles(userId),
-    queryFn: () => dao.getAllProfiles(), // for now
-    // queryFn: () => dao.getPossibleMatches(userId), // for production
+    //queryFn: () => dao.getAllProfiles(), // for now
+    queryFn: () => dao.getPossibleMatches(userId), // for production
     enabled: !!userId,
     staleTime: 0,
   });

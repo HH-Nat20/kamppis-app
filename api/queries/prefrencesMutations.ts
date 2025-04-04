@@ -29,6 +29,9 @@ export const useUpdatePreferencesMutation = (userId: number | undefined) => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.userPreferences(userId),
       });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.matchableProfiles(userId),
+      });
     },
   });
 };
