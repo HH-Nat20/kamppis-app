@@ -1,6 +1,6 @@
-import { UserProfile } from "../types/responses/UserProfile";
-import { RoomProfile } from "../types/responses/RoomProfile";
-import { ProfileCard } from "../app/types/ProfileCard";
+import { UserProfile } from "@/types/responses/UserProfile";
+import { RoomProfile } from "@/types/responses/RoomProfile";
+import { ProfileCard } from "@/types/ProfileCard";
 
 export function buildShuffledProfileCards(
   profiles: (UserProfile | RoomProfile)[]

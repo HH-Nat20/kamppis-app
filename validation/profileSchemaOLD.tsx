@@ -1,8 +1,8 @@
 import * as yup from "yup";
-import { Gender } from "../types/enums/GenderEnum";
-import { Lifestyle } from "../types/enums/LifestyleEnum";
-import { Location } from "../types/enums/LocationEnum";
-import { Cleanliness } from "../types/enums/CLeanlinessEnum";
+import { Gender } from "@/types/enums/GenderEnum";
+import { Lifestyle } from "@/types/enums/LifestyleEnum";
+import { Location } from "@/types/enums/LocationEnum";
+import { Cleanliness } from "@/types/enums/CLeanlinessEnum";
 
 export const profileSchema = yup.object({
   firstName: yup

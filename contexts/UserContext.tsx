@@ -6,8 +6,8 @@ import React, {
   useMemo,
 } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { User } from "../types/responses/User";
-import { getUserQueryOptions } from "../api/queries/userQueries";
+import { User } from "@/types/responses/User";
+import { getUserQueryOptions } from "@/api/queries/userQueries";
 
 type UserContextType = {
   user: User | undefined;

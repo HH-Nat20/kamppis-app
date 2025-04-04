@@ -4,11 +4,11 @@ import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useUser } from "./UserContext";
 import { useQuery } from "@tanstack/react-query";
-import { getUserQueryOptions } from "../api/queries/userQueries";
-import { useUpdateUserMutation } from "../api/queries/userMutations";
-import { Gender } from "../types/enums/GenderEnum";
-import { LookingFor } from "../types/enums/LookingForEnum";
-import { UserForm, userFormSchema } from "../validation/userFormSchema";
+import { getUserQueryOptions } from "@/api/queries/userQueries";
+import { useUpdateUserMutation } from "@/api/queries/userMutations";
+import { Gender } from "@/types/enums/GenderEnum";
+import { LookingFor } from "@/types/enums/LookingForEnum";
+import { UserForm, userFormSchema } from "@/validation/userFormSchema";
 import Toast from "react-native-toast-message";
 
 const UserFormContext = createContext<any>(undefined);

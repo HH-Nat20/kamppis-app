@@ -1,6 +1,6 @@
 import { date, z } from "zod";
-import { Gender } from "../types/enums/GenderEnum";
-import { LookingFor } from "../types/enums/LookingForEnum";
+import { Gender } from "@/types/enums/GenderEnum";
+import { LookingFor } from "@/types/enums/LookingForEnum";
 
 export const userFormSchema = z.object({
   firstName: z.string().min(1),

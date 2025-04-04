@@ -5,14 +5,11 @@ import Toast from "react-native-toast-message";
 import { ActivityIndicator } from "react-native";
 import { useUser } from "./UserContext";
 import { useQuery } from "@tanstack/react-query";
-import { useUpdateUserProfileMutation } from "../api/queries/profileMutations";
-import { getUserProfileQueryOptions } from "../api/queries/profileQueries";
-import {
-  ProfileForm,
-  profileFormSchema,
-} from "../validation/profileFormSchema";
-import { Cleanliness } from "../types/enums/CLeanlinessEnum";
-import { Lifestyle } from "../types/enums/LifestyleEnum";
+import { useUpdateUserProfileMutation } from "@/api/queries/profileMutations";
+import { getUserProfileQueryOptions } from "@/api/queries/profileQueries";
+import { ProfileForm, profileFormSchema } from "@/validation/profileFormSchema";
+import { Cleanliness } from "@/types/enums/CLeanlinessEnum";
+import { Lifestyle } from "@/types/enums/LifestyleEnum";
 
 const ProfileFormContext = createContext<any>(undefined);
 

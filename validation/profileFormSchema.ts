@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { Cleanliness } from "../types/enums/CLeanlinessEnum";
-import { Lifestyle } from "../types/enums/LifestyleEnum";
+import { Cleanliness } from "@/types/enums/CLeanlinessEnum";
+import { Lifestyle } from "@/types/enums/LifestyleEnum";
 
 export const profileFormSchema = z.object({
   bio: z.string().optional(),

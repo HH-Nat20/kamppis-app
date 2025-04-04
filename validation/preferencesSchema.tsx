@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { Gender } from "../types/enums/GenderEnum";
-import { Location } from "../types/enums/LocationEnum";
+import { Gender } from "@/types/enums/GenderEnum";
+import { Location } from "@/types/enums/LocationEnum";
 
 export const preferencesSchema = z.object({
   maxRent: z.number().min(0),
