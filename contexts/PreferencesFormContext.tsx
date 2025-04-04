@@ -7,14 +7,14 @@ import { ActivityIndicator } from "react-native";
 import Toast from "react-native-toast-message";
 import { useUser } from "./UserContext";
 import { useQuery } from "@tanstack/react-query";
-import { useUpdatePreferencesMutation } from "../api/queries/prefrencesMutations";
-import { getUserPreferencesQueryOptions } from "../api/queries/userQueries";
+import { useUpdatePreferencesMutation } from "@/api/queries/prefrencesMutations";
+import { getUserPreferencesQueryOptions } from "@/api/queries/userQueries";
 import {
   preferencesSchema,
   PreferencesForm,
-} from "../validation/preferencesSchema";
-import { Gender } from "../types/enums/GenderEnum";
-import { Location } from "../types/enums/LocationEnum";
+} from "@/validation/preferencesSchema";
+import { Gender } from "@/types/enums/GenderEnum";
+import { Location } from "@/types/enums/LocationEnum";
 
 const PreferencesFormContext = createContext<any>(undefined);
 
