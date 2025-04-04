@@ -1,6 +1,6 @@
 import React from "react";
 import { Controller } from "react-hook-form";
-import { LookingFor, LookingForLabels } from "../../types/enums/LookingForEnum";
+import { LookingFor, LookingForLabels } from "@/types/enums/LookingForEnum";
 
 import {
   Select,

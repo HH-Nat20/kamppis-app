@@ -1,8 +1,8 @@
 import { queryOptions } from "@tanstack/react-query";
 import dao from "../dao";
-import { MatchWithUser } from "../../app/types/Match";
-import { User } from "../../types/responses/User";
-import { Match } from "../../app/types/Match";
+import { MatchWithUser } from "@/types/Match";
+import { User } from "@/types/responses/User";
+import { Match } from "@/types/Match";
 import { queryKeys } from "./queryKeys";
 
 export const getUserMatchesQueryOptions = (userId: number) =>
@@ -14,12 +14,14 @@ export const getUserMatchesQueryOptions = (userId: number) =>
 
       const fullMatches: MatchWithUser[] = await Promise.all(
         matchesResponse.map(async (match) => {
-          const otherUserId = match.userIds.find((id) => id !== userId)!;
-          const user: User = await dao.getUser(otherUserId);
+          const otherUserIds = match.userIds.filter((id) => id !== userId)!;
+          const users: User[] = await Promise.all(
+            otherUserIds.map((id) => dao.getUser(id))
+          );
 
           return {
             matchId: match.id,
-            user,
+            users,
           };
         })
       );

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { View, Image } from "react-native";
 
-import { Photo } from "../../types/responses/Photo";
+import { Photo } from "@/types/responses/Photo";
 import { Box } from "@/components/ui/box";
 
-import styles from "../../assets/styles/styles";
+import styles from "@/assets/styles/styles";
 
-import { getImageUrl } from "../../helpers/helpers";
+import { getImageUrl } from "@/helpers/helpers";
 
 interface PortraitProps {
   photo: Photo;

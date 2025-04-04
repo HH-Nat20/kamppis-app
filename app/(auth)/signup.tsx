@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { userFormSchema, UserForm } from "../../validation/userFormSchema"; // Adjust path
+import { userFormSchema, UserForm } from "@/validation/userFormSchema"; // Adjust path
 import {
   View,
   Text,
@@ -13,8 +13,8 @@ import {
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { Gender } from "../../types/enums/GenderEnum";
-import { LookingFor } from "../../types/enums/LookingForEnum";
+import { Gender } from "@/types/enums/GenderEnum";
+import { LookingFor } from "@/types/enums/LookingForEnum";
 import { router } from "expo-router";
 import { VStack } from "@/components/ui/vstack";
 import { Input, InputField } from "@/components/ui/input";

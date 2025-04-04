@@ -1,5 +1,5 @@
-import { Photo } from "../types/responses/Photo";
-import { User } from "../types/responses/User";
+import { Photo } from "@/types/responses/Photo";
+import { User } from "@/types/responses/User";
 import { uploadRequest, remove, update } from "./request";
 
 const ENDPOINT = "images";

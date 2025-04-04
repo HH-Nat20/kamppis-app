@@ -1,6 +1,6 @@
 import React from "react";
 import { Controller } from "react-hook-form";
-import { Cleanliness } from "../../types/enums/CLeanlinessEnum";
+import { Cleanliness } from "@/types/enums/CLeanlinessEnum";
 
 import { VStack } from "@/components/ui/vstack";
 import { HStack } from "@/components/ui/hstack";

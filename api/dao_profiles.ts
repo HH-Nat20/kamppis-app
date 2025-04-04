@@ -1,9 +1,9 @@
-import { UserProfile } from "../types/responses/UserProfile";
-import { RoomProfile } from "../types/responses/RoomProfile";
+import { UserProfile } from "@/types/responses/UserProfile";
+import { RoomProfile } from "@/types/responses/RoomProfile";
 
 import { get, update } from "./request";
-import { UserProfileForm } from "../types/requests/UserProfileForm";
-import { ProfileForm } from "../validation/profileFormSchema";
+import { UserProfileForm } from "@/types/requests/UserProfileForm";
+import { ProfileForm } from "@/validation/profileFormSchema";
 
 const ENDPOINT = "profiles";
 

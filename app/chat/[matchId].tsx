@@ -72,7 +72,8 @@ export default function ChatScreen() {
               color: colors.black,
             }}
           >
-            Chat with {recipients?.map((recipient) => recipient.firstName)}
+            Chat with{" "}
+            {recipients?.map((recipient) => recipient.firstName).join(", ")}
           </Text>
         );
       },
@@ -87,8 +88,10 @@ export default function ChatScreen() {
     );
     if (relevantMatches.length > 0) {
       const match = relevantMatches[0];
-      setRecipientIds([match.user.id]);
-      setRecipients([match.user]);
+      setRecipientIds(
+        match.users.map((u) => u.id).filter((id) => id !== user?.id)
+      );
+      setRecipients(match.users.filter((u) => u.id != user?.id));
     } else {
       console.warn("No relevant matches found for matchId:", matchId);
     }

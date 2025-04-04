@@ -11,9 +11,9 @@ import { Divider } from "@/components/ui/divider";
 import { Heading } from "@/components/ui/heading";
 import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
-import { UserProfile } from "../../types/responses/UserProfile";
+import { UserProfile } from "@/types/responses/UserProfile";
 
-import { getProfilePicture, getImageUrl } from "../../helpers/helpers";
+import { getProfilePicture, getImageUrl } from "@/helpers/helpers";
 
 export const UserProfileDetailsCard = ({
   profile,

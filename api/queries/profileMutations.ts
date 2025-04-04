@@ -2,9 +2,9 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import dao from "../dao";
 import { queryKeys } from "./queryKeys";
 
-import { ProfileForm } from "../../validation/profileFormSchema";
+import { ProfileForm } from "@/validation/profileFormSchema";
 
-import { UserProfile } from "../../types/responses/UserProfile";
+import { UserProfile } from "@/types/responses/UserProfile";
 
 export const useUpdateUserProfileMutation = (
   profileId: number | undefined,

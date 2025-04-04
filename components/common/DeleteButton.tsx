@@ -3,7 +3,7 @@ import React from "react";
 import { Button, ButtonIcon } from "@/components/ui/button";
 import { TrashIcon } from "@/components/ui/icon";
 
-import { colorSet } from "../../assets/styles/colors";
+import { colorSet } from "@/assets/styles/colors";
 
 export default function DeleteButton({ onPress }: { onPress: () => void }) {
   return (

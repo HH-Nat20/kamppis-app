@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { SwipeRequest, SwipeResponse } from "../../types/requests/SwipeRequest";
+import { SwipeRequest, SwipeResponse } from "@/types/requests/SwipeRequest";
 import dao from "../dao";
 
 export const useSwipeMutation = () => {

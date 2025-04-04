@@ -1,5 +1,5 @@
-import { User } from "../types/responses/User";
-import { Match } from "../app/types/Match";
+import { User } from "@/types/responses/User";
+import { Match } from "@/types/Match";
 import { get } from "./request";
 
 const ENDPOINT = "matches";

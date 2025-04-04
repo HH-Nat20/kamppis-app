@@ -11,5 +11,5 @@ export interface Match {
 
 export interface MatchWithUser {
   matchId: number;
-  user: User;
+  users: User[];
 }

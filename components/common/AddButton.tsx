@@ -3,7 +3,7 @@ import React from "react";
 import { Button, ButtonIcon } from "@/components/ui/button";
 import { AddIcon } from "@/components/ui/icon";
 
-import { colorSet } from "../../assets/styles/colors";
+import { colorSet } from "@/assets/styles/colors";
 
 export default function AddButton({ onPress }: { onPress: () => void }) {
   return (

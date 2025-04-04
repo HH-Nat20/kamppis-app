@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useRef } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Toast from "react-native-toast-message";
-import { MatchWithUser } from "../app/types/Match";
+import { MatchWithUser } from "@/types/Match";
 import { useUser } from "./UserContext";
 import { getUserMatchesQueryOptions } from "../api/queries/matchQueries";
 
@@ -34,7 +34,7 @@ export const MatchProvider: React.FC<{ children: React.ReactNode }> = ({
     Toast.show({
       type: "success",
       text1: "New Match!",
-      text2: `${newMatch.user.firstName} matched with you 🎉`,
+      text2: `${newMatch.users[0].firstName} matched with you 🎉`, // TODO: This shows just the first user if the match is with many users
     });
 
     prevMatchCount.current = matches.length;

@@ -39,8 +39,11 @@ const MatchesScreen = () => {
     setLoading(false);
   }, [matches]);
 
-  const handleOpenChat = (matchId: number, user: User) => {
-    console.log("Opening chat with user:", user.id);
+  const handleOpenChat = (matchId: number, users: User[]) => {
+    console.log(
+      "Opening chat with users:",
+      users.map((user) => user.id).join(", ")
+    );
     router.push({
       pathname: "/chat/[matchId]",
       params: { matchId },
@@ -49,14 +52,14 @@ const MatchesScreen = () => {
 
   const renderItem = ({ item }: any) => {
     console.log("RENDERING ITEM", item);
-    const userPhoto = getProfilePicture(item.user.userProfile.photos);
+    const userPhoto = getProfilePicture(item.users[0].userProfile.photos);
 
     return (
       <TouchableOpacity
         style={styles.matchItem}
-        onPress={() => handleOpenChat(item.matchId, item.user)}
+        onPress={() => handleOpenChat(item.matchId, item.users)}
       >
-        {item.user.isOnline ? (
+        {item.users.some((user: User) => user.isOnline) ? (
           <Badge
             size="sm"
             variant="solid"
@@ -89,7 +92,9 @@ const MatchesScreen = () => {
           </View>
         )}
         <View style={styles.overlay}>
-          <Text style={styles.name}>{item.user!.firstName}</Text>
+          <Text style={styles.name}>
+            {item.users.map((user: User) => user.firstName).join(", ")}
+          </Text>
         </View>
       </TouchableOpacity>
     );

@@ -1,6 +1,6 @@
 import React from "react";
 import { Controller } from "react-hook-form";
-import { Gender } from "../../types/enums/GenderEnum";
+import { Gender } from "@/types/enums/GenderEnum";
 
 import { VStack } from "@/components/ui/vstack";
 import { HStack } from "@/components/ui/hstack";

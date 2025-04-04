@@ -1,5 +1,5 @@
-import { User } from "../types/responses/User";
-import { UserForm } from "../validation/userFormSchema";
+import { User } from "@/types/responses/User";
+import { UserForm } from "@/validation/userFormSchema";
 
 import { get, create, update, remove } from "./request";
 

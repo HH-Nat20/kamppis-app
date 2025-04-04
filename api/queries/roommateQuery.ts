@@ -1,6 +1,6 @@
 import { queryOptions } from "@tanstack/react-query";
 import dao from "../dao";
-import { User } from "../../types/responses/User";
+import { User } from "@/types/responses/User";
 import { queryKeys } from "./queryKeys";
 
 export const getRoommateQueryOptions = (userIds: number[]) =>

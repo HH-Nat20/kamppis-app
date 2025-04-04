@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import dao from "../dao";
 import { queryKeys } from "./queryKeys";
-import { PreferencesForm } from "../../validation/preferencesSchema";
-import { Preferences } from "../../types/responses/Preferences";
+import { PreferencesForm } from "@/validation/preferencesSchema";
+import { Preferences } from "@/types/responses/Preferences";
 
 export const useUpdatePreferencesMutation = (userId: number | undefined) => {
   const queryClient = useQueryClient();

@@ -1,8 +1,8 @@
 import { queryOptions } from "@tanstack/react-query";
 import dao from "../dao";
 import { queryKeys } from "./queryKeys";
-import { User } from "../../types/responses/User";
-import { Preferences } from "../../types/responses/Preferences";
+import { User } from "@/types/responses/User";
+import { Preferences } from "@/types/responses/Preferences";
 
 export const getUserQueryOptions = (userId: number | undefined) => {
   return queryOptions<User, Error>({

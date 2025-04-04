@@ -2,8 +2,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import dao from "../dao";
 import { queryKeys } from "./queryKeys";
 
-import { User } from "../../types/responses/User";
-import { UserForm } from "../../validation/userFormSchema";
+import { User } from "@/types/responses/User";
+import { UserForm } from "@/validation/userFormSchema";
 
 export const useUpdateUserMutation = (userId: number | undefined) => {
   const queryClient = useQueryClient();

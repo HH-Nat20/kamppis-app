@@ -1,6 +1,6 @@
 import React from "react";
 import { Controller } from "react-hook-form";
-import { Lifestyle } from "../../types/enums/LifestyleEnum";
+import { Lifestyle } from "@/types/enums/LifestyleEnum";
 
 import { VStack } from "@/components/ui/vstack";
 import { HStack } from "@/components/ui/hstack";

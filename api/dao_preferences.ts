@@ -1,7 +1,7 @@
 import { get, update } from "./request";
-import { PreferencesForm } from "../validation/preferencesSchema";
-import { Preferences } from "../types/responses/Preferences";
-import { PreferencesRequest } from "../types/requests/PreferencesRequest";
+import { PreferencesForm } from "@/validation/preferencesSchema";
+import { Preferences } from "@/types/responses/Preferences";
+import { PreferencesRequest } from "@/types/requests/PreferencesRequest";
 
 const ENDPOINT = "users";
 

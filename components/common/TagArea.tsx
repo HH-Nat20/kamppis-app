@@ -1,10 +1,10 @@
 import React from "react";
 import { View, Text } from "react-native";
-import { ProfileCard } from "../../app/types/ProfileCard";
-import { UserProfile } from "../../types/responses/UserProfile";
-import { RoomProfile } from "../../types/responses/RoomProfile";
-import styles from "../../assets/styles/styles";
-import { renderTagBgColor } from "../../assets/styles/colors";
+import { ProfileCard } from "@/types/ProfileCard";
+import { UserProfile } from "@/types/responses/UserProfile";
+import { RoomProfile } from "@/types/responses/RoomProfile";
+import styles from "@/assets/styles/styles";
+import { renderTagBgColor } from "@/assets/styles/colors";
 
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import FontAwesome from "@expo/vector-icons/FontAwesome";

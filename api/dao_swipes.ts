@@ -1,5 +1,5 @@
 import { create } from "./request";
-import { SwipeRequest } from "../types/requests/SwipeRequest";
+import { SwipeRequest } from "@/types/requests/SwipeRequest";
 
 const ENDPOINT = "swipes";
 
