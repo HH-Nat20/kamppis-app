@@ -9,7 +9,7 @@ import { Heading } from "@/components/ui/heading";
 
 import Slider from "react-native-a11y-slider";
 
-const MaxRoommatesSection = ({ control, errors }: any) => (
+export const MaxRoommatesSection = ({ control, errors }: any) => (
   <VStack space="md">
     <Heading size="sm">Max Roommates</Heading>
     <Controller

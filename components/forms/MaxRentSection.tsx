@@ -7,7 +7,7 @@ import { Heading } from "@/components/ui/heading";
 
 import Slider from "react-native-a11y-slider";
 
-const MaxRentSection = ({ control, errors }: any) => (
+export const MaxRentSection = ({ control, errors }: any) => (
   <VStack space="md">
     <Heading size="sm">Max Rent</Heading>
     <Controller

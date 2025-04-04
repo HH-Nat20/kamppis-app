@@ -15,12 +15,14 @@ import { Divider } from "@/components/ui/divider";
 import { Button } from "@/components/ui/button";
 import { ButtonText } from "@/components/ui/button";
 
-import AgeRangeSection from "@/components/forms/AgeRangeSection";
-import GenderPreferenceSection from "@/components/forms/GenderPreferenceSection";
-import LocationPreferenceSection from "@/components/forms/LocationPreferenceSection";
-import MaxRentSection from "@/components/forms/MaxRentSection";
-import PrivateRoomSection from "@/components/forms/PrivateRoomSection";
-import MaxRoommatesSection from "@/components/forms/MaxRoommatesSection";
+import {
+  AgeRangeSection,
+  GenderPreferenceSection,
+  LocationPreferenceSection,
+  MaxRentSection,
+  PrivateRoomSection,
+  MaxRoommatesSection,
+} from "@/components/forms";
 
 import ProfileDrawerLayout from "@/components/custom/ProfileDrawerLayout";
 

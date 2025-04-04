@@ -8,7 +8,7 @@ import { Text } from "@/components/ui/text";
 import { Heading } from "@/components/ui/heading";
 import { Pressable } from "@/components/ui/pressable";
 
-const GenderSection = ({ control, errors }: any) => (
+export const GenderSection = ({ control, errors }: any) => (
   <VStack space="md">
     <Heading size="sm">Gender</Heading>
     <Controller

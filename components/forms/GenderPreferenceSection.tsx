@@ -9,7 +9,7 @@ import { Text } from "@/components/ui/text";
 import { Heading } from "@/components/ui/heading";
 import { Pressable } from "@/components/ui/pressable";
 
-const GenderPreferenceSection = ({ control, errors }: any) => (
+export const GenderPreferenceSection = ({ control, errors }: any) => (
   <VStack space="md">
     <Heading size="sm">Preferred Genders</Heading>
     <Controller

@@ -8,7 +8,7 @@ import { Text } from "@/components/ui/text";
 import { Heading } from "@/components/ui/heading";
 import { Pressable } from "@/components/ui/pressable";
 
-const LifestyleSection = ({ control, errors }: any) => (
+export const LifestyleSection = ({ control, errors }: any) => (
   <VStack space="md">
     <Heading size="sm">Lifestyle</Heading>
     <HStack space="sm" className="flex-wrap">

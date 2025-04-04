@@ -6,7 +6,7 @@ import { Text } from "@/components/ui/text";
 import { Heading } from "@/components/ui/heading";
 import { Input, InputField } from "@/components/ui/input";
 
-const EmailSection = ({ control, errors }: any) => (
+export const EmailSection = ({ control, errors }: any) => (
   <VStack space="md">
     <Heading size="sm">Email</Heading>
 

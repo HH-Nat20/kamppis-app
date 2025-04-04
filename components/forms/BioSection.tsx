@@ -6,7 +6,7 @@ import { Text } from "@/components/ui/text";
 import { Heading } from "@/components/ui/heading";
 import { Textarea, TextareaInput } from "@/components/ui/textarea";
 
-const BioSection = ({ control, errors }: any) => (
+export const BioSection = ({ control, errors }: any) => (
   <VStack space="md">
     <Heading size="sm">Bio</Heading>
     <Controller

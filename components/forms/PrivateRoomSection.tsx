@@ -8,7 +8,7 @@ import { Text } from "@/components/ui/text";
 import { Heading } from "@/components/ui/heading";
 import { Pressable } from "@/components/ui/pressable";
 
-const PrivateRoomSection = ({ control, errors }: any) => (
+export const PrivateRoomSection = ({ control, errors }: any) => (
   <VStack space="md">
     <Heading size="sm">Must have a Private Room</Heading>
     <Controller

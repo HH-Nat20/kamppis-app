@@ -8,9 +8,9 @@ import { Text } from "@/components/ui/text";
 import { Heading } from "@/components/ui/heading";
 import { Input, InputField } from "@/components/ui/input";
 
-const formatDate = (date: Date) => date.toISOString().split("T")[0]; // YYYY-MM-DD
+export const formatDate = (date: Date) => date.toISOString().split("T")[0]; // YYYY-MM-DD
 
-const DateOfBirthSection = ({ control, errors }: any) => {
+export const DateOfBirthSection = ({ control, errors }: any) => {
   const [showPicker, setShowPicker] = useState(false);
 
   return (

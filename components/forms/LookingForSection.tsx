@@ -20,7 +20,7 @@ import { VStack } from "@/components/ui/vstack";
 import { Text } from "@/components/ui/text";
 import { Heading } from "@/components/ui/heading";
 
-const LookingForSection = ({ control, errors }: any) => (
+export const LookingForSection = ({ control, errors }: any) => (
   <VStack space="md">
     <Heading size="sm">Looking For</Heading>
 

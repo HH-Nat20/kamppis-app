@@ -6,7 +6,7 @@ import { Text } from "@/components/ui/text";
 import { Heading } from "@/components/ui/heading";
 import { Input, InputField } from "@/components/ui/input";
 
-const ProfileInputSection = ({ control, errors }: any) => (
+export const ProfileInputSection = ({ control, errors }: any) => (
   <VStack space="md">
     <Heading size="sm">Basic Info</Heading>
 

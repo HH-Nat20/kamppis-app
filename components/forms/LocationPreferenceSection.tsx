@@ -10,7 +10,7 @@ import { Heading } from "@/components/ui/heading";
 
 import { Pressable } from "@/components/ui/pressable";
 
-const LocationPreferenceSection = ({ control, errors }: any) => (
+export const LocationPreferenceSection = ({ control, errors }: any) => (
   <VStack space="md">
     <Heading size="sm">Preferred Locations</Heading>
     <HStack space="sm" className="flex-wrap">
