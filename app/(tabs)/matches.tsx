@@ -52,7 +52,7 @@ const MatchesScreen = () => {
 
   const renderItem = ({ item }: any) => {
     console.log("RENDERING ITEM", item);
-    const userPhoto = getProfilePicture(item.users[0].userProfile.photos);
+    const userPhoto = getProfilePicture(item.users[0].userProfile.photos); // TODO: Fix this to show the photo of the profile (can be room profile or user profile)
 
     return (
       <TouchableOpacity

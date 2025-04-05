@@ -15,6 +15,7 @@ import {
 } from "@/validation/preferencesSchema";
 import { Gender } from "@/types/enums/GenderEnum";
 import { Location } from "@/types/enums/LocationEnum";
+import { useMatchableProfiles } from "./MatchableProfilesContext";
 
 const PreferencesFormContext = createContext<any>(undefined);
 
@@ -70,6 +71,8 @@ export const PreferencesFormProvider = ({
     }
   }, [preferences]);
 
+  const { refreshMatchableProfiles } = useMatchableProfiles();
+
   const onSubmit = async (data: PreferencesForm) => {
     try {
       await mutation!.mutateAsync(data!);
@@ -78,6 +81,7 @@ export const PreferencesFormProvider = ({
         text1: "Saved",
         text2: "Preferences updated",
       });
+      refreshMatchableProfiles(); // Refresh matchable profiles after updating preferences
     } catch (err) {
       Toast.show({
         type: "error",

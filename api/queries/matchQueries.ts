@@ -30,5 +30,6 @@ export const getUserMatchesQueryOptions = (userId: number) =>
     },
     enabled: !!userId,
     staleTime: 0,
-    refetchInterval: 60 * 1000, // Poll every minute
+    //refetchInterval: 60 * 1000, // Poll every minute
+    // stop polling
   });

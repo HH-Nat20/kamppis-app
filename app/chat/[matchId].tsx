@@ -44,22 +44,21 @@ export default function ChatScreen() {
       headerRight: () => {
         return (
           <>
-            {recipients[0]?.isOnline ? (
+            {recipients?.map((recipient, index) => (
               <Badge
+                key={index}
                 size="sm"
                 variant="solid"
-                action="success"
+                action={recipient.isOnline ? "success" : "error"}
                 className="ml-1"
               >
-                <BadgeText>Online</BadgeText>
+                <BadgeText>
+                  {recipient.firstName}{" "}
+                  {recipient.isOnline ? "Online" : "Offline"}
+                </BadgeText>
                 <BadgeIcon as={BadgeCheckIcon} className="ml-1" />
               </Badge>
-            ) : (
-              <Badge size="sm" variant="solid" action="error" className="ml-1">
-                <BadgeText>Offline</BadgeText>
-                <BadgeIcon as={BadgeCheckIcon} className="ml-1" />
-              </Badge>
-            )}
+            ))}
           </>
         );
       },
