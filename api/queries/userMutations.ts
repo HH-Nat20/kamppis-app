@@ -20,6 +20,9 @@ export const useUpdateUserMutation = (userId: number | undefined) => {
       if (!userId) return;
       queryClient.setQueryData(queryKeys.user(userId), updatedUser);
       queryClient.invalidateQueries({ queryKey: queryKeys.user(userId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.matchableProfiles(userId),
+      });
     },
   });
 };

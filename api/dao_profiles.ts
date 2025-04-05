@@ -5,6 +5,8 @@ import { get, update } from "./request";
 import { UserProfileForm } from "@/types/requests/UserProfileForm";
 import { ProfileForm } from "@/validation/profileFormSchema";
 
+import { LookingFor } from "@/types/enums/LookingForEnum";
+
 const ENDPOINT = "profiles";
 
 /**
@@ -17,6 +19,22 @@ export const getPossibleMatches = async (userId: number) => {
   const profiles = [];
 
   console.log("Fetching possible matches for user: ", userId);
+
+  let lookingFor: LookingFor = LookingFor.USER_PROFILES; // Default to user profiles
+
+  // First check what profiles user wants to see
+  try {
+    const res = await get(`users/${userId}`);
+    const user = await res.json();
+    lookingFor = user?.lookingFor as LookingFor;
+    console.log("User: ", user);
+    console.log("User looking for: ", lookingFor);
+  } catch (err) {
+    console.log("Error fetching user", err);
+    return;
+  }
+
+  // Then fetch all profiles for the user
 
   let responseBody1, responseBody2;
 
@@ -37,15 +55,26 @@ export const getPossibleMatches = async (userId: number) => {
   if (responseBody1?.status === 404) {
     console.log("No room profiles found");
   } else if (Array.isArray(responseBody1)) {
-    console.log(`Found ${responseBody1.length} room profiles: `, responseBody1);
-    profiles.push(...responseBody1);
+    console.log(`Found ${responseBody1.length} room profiles`);
+    if (
+      lookingFor === LookingFor.OTHER_USER_PROFILES_OR_ROOM_PROFILES ||
+      lookingFor === LookingFor.ROOM_PROFILES
+    ) {
+      profiles.push(...responseBody1);
+    }
   }
 
   if (!responseBody2) {
     console.log("No user profiles found");
   } else if (Array.isArray(responseBody2)) {
-    console.log(`Found ${responseBody2.length} user profiles: `, responseBody2);
-    profiles.push(...responseBody2);
+    console.log(`Found ${responseBody2.length} user profiles`);
+    if (
+      lookingFor === LookingFor.OTHER_USER_PROFILES_OR_ROOM_PROFILES ||
+      lookingFor === LookingFor.USER_PROFILES ||
+      lookingFor === LookingFor.OTHER_USER_PROFILES
+    ) {
+      profiles.push(...responseBody2);
+    }
   }
 
   return profiles;
