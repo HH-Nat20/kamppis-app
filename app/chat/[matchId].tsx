@@ -205,14 +205,14 @@ export default function ChatScreen() {
       <Chat
         messages={messages.toReversed()}
         setMessages={(val) => onSendMessage(val)}
-        themeColor="orange"
+        themeColor={colors.tertiary}
         themeTextColor="white"
         showSenderAvatar={false}
         showReceiverAvatar={true}
-        inputBorderColor="orange"
+        inputBorderColor={colors.tertiary}
         user={{
           _id: you?.id || 1,
-          name: you?.email.split("@")[0] || "You",
+          name: you?.firstName || "You",
         }}
         backgroundColor="white"
         inputBackgroundColor="white"

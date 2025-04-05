@@ -1,0 +1,29 @@
+diff --git a/node_modules/@codsod/react-native-chat/src/components/MessageContainer.jsx b/node_modules/@codsod/react-native-chat/src/components/MessageContainer.jsx
+index 4b5a3bb..56d89bd 100644
+--- a/node_modules/@codsod/react-native-chat/src/components/MessageContainer.jsx
++++ b/node_modules/@codsod/react-native-chat/src/components/MessageContainer.jsx
+@@ -15,7 +15,7 @@ const Avatar = ({ icon, name, textColor, backgroundColor }) => (
+       />
+     ) : (
+       <Text style={[styles.avatarContainerText, { color: textColor }]}>
+-        {getInitials(name)}
++        {/* {getInitials(name)} patched by Paul C*/}
+       </Text>
+     )}
+   </View>
+@@ -51,9 +51,12 @@ const MessageContainer = ({
+         style={[messageContainerStyle, { backgroundColor }]}
+         activeOpacity={0.9}
+       >
+-        <Text style={[styles.messageText, { color: textColor }]}>
+-          {message}
+-        </Text>
++ <Text style={[styles.senderName, { color: textColor, fontWeight: 'thin', marginBottom: 4 }]}>
++    {name}
++  </Text>
++  <Text style={[styles.messageText, { color: textColor }]}>
++    {message}
++  </Text>
+       </TouchableOpacity>
+       {isSender && showAvatar && (
+         <Avatar
