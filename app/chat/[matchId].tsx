@@ -24,7 +24,7 @@ const mapMessageDTOToChatMessage = (dto: MessageDTO): ChatMessage => {
     createdAt: new Date(dto.createdAt), // Convert string to Date
     user: {
       _id: dto.senderId,
-      name: dto.senderEmail.split("@")[0], // Extract a simple name from the email for now
+      name: [dto.senderFirstName, dto.senderLastName].join(" "), // Join first and last name
     },
   };
 };
@@ -159,6 +159,8 @@ export default function ChatScreen() {
         body: JSON.stringify({
           content: text,
           senderEmail: you!.email,
+          senderFirstName: you!.firstName,
+          senderLastName: you!.lastName,
           matchId,
           createdAt: new Date().toISOString(),
         }),
@@ -208,12 +210,13 @@ export default function ChatScreen() {
         themeColor={colors.tertiary}
         themeTextColor="white"
         showSenderAvatar={false}
-        showReceiverAvatar={true}
+        showReceiverAvatar={false}
         inputBorderColor={colors.tertiary}
         user={{
           _id: you?.id || 1,
           name: you?.firstName || "You",
         }}
+        showSenderName={recipients.length > 1}
         backgroundColor="white"
         inputBackgroundColor="white"
         placeholder="Enter Your Message"

@@ -2,6 +2,8 @@ export interface MessageDTO {
   id: number;
   senderEmail: string;
   senderId: number;
+  senderFirstName: string;
+  senderLastName: string;
   matchId: number;
   content: string;
   createdAt: string;

@@ -1,5 +1,5 @@
 diff --git a/node_modules/@codsod/react-native-chat/src/components/MessageContainer.jsx b/node_modules/@codsod/react-native-chat/src/components/MessageContainer.jsx
-index 4b5a3bb..56d89bd 100644
+index 4b5a3bb..ff47354 100644
 --- a/node_modules/@codsod/react-native-chat/src/components/MessageContainer.jsx
 +++ b/node_modules/@codsod/react-native-chat/src/components/MessageContainer.jsx
 @@ -15,7 +15,7 @@ const Avatar = ({ icon, name, textColor, backgroundColor }) => (
@@ -11,19 +11,100 @@ index 4b5a3bb..56d89bd 100644
        </Text>
      )}
    </View>
-@@ -51,9 +51,12 @@ const MessageContainer = ({
+@@ -27,7 +27,9 @@ const MessageContainer = ({
+   icon,
+   backgroundColor,
+   textColor,
++  nameColor,
+   isSender,
++  showSenderName,
+   showAvatar,
+   time,
+ }) => {
+@@ -51,9 +53,14 @@ const MessageContainer = ({
          style={[messageContainerStyle, { backgroundColor }]}
          activeOpacity={0.9}
        >
 -        <Text style={[styles.messageText, { color: textColor }]}>
 -          {message}
 -        </Text>
-+ <Text style={[styles.senderName, { color: textColor, fontWeight: 'thin', marginBottom: 4 }]}>
-+    {name}
-+  </Text>
++        {showSenderName && !isSender && (
++          <Text style={[styles.senderName, { color: nameColor ?? textColor, fontWeight: 'thin', marginBottom: 4 }]}>
++            {`~ ${name}`}
++          </Text>
++        )}
 +  <Text style={[styles.messageText, { color: textColor }]}>
 +    {message}
 +  </Text>
        </TouchableOpacity>
        {isSender && showAvatar && (
          <Avatar
+diff --git a/node_modules/@codsod/react-native-chat/src/index.d.ts b/node_modules/@codsod/react-native-chat/src/index.d.ts
+index 3ebfa5f..3e9f5ff 100644
+--- a/node_modules/@codsod/react-native-chat/src/index.d.ts
++++ b/node_modules/@codsod/react-native-chat/src/index.d.ts
+@@ -18,6 +18,7 @@ interface ChatProps {
+   themeTextColor: string;
+   showSenderAvatar?: boolean;
+   showReceiverAvatar?: boolean;
++  showSenderName?: boolean;
+   placeholder?: string;
+   inputBorderColor?: string;
+   placeholderColor?: string;
+@@ -45,6 +46,7 @@ export default function Chat({
+   themeTextColor,
+   showSenderAvatar,
+   showReceiverAvatar,
++  showSenderName,
+   placeholder,
+   inputBorderColor,
+   placeholderColor,
+diff --git a/node_modules/@codsod/react-native-chat/src/index.jsx b/node_modules/@codsod/react-native-chat/src/index.jsx
+index 38c97f8..e499c30 100644
+--- a/node_modules/@codsod/react-native-chat/src/index.jsx
++++ b/node_modules/@codsod/react-native-chat/src/index.jsx
+@@ -23,6 +23,7 @@ function Chat({
+   themeTextColor,
+   showSenderAvatar = true,
+   showReceiverAvatar = true,
++  showSenderName = false,
+   placeholder = "Write Your Message...",
+   inputBorderColor = "gray",
+   placeholderColor = "gray",
+@@ -52,6 +53,15 @@ function Chat({
+   const [isDateVisible, setIsDateVisible] = useState(false);
+   const scrollTimeoutRef = useRef(null);
+ 
++  const nameColors = [ // Added nameColors array for user colors, Paul C
++  "#e57373", "#64b5f6", "#81c784", "#ffb74d", "#ba68c8",
++  "#4dd0e1", "#f06292", "#aed581", "#7986cb", "#ff8a65",
++];
++
++function getColorForUser(id) {
++  return nameColors[id % nameColors.length]; // Use the user ID to get a color from the array, Paul C
++}
++
+   useEffect(() => {
+     const keyboardDidShowListener = Keyboard.addListener(
+       "keyboardDidShow",
+@@ -70,17 +80,20 @@ function Chat({
+ 
+   const messageRenderItem = ({ item }) => {
+     const isSender = item.user._id === user._id;
++    const userColor = getColorForUser(item.user._id); // Added userColor function Paul C
+     return (
+       <View style={styles.messageWrapper}>
+         <MessageContainer
+           message={item.text}
+           name={item.user.name}
++          nameColor={userColor} // Added userColor prop Paul C
+           time={item.createdAt}
+           icon={item.user.avatar}
+           backgroundColor={isSender ? themeColor : senderContainerColor}
+           textColor={isSender ? themeTextColor : senderMessageColor}
+           showAvatar={isSender ? showSenderAvatar : showReceiverAvatar}
+           isSender={isSender}
++          showSenderName={showSenderName} // Added showSenderName prop Paul C
+         />
+       </View>
+     );
