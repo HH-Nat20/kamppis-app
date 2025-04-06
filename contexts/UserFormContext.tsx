@@ -10,6 +10,7 @@ import { Gender } from "@/types/enums/GenderEnum";
 import { LookingFor } from "@/types/enums/LookingForEnum";
 import { UserForm, userFormSchema } from "@/validation/userFormSchema";
 import Toast from "react-native-toast-message";
+import { useMatchableProfiles } from "./MatchableProfilesContext";
 
 const UserFormContext = createContext<any>(undefined);
 
@@ -70,6 +71,8 @@ export const UserFormProvider = ({
     isMounted.current = true;
   }, []);
 
+  const { refreshMatchableProfiles } = useMatchableProfiles();
+
   const onSubmit = async (data: UserForm) => {
     console.log("On submit data:", data);
     if (isMounted.current) {
@@ -80,6 +83,7 @@ export const UserFormProvider = ({
             text1: "Saved",
             text2: "Personal info updated",
           });
+          refreshMatchableProfiles(); // Refresh matchable profiles after successful update
         },
         onError: (error) => {
           console.error("Error updating user:", error);
