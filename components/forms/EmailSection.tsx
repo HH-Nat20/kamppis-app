@@ -6,7 +6,7 @@ import { Text } from "@/components/ui/text";
 import { Heading } from "@/components/ui/heading";
 import { Input, InputField } from "@/components/ui/input";
 
-export const EmailSection = ({ control, errors }: any) => (
+export const EmailSection = ({ editable = false, control, errors }: any) => (
   <VStack space="md">
     <Heading size="sm">Email</Heading>
 
@@ -15,15 +15,16 @@ export const EmailSection = ({ control, errors }: any) => (
       <Controller
         control={control}
         name="email"
-        render={({ field: { value } }) => (
-          <Input isDisabled>
+        render={({ field: { value, onChange } }) => (
+          <Input isDisabled={!editable}>
             <InputField
               value={value}
+              onChangeText={onChange}
               placeholder="Enter your email"
               keyboardType="email-address"
               autoCapitalize="none"
-              editable={false}
-              selectTextOnFocus={false}
+              editable={editable}
+              selectTextOnFocus={editable}
             />
           </Input>
         )}

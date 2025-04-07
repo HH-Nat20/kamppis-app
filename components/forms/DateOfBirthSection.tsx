@@ -10,7 +10,11 @@ import { Input, InputField } from "@/components/ui/input";
 
 export const formatDate = (date: Date) => date.toISOString().split("T")[0]; // YYYY-MM-DD
 
-export const DateOfBirthSection = ({ control, errors }: any) => {
+export const DateOfBirthSection = ({
+  editable = false,
+  control,
+  errors,
+}: any) => {
   const [showPicker, setShowPicker] = useState(false);
 
   return (
@@ -33,24 +37,25 @@ export const DateOfBirthSection = ({ control, errors }: any) => {
           return (
             <>
               <RNPressable onPress={() => setShowPicker(true)}>
-                <Input pointerEvents="none">
+                <Input isDisabled={!editable} pointerEvents="none">
                   <InputField
                     value={value}
                     placeholder="YYYY-MM-DD"
-                    editable={false}
+                    editable={editable}
                   />
                 </Input>
               </RNPressable>
 
-              {showPicker && (
-                <DateTimePicker
-                  mode="date"
-                  display={Platform.OS === "ios" ? "inline" : "default"}
-                  value={parsedDate ?? new Date(2000, 0, 1)}
-                  onChange={onDateChange}
-                  maximumDate={new Date()} // optional: no future dates
-                />
-              )}
+              {showPicker &&
+                editable &&(
+                  <DateTimePicker
+                    mode="date"
+                    display={Platform.OS === "ios" ? "inline" : "default"}
+                    value={parsedDate ?? new Date(2000, 0, 1)}
+                    onChange={onDateChange}
+                    maximumDate={new Date()} // optional: no future dates
+                  />
+                )}
             </>
           );
         }}

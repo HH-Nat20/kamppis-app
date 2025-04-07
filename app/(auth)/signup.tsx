@@ -6,10 +6,11 @@ import {
   View,
   Text,
   TextInput,
-  Button,
   Alert,
   Platform,
   Pressable as RNPressable,
+  ScrollView,
+  KeyboardAvoidingView,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -19,6 +20,17 @@ import { router } from "expo-router";
 import { VStack } from "@/components/ui/vstack";
 import { Input, InputField } from "@/components/ui/input";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Heading } from "@/components/ui/heading";
+import {
+  DateOfBirthSection,
+  EmailSection,
+  GenderSection,
+  LookingForSection,
+  ProfileInputSection,
+} from "@/components/forms";
+import { Divider } from "@/components/ui/divider";
+import { ButtonText, Button } from "@/components/ui/button";
+import { isDirty } from "zod";
 
 const formatDate = (date: Date) => date.toISOString().split("T")[0]; // YYYY-MM-DD
 
@@ -26,8 +38,7 @@ export default function SignUpScreen() {
   const {
     control,
     handleSubmit,
-    setValue,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<UserForm>({
     resolver: zodResolver(userFormSchema),
     defaultValues: {
@@ -35,7 +46,7 @@ export default function SignUpScreen() {
       lastName: "",
       email: "",
       gender: Gender.NOT_IMPORTANT, // Default value
-      dateOfBirth: new Date(2000, 0, 1).toISOString().split("T")[0], // Default to today
+      dateOfBirth: new Date(2000, 0, 1).toISOString().split("T")[0], // Default date
       lookingFor: LookingFor.OTHER_USER_PROFILES, // Default
     },
   });
@@ -76,157 +87,44 @@ export default function SignUpScreen() {
   };
 
   return (
-    <VStack space="md">
-      <View style={{ padding: 20 }}>
-        {/* First Name */}
-        <Text>First Name</Text>
-        <Controller
-          control={control}
-          name="firstName"
-          render={({ field }) => (
-            <TextInput
-              style={styles.input}
-              placeholder="First Name"
-              value={field.value}
-              onChangeText={field.onChange}
-            />
-          )}
-        />
-        {errors.firstName && (
-          <Text style={styles.error}>{errors.firstName.message}</Text>
-        )}
+    <VStack className="px-5 py-4 flex-1 dark:bg-black bg-white" space="xl">
+      <Heading className="mb-2">Personal Info</Heading>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <VStack space="xl">
+          <ProfileInputSection control={control} errors={errors} />
+          <Divider />
+          <EmailSection editable={true} control={control} errors={errors} />
+          <Divider />
+          <GenderSection control={control} errors={errors} />
+          <Divider />
+          <LookingForSection control={control} errors={errors} />
+          <Divider />
+          <DateOfBirthSection
+            editable={true}
+            control={control}
+            errors={errors}
+          />
+        </VStack>
+        <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }} />
+      </ScrollView>
 
-        {/* Last Name */}
-        <Text>Last Name</Text>
-        <Controller
-          control={control}
-          name="lastName"
-          render={({ field }) => (
-            <TextInput
-              style={styles.input}
-              placeholder="Last Name"
-              value={field.value}
-              onChangeText={field.onChange}
-            />
-          )}
-        />
-        {errors.lastName && (
-          <Text style={styles.error}>{errors.lastName.message}</Text>
-        )}
-
-        {/* Email */}
-        <Text>Email</Text>
-        <Controller
-          control={control}
-          name="email"
-          render={({ field }) => (
-            <TextInput
-              style={styles.input}
-              placeholder="Email"
-              keyboardType="email-address"
-              autoCapitalize="none"
-              value={field.value}
-              onChangeText={field.onChange}
-            />
-          )}
-        />
-        {errors.email && (
-          <Text style={styles.error}>{errors.email.message}</Text>
-        )}
-
-        {/* Gender Picker */}
-        <Text>Gender</Text>
-        <Controller
-          control={control}
-          name="gender"
-          render={({ field }) => (
-            <Picker
-              selectedValue={field.value}
-              onValueChange={(value) => field.onChange(value)}
-            >
-              {Object.values(Gender).map((g) => (
-                <Picker.Item key={g} label={g} value={g} />
-              ))}
-            </Picker>
-          )}
-        />
-
-        {/* Date Picker */}
-        <Text>Date of Birth</Text>
-        <Controller
-          control={control}
-          name="dateOfBirth"
-          render={({ field: { onChange, value } }) => {
-            const parsedDate = value ? new Date(value) : undefined;
-
-            const onDateChange = (event: any, selectedDate?: Date) => {
-              setShowPicker(Platform.OS === "ios"); // stay open on iOS
-              if (selectedDate) {
-                onChange(formatDate(selectedDate));
-              }
-            };
-
-            return (
-              <>
-                <RNPressable onPress={() => setShowPicker(true)}>
-                  <Input pointerEvents="none">
-                    <InputField
-                      value={value}
-                      placeholder="YYYY-MM-DD"
-                      editable={false}
-                    />
-                  </Input>
-                </RNPressable>
-
-                {showPicker && (
-                  <DateTimePicker
-                    mode="date"
-                    display={Platform.OS === "ios" ? "inline" : "default"}
-                    value={parsedDate ?? new Date(2000, 0, 1)}
-                    onChange={onDateChange}
-                    maximumDate={new Date()} // optional: no future dates
-                  />
-                )}
-              </>
-            );
-          }}
-        />
-        {errors.dateOfBirth && (
-          <Text style={styles.error}>{errors.dateOfBirth.message}</Text>
-        )}
-
-        {/* LookingFor Picker */}
-        <Text>Looking For</Text>
-        <Controller
-          control={control}
-          name="lookingFor"
-          render={({ field }) => (
-            <Picker
-              selectedValue={field.value}
-              onValueChange={(value) => field.onChange(value)}
-            >
-              {Object.values(LookingFor).map((l) => (
-                <Picker.Item key={l} label={l} value={l} />
-              ))}
-            </Picker>
-          )}
-        />
-
-        {/* Submit Button */}
-        <Button title="Sign Up" onPress={handleSubmit(onSubmit)} />
-      </View>
+      {isDirty && (
+        <Button onPress={handleSubmit(onSubmit)}>
+          <ButtonText>Save Changes</ButtonText>
+        </Button>
+      )}
     </VStack>
   );
 }
 
-const styles = {
-  input: {
-    borderWidth: 1,
-    padding: 10,
-    marginVertical: 5,
-    borderRadius: 5,
-  },
-  error: {
-    color: "red",
-  },
-};
+// const styles = {
+//   input: {
+//     borderWidth: 1,
+//     padding: 10,
+//     marginVertical: 5,
+//     borderRadius: 5,
+//   },
+//   error: {
+//     color: "red",
+//   },
+// };
