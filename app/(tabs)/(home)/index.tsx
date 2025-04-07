@@ -19,7 +19,7 @@ import { Heading } from "@/components/ui/heading";
 import * as Linking from "expo-linking";
 import GitHubAuthButton from "@/components/common/GitHubAuthButton";
 
-import { Link, RelativePathString, router } from "expo-router";
+import { Link, RelativePathString, router, useLocalSearchParams } from "expo-router";
 import TestGitHubCodeButton from "@/components/common/TestGitHubCodeButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from "react-native-toast-message";
@@ -75,6 +75,18 @@ const HomeScreen = () => {
       text2: `GitHub Code: ${code}`,
     });
   };
+
+const { signupSuccess } = useLocalSearchParams();
+
+  useEffect(() => {
+    if (signupSuccess) {
+      Toast.show({
+        type: "success",
+        text1: "Welcome to Kamppis 🎉",
+        text2: "You can now log in.",
+      });
+    }
+  }, [signupSuccess]);
 
   return (
     <Container>

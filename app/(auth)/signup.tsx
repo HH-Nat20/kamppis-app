@@ -31,6 +31,7 @@ import {
 import { Divider } from "@/components/ui/divider";
 import { ButtonText, Button } from "@/components/ui/button";
 import { isDirty } from "zod";
+import Toast from "react-native-toast-message";
 
 const formatDate = (date: Date) => date.toISOString().split("T")[0]; // YYYY-MM-DD
 
@@ -69,21 +70,32 @@ export default function SignUpScreen() {
         }
       );
       console.log("Response:", response);
-      if (!response.ok) throw new Error("Login failed");
-
-      router.push("/");
-    } catch (error) {
-      console.error("Login error:", error);
+      const responseBody = await response.json();
+      if (!response.ok) {
+        const errorMessage =
+          responseBody?.error || "Unknown error occurred during signup.";
+        throw new Error(errorMessage);
+      }
+      router.push({
+        pathname: "/",
+        params: { signupSuccess: 1 }, // Pass success message to home screen
+      });
+    } catch (error: any) {
+      console.error("Signup error:", error.message);
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: error.message,
+      });
     }
   };
 
   const [showPicker, setShowPicker] = useState(false);
 
   const onSubmit = (data: UserForm) => {
-    Alert.alert("Data sent:", JSON.stringify(data, null, 2));
+    console.log("Data sent:", JSON.stringify(data, null, 2));
     // Handle form submission (e.g., send data to server)
     sendUserData(data);
-    router.push("/"); // Navigate to home screen after submission
   };
 
   return (
