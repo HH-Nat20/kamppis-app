@@ -30,18 +30,8 @@ const formatDate = (dateTuple?: [number, number, number]) => {
   )}`;
 };
 
-const getProfilePicture = (photos?: Photo[]): Photo | undefined => {
-  if (photos) {
-    //console.log("Found some photos...", photos);
-    const profilePicture = photos.find((photo) => photo.isProfilePhoto);
-    if (profilePicture) {
-      //console.log("Found a profile picture...", profilePicture);
-      return profilePicture;
-    }
-  }
-
-  return undefined;
-};
+const getProfilePicture = (photos?: Photo[]) =>
+  photos?.find((photo) => photo.isProfilePhoto);
 
 const getImageUrl = (
   photo: Photo | undefined,
