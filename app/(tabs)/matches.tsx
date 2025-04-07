@@ -27,6 +27,7 @@ import { User } from "@/types/responses/User";
 import { Heading } from "@/components/ui/heading";
 
 import { router } from "expo-router";
+import profile from "@/assets/styles/profile";
 
 const MatchesScreen = () => {
   const { matches } = useMatch();
@@ -50,14 +51,29 @@ const MatchesScreen = () => {
     });
   };
 
+  const handleViewProfile = (profileId: number) => {
+    console.log("Viewing profile:", profileId);
+    router.push({
+      pathname: "/[profileId]",
+      params: { profileId },
+    });
+  };
+
   const renderItem = ({ item }: any) => {
     console.log("RENDERING ITEM", item);
-    const userPhoto = getProfilePicture(item.users[0].userProfile.photos); // TODO: Fix this to show the photo of the profile (can be room profile or user profile)
+    const userPhoto =
+      getProfilePicture(item.users[0].userProfile.photos) ??
+      getProfilePicture(item.users[0].roomProfiles[0].photos); // TODO: Fix this to show the photo of the profile (can be room profile or user profile)
 
     return (
       <TouchableOpacity
         style={styles.matchItem}
         onPress={() => handleOpenChat(item.matchId, item.users)}
+        onLongPress={() =>
+          handleViewProfile(
+            item.users[0].roomProfiles[0].id ?? item.users[0].id
+          )
+        } // TODO: Fix this to show the user profile or room profile of the match
       >
         {item.users.some((user: User) => user.isOnline) ? (
           <Badge
