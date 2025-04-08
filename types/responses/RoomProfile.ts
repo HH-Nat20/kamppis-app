@@ -10,5 +10,6 @@ export interface RoomProfile extends Profile {
   totalRoommates: number;
   location: string; // TODO: Is this necessary when we have flat.location?
   isPrivateRoom: boolean;
-  roomUtilities: string[]; // TODO: Utility enum
+  furnished: boolean;
+  furnishedInfo: string;
 }

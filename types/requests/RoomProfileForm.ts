@@ -8,6 +8,7 @@ export type RoomProfileForm = {
   totalRoommates: number;
   location: string;
   isPrivateRoom: boolean;
-  roomUtilities: string[];
+  furnished: boolean;
+  furnishedInfo: string;
   flatId: number; // ???
 };

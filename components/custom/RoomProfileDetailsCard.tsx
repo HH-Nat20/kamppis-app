@@ -49,8 +49,13 @@ export const RoomProfileDetailsCard = ({
         </VStack>
         <Divider orientation="horizontal" className="my-2 bg-background-300" />
         <VStack className="flex-row gap-2 pb-2">
-          <Heading size="xs">Utilities</Heading>
-          <Text size="xs">{profile.roomUtilities?.join(", ")}</Text>
+          <Heading size="xs">Furnished</Heading>
+          <Text size="xs">{profile.furnished ? "✅" : "❌"}</Text>
+          {profile.furnished && (
+            <Text size="xs" className="text-gray-500">
+              {profile.furnishedInfo}
+            </Text>
+          )}
         </VStack>
         <Divider orientation="horizontal" className="my-2 bg-background-300" />
         <VStack className="flex-row gap-2 pb-2">
