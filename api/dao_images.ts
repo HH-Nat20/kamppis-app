@@ -24,8 +24,9 @@ export const deleteImage = async (authUser: User | undefined, photo: Photo) => {
   if (!authUser) {
     throw new Error("User is not authenticated");
   }
+  const profileId = authUser.userProfile.id;
   console.log("Deleting image", photo.id);
-  const response = await remove(`${ENDPOINT}/${authUser!.id}/${photo.id}`); // TODO: userId or profileId?
+  const response = await remove(`${ENDPOINT}/${profileId}/${photo.id}`); // TODO: userId or profileId?
   console.log("Response", response);
   if (!response.ok) {
     throw new Error("Failed to delete image");
