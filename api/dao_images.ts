@@ -7,8 +7,8 @@ const ENDPOINT = "images";
 /**
  * Post an image to the server
  */
-export const postImage = async (formData: FormData, userId: number) => {
-  const response = await uploadRequest(`${ENDPOINT}/${userId}`, formData); // Not the most secure way to upload images. Handle userId in a more secure way.
+export const postImage = async (formData: FormData, profileId: number) => {
+  const response = await uploadRequest(`${ENDPOINT}/${profileId}`, formData); // Not the most secure way to upload images. Handle userId in a more secure way.
 
   if (!response.ok) {
     throw new Error("Failed to upload image");
@@ -45,9 +45,10 @@ export const putImage = async (
   if (!authUser) {
     throw new Error("User is not authenticated");
   }
+  const profileId = authUser.userProfile.id;
   console.log(`setting image ${photo.id} to isProfilePhoto=${isProfilePhoto}`);
   const response = await update(
-    `${ENDPOINT}/${authUser!.id}/${photo.id}?isProfilePhoto=${isProfilePhoto}`,
+    `${ENDPOINT}/${profileId}/${photo.id}?isProfilePhoto=${isProfilePhoto}`, // TODO: get profileId from somewhere else
     {} // Empty body
   );
   console.log("Response", response);

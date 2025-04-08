@@ -18,6 +18,7 @@ import styles from "@/assets/styles/styles";
 
 const ImageUpload = () => {
   const { mode } = useLocalSearchParams() ?? "gallery";
+  const { profileId } = useLocalSearchParams() ?? "0";
 
   type Image = {
     uri: string;
@@ -102,7 +103,7 @@ const ImageUpload = () => {
     formData.append("image", file);
 
     try {
-      const response = await dao.postImage(formData, user?.id || 1);
+      const response = await dao.postImage(formData, Number(profileId));
       console.log("Image uploaded", response);
       setUploadSuccess(true);
       setUploading(false);

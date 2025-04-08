@@ -101,10 +101,11 @@ export default function ProfilePhotosScreen() {
   };
 
   const openUploader = (mode: string) => {
+    const profileId = user?.userProfile?.id;
     setShowActionsheet(false);
     router.push({
       pathname: "/profile/upload",
-      params: { mode },
+      params: { mode, profileId },
     });
     //navigation.navigate("Upload", { mode });
   };
