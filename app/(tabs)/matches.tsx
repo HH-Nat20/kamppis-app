@@ -62,8 +62,8 @@ const MatchesScreen = () => {
   const renderItem = ({ item }: any) => {
     console.log("RENDERING ITEM", item);
     const userPhoto =
-      getProfilePicture(item.users[0].userProfile.photos) ??
-      getProfilePicture(item.users[0].roomProfiles[0].photos); // TODO: Fix this to show the photo of the profile (can be room profile or user profile)
+      getProfilePicture(item.users[0].roomProfiles[0]?.photos) ??
+      getProfilePicture(item.users[0].userProfile.photos); // TODO: Fix this to show the photo of the profile (can be room profile or user profile)
 
     return (
       <TouchableOpacity
@@ -71,7 +71,7 @@ const MatchesScreen = () => {
         onPress={() => handleOpenChat(item.matchId, item.users)}
         onLongPress={() =>
           handleViewProfile(
-            item.users[0].roomProfiles[0].id ?? item.users[0].id
+            item.users[0].roomProfiles[0]?.id ?? item.users[0].id
           )
         } // TODO: Fix this to show the user profile or room profile of the match
       >
