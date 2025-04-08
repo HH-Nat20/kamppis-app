@@ -1,0 +1,5 @@
+export enum Pets {
+  PET_OWNER = "PET_OWNER",
+  OK_WITH_PETS = "OK_WITH_PETS",
+  PREFER_NO_PETS = "PREFER_NO_PETS",
+}

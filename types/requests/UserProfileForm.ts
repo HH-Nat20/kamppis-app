@@ -1,5 +1,6 @@
 import { Cleanliness } from "../enums/CLeanlinessEnum";
 import { Lifestyle } from "../enums/LifestyleEnum";
+import { Pets } from "../enums/PetsEnum";
 
 export type UserProfileForm = {
   userId: number;
@@ -7,4 +8,5 @@ export type UserProfileForm = {
   cleanliness: Cleanliness;
   lifestyle: Lifestyle[];
   bio: string;
+  pets: Pets[];
 };
