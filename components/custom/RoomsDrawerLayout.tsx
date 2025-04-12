@@ -25,6 +25,7 @@ import {
   Settings,
   BriefcaseBusiness,
   Images,
+  AlignJustify,
   Home,
 } from "lucide-react-native";
 import { useNavigation, router, RelativePathString } from "expo-router";
@@ -75,14 +76,11 @@ const DrawerLayoutContent = ({ children }: { children: React.ReactNode }) => {
     navigation.setOptions({
       headerRight: () => (
         <Pressable onPress={openDrawer} className="mr-4">
-          <Avatar size="sm">
-            <AvatarImage
-              source={{
-                uri: getImageUrl(getProfilePicture(user?.userProfile?.photos)),
-              }}
-            />
-            <AvatarFallbackText>{user?.firstName.charAt(0)}</AvatarFallbackText>
-          </Avatar>
+          <Icon
+            as={AlignJustify}
+            size="xl"
+            className="text-typography-900 dark:text-typography-100"
+          />
         </Pressable>
       ),
     });
@@ -108,21 +106,30 @@ const DrawerLayoutContent = ({ children }: { children: React.ReactNode }) => {
         <DrawerBackdrop />
         <DrawerContent className="w-[270px] md:w-[300px]">
           <DrawerHeader className="justify-center flex-col gap-2">
-            <Avatar size="2xl">
-              <AvatarFallbackText>User's Avatar</AvatarFallbackText>
-              <AvatarImage
-                source={{
-                  uri: getImageUrl(
-                    getProfilePicture(user?.userProfile?.photos)
-                  ),
-                }}
-              />
-            </Avatar>
+            <Icon
+              as={Home}
+              size="xl"
+              className="text-typography-900 dark:text-typography-100"
+            />
             <VStack className="justify-center items-center">
-              <Text size="lg">{`${user?.firstName} ${user?.lastName}`}</Text>
-              <Text size="sm" className="text-typography-600">
-                {user?.email}
-              </Text>
+              <Pressable
+                onPress={() => router.push("/rooms")}
+                className={`flex-row items-center gap-3 px-4 py-3 rounded-md ${
+                  currentRoute === ("/rooms" as RelativePathString)
+                    ? "bg-background-100"
+                    : "hover:bg-background-50"
+                }`}
+              >
+                <Text
+                  className={`text-base ${
+                    currentRoute === ("/rooms" as RelativePathString)
+                      ? "font-semibold"
+                      : ""
+                  } text-typography-900 dark:text-typography-100`}
+                >
+                  My Rooms
+                </Text>
+              </Pressable>
             </VStack>
           </DrawerHeader>
 
