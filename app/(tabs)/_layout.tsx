@@ -10,7 +10,7 @@ const TabsLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <ProfileDrawerProvider>
       <Tabs
-        initialRouteName="(home)"
+        initialRouteName="profile"
         screenOptions={({ route }) => ({
           tabBarStyle: {
             backgroundColor: "transparent",
@@ -66,7 +66,7 @@ const TabsLayout = ({ children }: { children: React.ReactNode }) => {
           }}
         />
         <Tabs.Screen
-          name="matches"
+          name="(matches)"
           options={{
             headerShown: true,
             tabBarLabel: "Matches",
