@@ -45,6 +45,17 @@ const TabsLayout = ({ children }: { children: React.ReactNode }) => {
           }}
         />
         <Tabs.Screen
+          name="rooms"
+          options={{
+            headerShown: false,
+            tabBarLabel: "Rooms",
+            title: "Rooms",
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="home" size={size} color={color} />
+            ),
+          }}
+        />
+        <Tabs.Screen
           name="profile"
           options={{
             headerShown: false,
@@ -68,7 +79,7 @@ const TabsLayout = ({ children }: { children: React.ReactNode }) => {
         <Tabs.Screen
           name="(matches)"
           options={{
-            headerShown: true,
+            headerShown: false,
             tabBarLabel: "Matches",
             title: "Matches",
             tabBarIcon: ({ color, size }) => (
