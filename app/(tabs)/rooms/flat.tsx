@@ -16,6 +16,8 @@ import NameSection from "@/components/forms/flat/NameSection";
 import DescriptionSection from "@/components/forms/flat/DescriptionSection";
 import LocationSection from "@/components/forms/flat/LocationSection";
 import TotalRoommatesSection from "@/components/forms/flat/TotalRoommatesSection";
+import PetHouseholdSection from "@/components/forms/flat/PetHouseholdSection";
+import FlatUtilitiesSection from "@/components/forms/flat/FlatUtilitiesSection";
 
 import { FlatFormProvider } from "@/contexts/FlatFormContext";
 
@@ -49,6 +51,9 @@ const FlatScreenContent = () => {
             <Divider />
             <TotalRoommatesSection control={control} errors={errors} />
             <Divider />
+            <PetHouseholdSection control={control} errors={errors} />
+            <Divider />
+            <FlatUtilitiesSection control={control} errors={errors} />
           </VStack>
           <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }} />
         </ScrollView>

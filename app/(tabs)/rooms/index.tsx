@@ -10,12 +10,22 @@ import { useUser } from "@/contexts/UserContext";
 import RoomsDrawerLayout from "@/components/custom/RoomsDrawerLayout";
 
 import Container from "@/components/common/Container";
-import TagArea from "@/components/common/TagArea";
+import { renderTag } from "@/components/common/TagArea";
+import { renderTagBgColor } from "@/assets/styles/colors";
+
+import { getFlatQueryOptions } from "@/api/queries/flatQueries";
+import { useQuery } from "@tanstack/react-query";
+
+import styles from "@/assets/styles/styles";
 
 const RoomsScreen: React.FC = () => {
   const { isOpen, closeDrawer } = useRoomsDrawer();
   const { user } = useUser();
   const navigation = useNavigation();
+
+  const { data: flat } = useQuery(
+    getFlatQueryOptions(user?.roomProfiles[0]?.flat?.id)
+  );
 
   useLayoutEffect(() => {
     console.log("RoomsScreen: useLayoutEffect", user?.roomProfiles);
@@ -34,11 +44,21 @@ const RoomsScreen: React.FC = () => {
       <Container>
         {user?.roomProfiles?.length ? (
           <View className="flex-1 justify-center items-center p-4 mt-4">
-            <Heading>Your flat:</Heading>
-            <Text>{user.roomProfiles[0]?.flat?.name}</Text>
-            <Text className="text-gray-500">
-              {user.roomProfiles[0]?.flat?.location}
-            </Text>
+            <Heading>{flat?.name}</Heading>
+            <Text className="text-gray-500">{flat?.location}</Text>
+            <View style={styles.tagArea}>
+              {flat?.flatUtilities?.map((tag) => (
+                <Text
+                  key={tag}
+                  style={{
+                    ...styles.tag,
+                    backgroundColor: renderTagBgColor(tag),
+                  }}
+                >
+                  {renderTag(tag)}
+                </Text>
+              ))}
+            </View>
             <Heading>Your rooms:</Heading>
             <Card className="w-1/2 px-4 py-2 bg-white dark:bg-black">
               {user.roomProfiles.map((room, index) => (
