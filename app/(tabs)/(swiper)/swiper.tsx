@@ -15,6 +15,7 @@ import Card from "@/components/custom/Card";
 import styles from "@/assets/styles/styles";
 
 import Container from "@/components/common/Container";
+import { router } from "expo-router";
 
 const SwipeScreen: React.FC = () => {
   const swiperRef = useRef<Swiper<any>>(null);
@@ -83,12 +84,14 @@ const SwipeScreen: React.FC = () => {
         onSwipedRight={(i) => handleSwipe(i, "right")}
         onSwipedBottom={(i) => handleSwipe(i, "down")}
         onSwipedAll={() => {
+          console.log("All swiped");
           setTimeout(refreshMatchableProfiles, 500);
+          router.replace("/swiper"); // A bit of a hack :D
         }}
         cardIndex={0}
         backgroundColor="transparent"
         stackScale={-3}
-        stackSize={10}
+        stackSize={10} // Number of cards to show in the stack
         animateOverlayLabelsOpacity
         animateCardOpacity
         infinite={false}

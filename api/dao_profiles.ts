@@ -39,7 +39,7 @@ export const getPossibleMatches = async (userId: number) => {
   let responseBody1, responseBody2, content1, content2;
 
   try {
-    const res1 = await get(`room-profiles/${userId}/query?size=1`);
+    const res1 = await get(`room-profiles/${userId}/query?size=5`);
     responseBody1 = await res1.json();
     content1 = await responseBody1?.content;
     console.log("Room profiles: ", content1);
@@ -48,7 +48,7 @@ export const getPossibleMatches = async (userId: number) => {
   }
 
   try {
-    const res2 = await get(`user-profiles/${userId}/query?size=1`);
+    const res2 = await get(`user-profiles/${userId}/query?size=5`);
     responseBody2 = await res2.json();
     content2 = await responseBody2?.content;
     console.log("User profiles: ", content2);
