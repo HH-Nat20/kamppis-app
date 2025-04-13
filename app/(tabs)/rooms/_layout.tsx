@@ -13,7 +13,6 @@ const ProfileLayout = ({ children }: { children: React.ReactNode }) => {
           options={{
             headerShown: true,
             headerTitle: "My Rooms",
-            headerLeft: () => <></>,
           }}
         />
       </Stack>

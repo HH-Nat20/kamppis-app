@@ -114,19 +114,9 @@ const DrawerLayoutContent = ({ children }: { children: React.ReactNode }) => {
             <VStack className="justify-center items-center">
               <Pressable
                 onPress={() => router.push("/rooms")}
-                className={`flex-row items-center gap-3 px-4 py-3 rounded-md ${
-                  currentRoute === ("/rooms" as RelativePathString)
-                    ? "bg-background-100"
-                    : "hover:bg-background-50"
-                }`}
+                className="flex-row items-center gap-3 px-4 py-3 rounded-md hover:bg-background-50"
               >
-                <Text
-                  className={`text-base ${
-                    currentRoute === ("/rooms" as RelativePathString)
-                      ? "font-semibold"
-                      : ""
-                  } text-typography-900 dark:text-typography-100`}
-                >
+                <Text className="text-base text-typography-900 dark:text-typography-100">
                   My Rooms
                 </Text>
               </Pressable>

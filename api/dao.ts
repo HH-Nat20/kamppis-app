@@ -5,6 +5,8 @@ import * as dao_swipes from "./dao_swipes";
 import * as dao_matches from "./dao_matches";
 import * as dao_images from "./dao_images";
 import * as dao_preferences from "./dao_preferences";
+import * as dao_flats from "./dao_flats";
+import * as dao_rooms from "./dao_rooms";
 
 const dao = {
   ...dao_users,
@@ -14,6 +16,8 @@ const dao = {
   ...dao_matches,
   ...dao_images,
   ...dao_preferences,
+  ...dao_flats,
+  ...dao_rooms,
 };
 
 export default dao;

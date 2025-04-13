@@ -1,12 +1,11 @@
+import { Location } from "../enums/LocationEnum";
 import { Utilities } from "../enums/UtilitiesEnum";
 
-export interface Flat {
-  id: number;
+export type FlatForm = {
   name: string;
   description: string;
-  location: string;
+  location: Location;
   totalRoommates: number;
-  petHouseHold: boolean;
-  roomProfileIds: number[];
+  petHousehold: boolean;
   flatUtilities: Utilities[];
-}
+};

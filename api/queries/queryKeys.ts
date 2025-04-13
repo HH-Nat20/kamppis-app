@@ -6,6 +6,9 @@ export const queryKeys = {
   matches: (userId: number) => ["matches", userId] as const,
   matchableProfiles: (userId: number) => ["matchableProfiles", userId] as const,
   roommates: (userIds: number[]) => ["roommates", userIds] as const,
+  roomProfile: (roomProfileId: number) =>
+    ["roomProfile", roomProfileId] as const,
+  flat: (flatId: number) => ["flat", flatId] as const,
   serverHealth: ["serverHealth"] as const,
   databaseHealth: ["databaseHealth"] as const,
 };
