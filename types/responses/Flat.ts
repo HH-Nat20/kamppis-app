@@ -1,12 +1,12 @@
 import { Utilities } from "../enums/UtilitiesEnum";
-
+import { Location } from "../enums/LocationEnum";
 export interface Flat {
   id: number;
   name: string;
   description: string;
-  location: string;
+  location: Location;
   totalRoommates: number;
-  petHouseHold: boolean;
+  petHousehold: boolean;
   roomProfileIds: number[];
   flatUtilities: Utilities[];
 }

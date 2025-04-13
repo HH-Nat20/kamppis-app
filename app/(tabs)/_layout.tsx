@@ -55,16 +55,7 @@ const TabsLayout = ({ children }: { children: React.ReactNode }) => {
             ),
           }}
         />
-        <Tabs.Screen
-          name="profile"
-          options={{
-            headerShown: false,
-            tabBarLabel: "Profile",
-            tabBarIcon: ({ color, size }) => (
-              <Ionicons name="person" size={size} color={color} />
-            ),
-          }}
-        />
+
         <Tabs.Screen
           name="(swiper)"
           options={{
@@ -83,7 +74,17 @@ const TabsLayout = ({ children }: { children: React.ReactNode }) => {
             tabBarLabel: "Matches",
             title: "Matches",
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="people" size={size} color={color} />
+              <Ionicons name="chatbubble" size={size} color={color} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="profile"
+          options={{
+            headerShown: false,
+            tabBarLabel: "Profile",
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="person" size={size} color={color} />
             ),
           }}
         />

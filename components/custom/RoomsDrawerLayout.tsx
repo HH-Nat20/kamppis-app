@@ -1,9 +1,5 @@
 import React, { useLayoutEffect, useState } from "react";
-import {
-  Avatar,
-  AvatarFallbackText,
-  AvatarImage,
-} from "@/components/ui/avatar";
+
 import {
   Drawer,
   DrawerBackdrop,
@@ -18,6 +14,7 @@ import { Pressable } from "@/components/ui/pressable";
 import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
 import { Button, ButtonIcon, ButtonText } from "@/components/ui/button";
+
 import {
   LogOut,
   User,
@@ -25,42 +22,28 @@ import {
   Settings,
   BriefcaseBusiness,
   Images,
+  BedDouble,
   AlignJustify,
   Home,
+  Plus,
 } from "lucide-react-native";
 import { useNavigation, router, RelativePathString } from "expo-router";
 import { useUser } from "@/contexts/UserContext";
 import { useProfileDrawer } from "@/contexts/ProfileDrawerContext";
 
-import { getProfilePicture, getImageUrl } from "@/helpers/helpers";
-
 import { ProfileStackNavItem } from "@/types/ProfileStackNavItem";
-
-const rooms: ProfileStackNavItem[] = [
-  {
-    icon: Home,
-    label: "Room1",
-    href: "/profile/personal" as RelativePathString,
-  },
-  {
-    icon: Home,
-    label: "Room2",
-    href: "/profile/bio" as RelativePathString,
-  },
-];
 
 const drawerItems: ProfileStackNavItem[] = [
   {
-    icon: UserCog,
+    icon: Settings,
     label: "Flat Settings",
-    href: "/profile/personal" as RelativePathString,
+    href: "/rooms/flat" as RelativePathString,
   },
   {
     icon: User,
     label: "Residents",
-    href: "/profile/bio" as RelativePathString,
+    href: "/rooms/residents" as RelativePathString,
   },
-  ...rooms,
 ];
 
 const ProfileDrawerLayout = ({ children }: { children: React.ReactNode }) => {
@@ -151,18 +134,38 @@ const DrawerLayoutContent = ({ children }: { children: React.ReactNode }) => {
                 </Pressable>
               );
             })}
-          </DrawerBody>
-
-          <DrawerFooter>
+            <Divider />
+            {user &&
+              user.roomProfiles.map((room, index) => (
+                <Pressable
+                  key={index}
+                  onPress={() => {
+                    closeDrawer();
+                    router.push(`/rooms/${room.id}`);
+                  }}
+                  className="flex-row items-center gap-3 px-4 py-3 rounded-md hover:bg-background-50"
+                >
+                  <Icon
+                    as={BedDouble}
+                    size="lg"
+                    className="text-typography-900 dark:text-typography-100"
+                  />
+                  <Text className="text-base text-typography-900 dark:text-typography-100">
+                    {room.name ?? "Room " + (index + 1)}
+                  </Text>
+                </Pressable>
+              ))}
             <Button
               variant="outline"
               action="secondary"
               className="w-full gap-2"
             >
               <ButtonText>Add Room</ButtonText>
-              <ButtonIcon as={LogOut} />
+              <ButtonIcon as={Plus} />
             </Button>
-          </DrawerFooter>
+          </DrawerBody>
+
+          <DrawerFooter>{/** nothing here ? */}</DrawerFooter>
         </DrawerContent>
       </Drawer>
     </>

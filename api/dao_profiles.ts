@@ -36,44 +36,48 @@ export const getPossibleMatches = async (userId: number) => {
 
   // Then fetch all profiles for the user
 
-  let responseBody1, responseBody2;
+  let responseBody1, responseBody2, content1, content2;
 
   try {
-    const res1 = await get(`room-profiles/${userId}/query`);
+    const res1 = await get(`room-profiles/${userId}/query?size=1`);
     responseBody1 = await res1.json();
+    content1 = await responseBody1?.content;
+    console.log("Room profiles: ", content1);
   } catch (err) {
     console.log("Error parsing room profiles response:", err);
   }
 
   try {
-    const res2 = await get(`user-profiles/${userId}/query`);
+    const res2 = await get(`user-profiles/${userId}/query?size=1`);
     responseBody2 = await res2.json();
+    content2 = await responseBody2?.content;
+    console.log("User profiles: ", content2);
   } catch (err) {
     console.log("Error parsing user profiles response:", err);
   }
 
   if (responseBody1?.status === 404) {
     console.log("No room profiles found");
-  } else if (Array.isArray(responseBody1)) {
-    console.log(`Found ${responseBody1.length} room profiles`);
+  } else if (Array.isArray(content1)) {
+    console.log(`Found ${content1.length} room profiles`);
     if (
       lookingFor === LookingFor.OTHER_USER_PROFILES_OR_ROOM_PROFILES ||
       lookingFor === LookingFor.ROOM_PROFILES
     ) {
-      profiles.push(...responseBody1);
+      profiles.push(...content1);
     }
   }
 
-  if (!responseBody2) {
+  if (responseBody2?.status === 404) {
     console.log("No user profiles found");
-  } else if (Array.isArray(responseBody2)) {
-    console.log(`Found ${responseBody2.length} user profiles`);
+  } else if (Array.isArray(content2)) {
+    console.log(`Found ${content2.length} user profiles`);
     if (
       lookingFor === LookingFor.OTHER_USER_PROFILES_OR_ROOM_PROFILES ||
       lookingFor === LookingFor.USER_PROFILES ||
       lookingFor === LookingFor.OTHER_USER_PROFILES
     ) {
-      profiles.push(...responseBody2);
+      profiles.push(...content2);
     }
   }
 

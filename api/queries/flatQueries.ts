@@ -5,7 +5,7 @@ import { queryKeys } from "./queryKeys";
 
 import { Flat } from "@/types/responses/Flat";
 
-export const flatQueryOptions = (flatId: number | undefined) =>
+export const getFlatQueryOptions = (flatId: number | undefined) =>
   queryOptions<Flat, Error>({
     queryKey: queryKeys.flat(flatId!),
     queryFn: async () => await dao.getFlat(flatId!),

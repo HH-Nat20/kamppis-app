@@ -48,9 +48,10 @@ export default function RootLayout() {
                     <Stack.Screen name="(tabs)" />
                     <Stack.Screen name="(auth)" options={{}} />
                     <Stack.Screen
-                      name="modal"
+                      name="flatModal"
                       options={{
-                        presentation: "modal",
+                        presentation: "transparentModal",
+                        animation: "slide_from_bottom",
                         headerShown: false,
                       }}
                     />
