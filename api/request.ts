@@ -1,3 +1,8 @@
+/**
+ * CREDIT: Most of this file is taken from the Siba project
+ * presented in the Ohjelmointikehityksen teknologiat course.
+ */
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const getBaseUrl = () => {
@@ -10,7 +15,7 @@ export const baseUrl = getBaseUrl();
 // Function to get token from AsyncStorage
 const getSessionToken = async (): Promise<string | null> => {
   try {
-    return await AsyncStorage.getItem("sessionToken");
+    return await AsyncStorage.getItem("jwtToken");
   } catch (error) {
     console.error("Error retrieving session token:", error);
     return null;
@@ -47,7 +52,7 @@ const sendRequest = async (
 };
 
 export const uploadRequest = async (url: string, formData: FormData) => {
-  //const token = await getSessionToken();
+  const token = await getSessionToken();
 
   /**
    * TODO: Currently this is not a very secure way to upload images.
@@ -59,11 +64,11 @@ export const uploadRequest = async (url: string, formData: FormData) => {
 
   console.log("Sending request to", `${baseUrl}/${url}`);
   console.log("Body:", formData);
-  //console.log("Token", token);
+  console.log("Token", token);
 
   const headers: Record<string, string> = {
     "Content-Type": "multipart/form-data",
-    //Authorization: `Bearer ${token}`,
+    Authorization: `Bearer ${token}`,
   };
 
   const options: RequestInit = {

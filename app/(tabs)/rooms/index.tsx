@@ -59,6 +59,14 @@ const RoomsScreen: React.FC = () => {
                 </Text>
               ))}
             </View>
+            <Text
+              style={{
+                paddingTop: 10,
+                paddingBottom: 20,
+              }}
+            >
+              {flat?.description}
+            </Text>
             <Heading>Your rooms:</Heading>
             <Card className="w-1/2 px-4 py-2 bg-white dark:bg-black">
               {user.roomProfiles.map((room, index) => (
