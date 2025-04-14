@@ -38,8 +38,8 @@ export default function App() {
           tabBarIndicatorStyle: { backgroundColor: "blue" },
         }}
       >
-        <Tab.Screen name="index" component={() => <RoomScreen />} />
-        <Tab.Screen name="photos" component={() => <Photos />} />
+        <Tab.Screen name="Room Details" component={() => <RoomScreen />} />
+        <Tab.Screen name="Photos" component={() => <Photos />} />
         <Tab.Screen name="Likes" component={() => <View />} />
       </Tab.Navigator>
     </RoomsDrawerLayout>
