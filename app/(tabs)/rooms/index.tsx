@@ -74,7 +74,7 @@ const RoomsScreen: React.FC = () => {
                   className="mb-2 w-full bg-info-600"
                   key={room.id}
                   onPress={() => {
-                    closeDrawer();
+                    router.push(`/rooms/${room.id}`);
                   }}
                 >
                   <Text className="text-white dark:text-white">
