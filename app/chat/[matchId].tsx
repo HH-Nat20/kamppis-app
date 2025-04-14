@@ -16,6 +16,8 @@ import { Badge, BadgeIcon, BadgeText } from "@/components/ui/badge";
 import { BadgeCheckIcon } from "lucide-react-native";
 
 import { useLocalSearchParams, router, useNavigation } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { set } from "zod";
 
 const mapMessageDTOToChatMessage = (dto: MessageDTO): ChatMessage => {
   return {
@@ -38,6 +40,8 @@ export default function ChatScreen() {
 
   const [recipientIds, setRecipientIds] = useState<number[]>([]);
   const [recipients, setRecipients] = useState<User[]>([]);
+
+  const [token, setToken] = useState<string | null>(null);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -81,6 +85,17 @@ export default function ChatScreen() {
 
   useEffect(() => {
     console.log("ChatScreen mounted with matchId:", matchId);
+
+    const fetchToken = async () => {
+      const token = await AsyncStorage.getItem("jwtToken");
+      if (!token) {
+        console.warn("No token found");
+        return;
+      } else {
+        setToken(token);
+      }
+    };
+    fetchToken();
 
     const relevantMatches = matches.filter(
       (match) => String(match.matchId) === String(matchId)
@@ -139,7 +154,7 @@ export default function ChatScreen() {
                 : [...prev, mapMessageDTOToChatMessage(dto)]
             );
           },
-          { email: you.email }
+          { email: you.email, Authorization: `Bearer ${token}` }
         );
       },
     });
@@ -164,7 +179,7 @@ export default function ChatScreen() {
           matchId,
           createdAt: new Date().toISOString(),
         }),
-        headers: { email: you!.email },
+        headers: { email: you!.email, Authorization: `Bearer ${token}` },
       });
     }
   };
