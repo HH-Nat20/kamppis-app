@@ -5,8 +5,10 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 
 import { useLocalSearchParams, useNavigation } from "expo-router";
 
-import { RoomsDrawerProvider } from "@/contexts/RoomsDrawerContext";
 import RoomsDrawerLayout from "@/components/custom/RoomsDrawerLayout";
+
+import { useQuery } from "@tanstack/react-query";
+import { getRoomProfileQueryOptions } from "@/api/queries/roomQueries";
 
 import RoomScreen from ".";
 import Photos from "./photos";
@@ -17,19 +19,23 @@ export default function App() {
   const { roomId } = useLocalSearchParams<{ roomId: string }>();
   const navigation = useNavigation();
 
+  const { data: room } = useQuery(getRoomProfileQueryOptions(Number(roomId)));
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: true,
       headerTitle: () => (
-        <Text style={{ fontSize: 18, fontWeight: "bold" }}>{"Room"}</Text>
+        <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+          {room?.name || "Room"}
+        </Text>
       ),
     });
-  }, [navigation, roomId]);
+  }, [navigation, room]);
 
   return (
     <RoomsDrawerLayout>
       <Tab.Navigator
-        initialRouteName="index"
+        initialRouteName="Room Details"
         screenOptions={{
           lazy: true,
           tabBarStyle: { backgroundColor: "white" },
