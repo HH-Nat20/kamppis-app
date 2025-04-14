@@ -4,14 +4,13 @@ import { Flat } from "./Flat";
 
 export interface RoomProfile extends Profile {
   id: number;
-  name: string;
-  userIds?: number[];
-  users: ShortUser[];
   flat: Flat;
   rent: number;
-  totalRoommates: number;
-  location: string; // TODO: Is this necessary when we have flat.location?
+  name: string;
   isPrivateRoom: boolean;
   furnished: boolean;
   furnishedInfo: string;
+  userIds?: number[];
+  users: ShortUser[];
+  status?: "ACTIVE" | "INACTIVE";
 }

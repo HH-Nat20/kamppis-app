@@ -24,6 +24,9 @@ export const useCreateFlatMutation = (userId: number | undefined) => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.flat(createdFlat.id),
       });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.user(userId),
+      });
     },
   });
 };
