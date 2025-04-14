@@ -8,43 +8,45 @@ import { useQuery } from "@tanstack/react-query";
 
 import { router, useLocalSearchParams } from "expo-router";
 
-import { useUpdateFlatMutation } from "@/api/queries/flatMutations";
-import { getFlatQueryOptions } from "@/api/queries/flatQueries";
-import { FlatForm, flatFormSchema } from "@/validation/flatFormSchema";
+import { useUpdateRoomProfileMutation } from "@/api/queries/roomMutations";
+import { getRoomProfileQueryOptions } from "@/api/queries/roomQueries";
+import {
+  RoomProfileForm,
+  roomProfileFormSchema,
+} from "@/validation/roomFormSchema";
 
-import { Location } from "@/types/enums/LocationEnum";
-import { Utilities } from "@/types/enums/UtilitiesEnum";
+const RoomFormContext = createContext<any>(undefined);
 
-const FlatFormContext = createContext<any>(undefined);
-
-export const FlatFormProvider = ({
+export const RoomFormProvider = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
   const isMounted = useRef(false);
   const { user } = useUser();
-  const { profileId } = useLocalSearchParams();
+  const { roomId } = useLocalSearchParams<{ roomId: string }>();
 
-  if (!profileId) {
+  if (!roomId) {
     router.back();
   }
 
-  const mutation = useUpdateFlatMutation(Number(profileId));
+  const mutation = useUpdateRoomProfileMutation(Number(roomId));
 
-  const { isPending, data: profile } = useQuery(
-    getFlatQueryOptions(Number(profileId))
+  const { isPending, data: room } = useQuery(
+    getRoomProfileQueryOptions(Number(roomId))
   );
 
-  const methods = useForm<FlatForm>({
-    resolver: zodResolver(flatFormSchema),
+  const methods = useForm<RoomProfileForm>({
+    resolver: zodResolver(roomProfileFormSchema),
     defaultValues: {
       name: "",
-      description: "",
-      location: Location.HELSINKI,
-      totalRoommates: 1,
-      petHousehold: false,
-      flatUtilities: [] as Utilities[],
+      userIds: [user?.id],
+      flatId: Number(user?.roomProfiles[0]?.flat?.id),
+      rent: 500,
+      isPrivateRoom: true,
+      furnished: false,
+      furnishedInfo: undefined,
+      bio: "Room description",
     },
   });
 
@@ -55,51 +57,53 @@ export const FlatFormProvider = ({
   } = methods;
 
   useEffect(() => {
-    if (profile) {
+    if (room) {
       reset({
-        name: profile.name ?? "",
-        description: profile.description ?? "",
-        location: profile.location ?? Location.HELSINKI,
-        totalRoommates: profile.totalRoommates ?? 1,
-        petHousehold: profile.petHousehold ?? false,
-        flatUtilities: profile.flatUtilities ?? ([] as Utilities[]),
+        name: room.name,
+        userIds: room.userIds,
+        flatId: room.flat.id,
+        rent: room.rent,
+        isPrivateRoom: room.isPrivateRoom,
+        furnished: room.furnished,
+        furnishedInfo: room.furnishedInfo,
+        bio: room.bio,
       });
     }
-  }, [profile]);
+  }, [room]);
 
   useEffect(() => {
     isMounted.current = true;
   }, []);
 
-  const onSubmit = async (data: FlatForm) => {
+  const onSubmit = async (data: RoomProfileForm) => {
     try {
       await mutation!.mutateAsync(data);
       Toast.show({
         type: "success",
         text1: "Saved",
-        text2: "Lifestyle info updated",
+        text2: "Room updated",
       });
     } catch (err) {
       Toast.show({
         type: "error",
         text1: "Error",
-        text2: "Could not update lifestyle info",
+        text2: "Could not update room profile",
       });
     }
   };
 
   return (
-    <FlatFormContext.Provider value={{ onSubmit, formState: { errors } }}>
+    <RoomFormContext.Provider value={{ onSubmit, formState: { errors } }}>
       <FormProvider {...methods}>
         {isPending ? <ActivityIndicator size="large" color="#fff" /> : children}
       </FormProvider>
-    </FlatFormContext.Provider>
+    </RoomFormContext.Provider>
   );
 };
 
-export const useFlatForm = () => {
-  const context = useContext(FlatFormContext);
+export const useRoomForm = () => {
+  const context = useContext(RoomFormContext);
   if (!context)
-    throw new Error("useFlatForm must be used within ProfileFormProvider");
+    throw new Error("useRoomForm must be used within ProfileFormProvider");
   return context;
 };

@@ -159,6 +159,12 @@ const DrawerLayoutContent = ({ children }: { children: React.ReactNode }) => {
               variant="outline"
               action="secondary"
               className="w-full gap-2"
+              onPress={() => {
+                closeDrawer();
+                router.push(
+                  `/roomModal?flatId=${user?.roomProfiles[0]?.flat?.id}`
+                );
+              }}
             >
               <ButtonText>Add Room</ButtonText>
               <ButtonIcon as={Plus} />

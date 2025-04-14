@@ -2,11 +2,10 @@ import React from "react";
 import { KeyboardAvoidingView, ScrollView } from "react-native";
 import { useFormContext } from "react-hook-form";
 
-import { useFlatForm } from "@/contexts/FlatFormContext";
+import { FlatFormProvider, useFlatForm } from "@/contexts/FlatFormContext";
 import { FlatForm } from "@/validation/flatFormSchema";
 
 import { VStack } from "@/components/ui/vstack";
-import { Heading } from "@/components/ui/heading";
 import { Divider } from "@/components/ui/divider";
 import { Button, ButtonText } from "@/components/ui/button";
 
@@ -18,8 +17,6 @@ import LocationSection from "@/components/forms/flat/LocationSection";
 import TotalRoommatesSection from "@/components/forms/flat/TotalRoommatesSection";
 import PetHouseholdSection from "@/components/forms/flat/PetHouseholdSection";
 import FlatUtilitiesSection from "@/components/forms/flat/FlatUtilitiesSection";
-
-import { FlatFormProvider } from "@/contexts/FlatFormContext";
 
 const FlatScreen = () => {
   return (

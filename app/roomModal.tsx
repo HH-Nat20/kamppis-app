@@ -24,46 +24,37 @@ import { Utilities } from "@/types/enums/UtilitiesEnum";
 import { useQueryClient } from "@tanstack/react-query";
 import { queryKeys } from "@/api/queries/queryKeys";
 
+import { useLocalSearchParams } from "expo-router";
+
 import dao from "@/api/dao";
 
-export default function FlatModal() {
+export default function RoomModal() {
+  const { flatId } = useLocalSearchParams<{ flatId: string }>();
+
   const isPresented = router.canGoBack();
 
   const queryClient = useQueryClient();
 
   const { user } = useUser();
 
-  const [flatName, setFlatName] = useState("");
+  const [roomName, setRoomName] = useState("");
+  const handleCreateRoom = async () => {
+    if (!roomName || !user) return;
 
-  const handleCreateFlat = async () => {
-    if (!flatName || !user) return;
-    const flatData: FlatForm = {
-      name: flatName,
-      totalRoommates: 1,
-      description: "",
-      location: Location.HELSINKI,
-      petHousehold: false,
-      flatUtilities: [] as Utilities[],
+    const newRoom: RoomProfileForm = {
+      userIds: [user.id],
+      name: roomName,
+      flatId: Number(flatId),
+      rent: 500,
+      isPrivateRoom: true,
+      furnished: false,
+      bio: "Room description",
     };
+
     try {
-      const newFlat: Flat = await dao.createFlat(flatData);
-      console.log("Flat created:", newFlat);
-      const flatId = newFlat.id;
-
-      const newRoom: RoomProfileForm = {
-        userIds: [user.id],
-        name: `${flatName} - Room 1`,
-        flatId: flatId,
-        rent: 500,
-        isPrivateRoom: true,
-        furnished: false,
-        bio: "Room description",
-      };
-
       const createdRoom: RoomProfile = await dao.createRoomProfile(newRoom);
       console.log("Room created:", createdRoom);
 
-      queryClient.setQueryData(queryKeys.flat(flatId), newFlat);
       queryClient.setQueryData(
         queryKeys.roomProfile(createdRoom.id),
         createdRoom
@@ -73,7 +64,7 @@ export default function FlatModal() {
       });
       router.back();
     } catch (error) {
-      console.error("Error creating flat:", error);
+      console.error("Error creating room:", error);
     }
   };
 
@@ -114,7 +105,7 @@ export default function FlatModal() {
         }}
       >
         <Text style={{ fontWeight: "bold", marginBottom: 10, marginTop: 10 }}>
-          Create a Flat
+          Create a Room
         </Text>
 
         <Animated.View
@@ -129,18 +120,13 @@ export default function FlatModal() {
           }}
         >
           <Text style={{ fontSize: 16, marginBottom: 20, width: "80%" }}>
-            This will create a new flat and a free room for users to swipe on.
-          </Text>
-          <Text style={{ fontSize: 16, marginBottom: 20 }}>
-            You can add more rooms later.
-          </Text>
-          <Text style={{ fontSize: 16, marginBottom: 20, color: "#ef0950" }}>
-            Note: You can only own one flat at a time
+            This will create a new free room for users to swipe on. Flat used:{" "}
+            {flatId}
           </Text>
           <TextInput
-            placeholder="Flat Name"
-            value={flatName}
-            onChangeText={setFlatName}
+            placeholder="Room Name"
+            value={roomName}
+            onChangeText={setRoomName}
             style={{
               width: "80%",
               height: 40,
@@ -150,12 +136,13 @@ export default function FlatModal() {
               paddingLeft: 10,
             }}
           />
+
           <TouchableOpacity
-            onPress={handleCreateFlat}
-            disabled={!flatName}
+            onPress={handleCreateRoom}
+            disabled={!roomName}
             style={{
               marginTop: 20,
-              backgroundColor: !flatName ? "#ccc" : "#007AFF",
+              backgroundColor: !roomName ? "#ccc" : "#007AFF",
               padding: 10,
               borderRadius: 5,
               width: "80%",
@@ -168,7 +155,7 @@ export default function FlatModal() {
                 fontWeight: "bold",
               }}
             >
-              Create Flat
+              Create Room
             </Text>
           </TouchableOpacity>
 

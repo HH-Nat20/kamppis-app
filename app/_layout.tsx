@@ -55,6 +55,14 @@ export default function RootLayout() {
                         headerShown: false,
                       }}
                     />
+                    <Stack.Screen
+                      name="roomModal"
+                      options={{
+                        presentation: "transparentModal",
+                        animation: "slide_from_left",
+                        headerShown: false,
+                      }}
+                    />
                   </Stack>
                   <Toast />
                 </GluestackUIProvider>

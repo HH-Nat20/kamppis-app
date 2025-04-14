@@ -58,5 +58,10 @@ export const useUpdateRoomProfileMutation = (
         queryKey: queryKeys.roomProfile(roomProfileId),
       });
     },
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["user"],
+      });
+    },
   });
 };

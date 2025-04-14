@@ -79,13 +79,13 @@ export const FlatFormProvider = ({
       Toast.show({
         type: "success",
         text1: "Saved",
-        text2: "Lifestyle info updated",
+        text2: "Flat updated",
       });
     } catch (err) {
       Toast.show({
         type: "error",
         text1: "Error",
-        text2: "Could not update lifestyle info",
+        text2: "Could not update flat info",
       });
     }
   };
