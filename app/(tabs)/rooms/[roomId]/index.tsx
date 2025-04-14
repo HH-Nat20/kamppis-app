@@ -11,8 +11,6 @@ import { VStack } from "@/components/ui/vstack";
 import { Divider } from "@/components/ui/divider";
 import { Button, ButtonText } from "@/components/ui/button";
 
-import RoomsDrawerLayout from "@/components/custom/RoomsDrawerLayout";
-
 import { useQuery } from "@tanstack/react-query";
 import { getRoomProfileQueryOptions } from "@/api/queries/roomQueries";
 
@@ -63,30 +61,28 @@ const RoomScreenContent = () => {
   if (!room) return <Text>Room not found</Text>;
 
   return (
-    <RoomsDrawerLayout>
-      <VStack className="px-5 py-4 flex-1 dark:bg-black bg-white" space="xl">
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <VStack space="xl">
-            <NameSection control={control} errors={errors} />
-            <Divider />
-            <BioSection control={control} errors={errors} />
-            <Divider />
-            <RentSection control={control} errors={errors} />
-            <Divider />
-            <PrivateRoomSection control={control} errors={errors} />
-            <Divider />
-            <FurnishedSection control={control} errors={errors} />
-          </VStack>
-          <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }} />
-        </ScrollView>
+    <VStack className="px-5 py-4 flex-1 dark:bg-black bg-white" space="xl">
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <VStack space="xl">
+          <NameSection control={control} errors={errors} />
+          <Divider />
+          <BioSection control={control} errors={errors} />
+          <Divider />
+          <RentSection control={control} errors={errors} />
+          <Divider />
+          <PrivateRoomSection control={control} errors={errors} />
+          <Divider />
+          <FurnishedSection control={control} errors={errors} />
+        </VStack>
+        <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }} />
+      </ScrollView>
 
-        {isDirty && (
-          <Button onPress={handleSubmit(onSubmit, onError)}>
-            <ButtonText>Save Changes</ButtonText>
-          </Button>
-        )}
-      </VStack>
-    </RoomsDrawerLayout>
+      {isDirty && (
+        <Button onPress={handleSubmit(onSubmit, onError)}>
+          <ButtonText>Save Changes</ButtonText>
+        </Button>
+      )}
+    </VStack>
   );
 };
 

@@ -18,7 +18,7 @@ const ProfileLayout = ({ children }: { children: React.ReactNode }) => {
         <Stack.Screen
           name="[roomId]"
           options={{
-            headerShown: false,
+            headerShown: true,
             headerTitle: "Room Profile",
           }}
         />
