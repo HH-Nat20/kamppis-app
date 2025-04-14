@@ -1,5 +1,4 @@
 import { Photo } from "@/types/responses/Photo";
-import { User } from "@/types/responses/User";
 import { uploadRequest, remove, update } from "./request";
 
 const ENDPOINT = "images";
@@ -20,13 +19,15 @@ export const postImage = async (formData: FormData, profileId: number) => {
 /**
  * Delete an image from the server
  */
-export const deleteImage = async (authUser: User | undefined, photo: Photo) => {
-  if (!authUser) {
-    throw new Error("User is not authenticated");
+export const deleteImage = async (
+  profileId: number | undefined,
+  photo: Photo
+) => {
+  if (!profileId) {
+    throw new Error("Profile ID is not defined");
   }
-  const profileId = authUser.userProfile.id;
   console.log("Deleting image", photo.id);
-  const response = await remove(`${ENDPOINT}/${profileId}/${photo.id}`); // TODO: userId or profileId?
+  const response = await remove(`${ENDPOINT}/${profileId}/${photo.id}`);
   console.log("Response", response);
   if (!response.ok) {
     throw new Error("Failed to delete image");
@@ -39,14 +40,13 @@ export const deleteImage = async (authUser: User | undefined, photo: Photo) => {
  * Set ProfilePhoto State
  */
 export const putImage = async (
-  authUser: User | undefined,
+  profileId: number | undefined,
   photo: Photo,
   isProfilePhoto: boolean
 ) => {
-  if (!authUser) {
-    throw new Error("User is not authenticated");
+  if (!profileId) {
+    throw new Error("Profile ID is not defined");
   }
-  const profileId = authUser.userProfile.id;
   console.log(`setting image ${photo.id} to isProfilePhoto=${isProfilePhoto}`);
   const response = await update(
     `${ENDPOINT}/${profileId}/${photo.id}?isProfilePhoto=${isProfilePhoto}`, // TODO: get profileId from somewhere else

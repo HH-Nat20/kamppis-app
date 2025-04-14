@@ -83,14 +83,14 @@ export default function ProfilePhotosScreen() {
   };
 
   const confirmDelete = (photo: Photo) => {
-    dao.deleteImage(user, photo).then(() => {
+    dao.deleteImage(user?.userProfile?.id, photo).then(() => {
       Alert.alert("Photo Deleted", "Your photo has been deleted.");
       setPhotos(photos.filter((p) => p.id !== photo.id));
     });
   };
 
   const changeProfilePhoto = (photo: Photo, value: boolean) => {
-    dao.putImage(user, photo, value).then(() => {
+    dao.putImage(user?.userProfile?.id, photo, value).then(() => {
       const updated = photos.map((p) => ({
         ...p,
         isProfilePhoto: p.id === photo.id ? value : false,
@@ -107,7 +107,6 @@ export default function ProfilePhotosScreen() {
       pathname: "/profile/upload",
       params: { mode, profileId },
     });
-    //navigation.navigate("Upload", { mode });
   };
 
   return (
