@@ -29,7 +29,7 @@ export const removeUser = async (id: number) => {
 };
 
 export const getUsers = async () => {
-  const response = await get(`${ENDPOINT}`);
+  const response = await get(`${ENDPOINT}/mock`); // Mock users endpoint for testing
   const users: User[] = await response.json();
   return users;
 };
