@@ -32,7 +32,7 @@ export default function LoginScreen() {
   const handleLogin = async (user: User) => {
     try {
       const response = await fetch(
-        `https://kamppis.hellmanstudios.fi/api/login?email=${encodeURIComponent(
+        `https://kamppis.hellmanstudios.fi/api/login/mock?email=${encodeURIComponent(
           user.email
         )}`,
         {
