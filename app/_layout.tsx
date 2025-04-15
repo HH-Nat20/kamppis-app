@@ -63,6 +63,14 @@ export default function RootLayout() {
                         headerShown: false,
                       }}
                     />
+                    <Stack.Screen
+                      name="uploadModal"
+                      options={{
+                        presentation: "transparentModal",
+                        animation: "slide_from_bottom",
+                        headerShown: false,
+                      }}
+                    />
                   </Stack>
                   <Toast />
                 </GluestackUIProvider>

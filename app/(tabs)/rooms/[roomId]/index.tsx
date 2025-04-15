@@ -4,7 +4,11 @@ import { Text } from "react-native";
 
 import { useLocalSearchParams, useNavigation } from "expo-router";
 
-import { KeyboardAvoidingView, ScrollView } from "react-native";
+import {
+  KeyboardAvoidingView,
+  ScrollView,
+  ActivityIndicator,
+} from "react-native";
 import { useFormContext } from "react-hook-form";
 
 import { VStack } from "@/components/ui/vstack";
@@ -57,7 +61,9 @@ const RoomScreenContent = () => {
     });
   }, [navigation, room?.name]);
 
-  if (isLoading) return <Text>Loading...</Text>;
+  if (isLoading) {
+    return <ActivityIndicator size="large" color="#0000ff" />;
+  }
   if (!room) return <Text>Room not found</Text>;
 
   return (

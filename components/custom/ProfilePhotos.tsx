@@ -54,6 +54,7 @@ export default function ProfilePhotos({
   profile: (UserProfile | RoomProfile) & Profile;
 }) {
   const queryClient = useQueryClient();
+
   const [showActionsheet, setShowActionsheet] = useState(false);
   const handleClose = () => setShowActionsheet(false);
   //const { user, refreshUser } = useUser();
@@ -115,7 +116,7 @@ export default function ProfilePhotos({
     const profileId = profile.id;
     setShowActionsheet(false);
     router.push({
-      pathname: "/profile/upload", // TODO: Fix Uploader as well - to be reusable - maybe into modal?
+      pathname: "/uploadModal",
       params: { mode, profileId },
     });
   };

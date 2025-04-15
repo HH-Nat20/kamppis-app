@@ -12,14 +12,9 @@ import Animated, { FadeIn, SlideInDown } from "react-native-reanimated";
 import { StatusBar } from "expo-status-bar";
 
 import { useUser } from "@/contexts/UserContext";
-import { FlatForm } from "@/validation/flatFormSchema";
 import { RoomProfileForm } from "@/validation/roomFormSchema";
 
-import { Flat } from "@/types/responses/Flat";
 import { RoomProfile } from "@/types/responses/RoomProfile";
-
-import { Location } from "@/types/enums/LocationEnum";
-import { Utilities } from "@/types/enums/UtilitiesEnum";
 
 import { useQueryClient } from "@tanstack/react-query";
 import { queryKeys } from "@/api/queries/queryKeys";
