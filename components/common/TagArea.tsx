@@ -11,6 +11,8 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import AntDesign from "@expo/vector-icons/AntDesign";
 
+import Tooltip from "rn-tooltip";
+
 export const renderTag = (tag: string) => {
   switch (tag) {
     case "PRIVATE_BATHROOM":
@@ -38,6 +40,18 @@ export const renderTag = (tag: string) => {
   }
 };
 
+export const tagToHumanReadable = (tag: string) => {
+  const tagMap: { [key: string]: string } = {
+    PRIVATE_BATHROOM: "Private Bathroom",
+    SEPARATE_BATHROOM_AND_SHOWER: "Separate Bathroom and Shower",
+    BALCONY: "Balcony",
+    WIFI: "Wi-Fi",
+    DISHWASHER: "Dishwasher",
+    LAUNDRY_MACHINE: "Laundry Machine",
+  };
+  return tagMap[tag] || tag.replace(/_/g, " ");
+};
+
 const TagArea: React.FC<{ profile: UserProfile | RoomProfile }> = ({
   profile,
 }) => {
@@ -54,16 +68,21 @@ const TagArea: React.FC<{ profile: UserProfile | RoomProfile }> = ({
 
   return (
     <View style={styles.tagArea}>
-      {tags.map((tag, index) => (
-        <Text
-          key={index}
-          style={{
-            ...styles.tag,
-            backgroundColor: renderTagBgColor(tag),
-          }}
+      {tags.map((tag) => (
+        <Tooltip
+          key={tag}
+          actionType="press"
+          popover={<Text>{tagToHumanReadable(tag)}</Text>}
         >
-          {renderTag(tag)}
-        </Text>
+          <Text
+            style={{
+              ...styles.tag,
+              backgroundColor: renderTagBgColor(tag),
+            }}
+          >
+            {renderTag(tag)}
+          </Text>
+        </Tooltip>
       ))}
     </View>
   );

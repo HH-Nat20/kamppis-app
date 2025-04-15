@@ -8,7 +8,11 @@ import { Text } from "@/components/ui/text";
 import { Heading } from "@/components/ui/heading";
 import { Pressable } from "@/components/ui/pressable";
 
-import { renderTag } from "@/components/common/TagArea";
+import { View } from "@/components/ui/view";
+
+import { renderTag, tagToHumanReadable } from "@/components/common/TagArea";
+
+import Tooltip from "rn-tooltip";
 
 export const FlatUtilitiesSection = ({ control, errors }: any) => (
   <VStack space="md">
@@ -34,7 +38,28 @@ export const FlatUtilitiesSection = ({ control, errors }: any) => (
                 }
               }}
             >
-              {renderTag(l)}
+              <Tooltip
+                actionType="press"
+                popover={
+                  <Text style={{ color: "#FFF" }}>{tagToHumanReadable(l)}</Text>
+                }
+                backgroundColor="#10B981"
+                containerStyle={{
+                  borderRadius: 8,
+                  padding: 5,
+                  borderColor: "#10B981",
+                }}
+                onOpen={() => {
+                  // has to be here too or it won't work when pressing the icon
+                  if (value?.includes(l)) {
+                    onChange(value.filter((v: string) => v !== l));
+                  } else {
+                    onChange([...(value || []), l]);
+                  }
+                }}
+              >
+                <Text>{renderTag(l)}</Text>
+              </Tooltip>
             </Pressable>
           )}
         />

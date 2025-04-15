@@ -66,13 +66,13 @@ const RoomScreenContent = () => {
         <VStack space="xl">
           <NameSection control={control} errors={errors} />
           <Divider />
-          <BioSection control={control} errors={errors} />
-          <Divider />
           <RentSection control={control} errors={errors} />
           <Divider />
           <PrivateRoomSection control={control} errors={errors} />
           <Divider />
           <FurnishedSection control={control} errors={errors} />
+          <Divider />
+          <BioSection control={control} errors={errors} />
         </VStack>
         <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }} />
       </ScrollView>
