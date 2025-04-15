@@ -34,6 +34,12 @@ export const getUsers = async () => {
   return users;
 };
 
+export const getMockUsers = async () => {
+  const response = await get(`${ENDPOINT}/mock`);
+  const users: User[] = await response.json();
+  return users;
+};
+
 export const changePassword = async (
   userId: number,
   oldPassword: string,

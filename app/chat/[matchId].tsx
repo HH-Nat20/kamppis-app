@@ -102,9 +102,9 @@ export default function ChatScreen() {
     if (relevantMatches.length > 0) {
       const match = relevantMatches[0];
       setRecipientIds(
-        match.users.map((u) => u.id).filter((id) => id !== user?.id)
+        match.users?.map((u) => u.id).filter((id) => id !== user?.id)
       );
-      setRecipients(match.users.filter((u) => u.id != user?.id));
+      setRecipients(match.users?.filter((u) => u.id != user?.id));
     } else {
       console.warn("No relevant matches found for matchId:", matchId);
     }

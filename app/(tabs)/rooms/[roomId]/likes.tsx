@@ -1,21 +1,134 @@
 import React from "react";
+import {
+  SafeAreaView,
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  Image,
+  ActivityIndicator,
+} from "react-native";
+import { useInfiniteQuery } from "@tanstack/react-query";
 
-import { Avatar, AvatarFallbackText } from "@/components/ui/avatar";
-import { HStack } from "@/components/ui/hstack";
-import { Icon } from "@/components/ui/icon";
-import { Command } from "lucide-react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { StatusBar } from "expo-status-bar";
 
-function Likes() {
+import { getProfilePicture, getImageUrl } from "@/helpers/helpers";
+import { Heading } from "@/components/ui/heading";
+
+import styles from "@/assets/styles/styles";
+import { bgGradient } from "@/assets/styles/colors";
+
+import { UserProfile } from "@/types/responses/UserProfile";
+import dao from "@/api/dao";
+import { router, useLocalSearchParams } from "expo-router";
+
+import { SwiperResponse } from "@/types/responses/Swiper";
+
+const PAGE_SIZE: number = 5;
+
+const Likes = () => {
+  const { roomId } = useLocalSearchParams<{ roomId: string }>();
+  const numericId: number = Number(roomId);
+
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    isError,
+  } = useInfiniteQuery<
+    SwiperResponse,
+    Error,
+    { pages: SwiperResponse[] },
+    [string, number],
+    number
+  >({
+    queryKey: ["roomProfileSwipers", numericId],
+    initialPageParam: 0,
+    queryFn: async ({ pageParam = 0 }) =>
+      await dao.getRoomProfileSwipers(numericId, pageParam, PAGE_SIZE),
+    getNextPageParam: (lastPage, pages) =>
+      lastPage.last ? undefined : pages.length,
+    enabled: !!numericId,
+  });
+
+  const handleViewProfile = (profileId: number) => {
+    console.log("Viewing profile:", profileId);
+    router.push({
+      pathname: "/[profileId]",
+      params: { profileId },
+    });
+  };
+
+  const flatData = data?.pages.flatMap((page) => page.swipers) ?? [];
+
+  const renderItem = ({ item }: { item: UserProfile }) => {
+    const photo = getProfilePicture(item.photos);
+
+    return (
+      <TouchableOpacity
+        style={styles.matchItem}
+        onPress={() => handleViewProfile(item.id)}
+      >
+        {photo ? (
+          <Image
+            source={{ uri: getImageUrl(photo, "thumbnail", item.id) }}
+            style={styles.image}
+          />
+        ) : (
+          <View style={[styles.image, styles.placeholder]}>
+            <Text style={styles.placeholderText}>No Photo</Text>
+          </View>
+        )}
+        <View style={styles.overlay}>
+          <Text style={styles.name}>{item.user.firstName}</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
+  const loadMore = () => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  };
+
   return (
-    <HStack space="xs" className="p-1 ml-3">
-      <Avatar size="xs" className="bg-gray-500 rounded">
-        <Icon as={Command} className="text-typography-0" />
-      </Avatar>
-      <Avatar size="xs" className="bg-gray-500 rounded">
-        <AvatarFallbackText>N</AvatarFallbackText>
-      </Avatar>
-    </HStack>
+    <SafeAreaView className="flex-1 bg-white dark:bg-gray-800">
+      <LinearGradient colors={bgGradient} style={styles.background} />
+
+      {isLoading ? (
+        <ActivityIndicator size="large" color="#fff" />
+      ) : isError ? (
+        <View style={styles.emptyContainer}>
+          <Heading>Error loading users.</Heading>
+        </View>
+      ) : flatData.length === 0 ? (
+        <View style={styles.emptyContainer}>
+          <Heading>No users found.</Heading>
+        </View>
+      ) : (
+        <FlatList
+          data={flatData}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={renderItem}
+          numColumns={2}
+          columnWrapperStyle={styles.columnWrapper}
+          onEndReached={loadMore}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={
+            isFetchingNextPage ? (
+              <ActivityIndicator size="small" color="#fff" />
+            ) : null
+          }
+        />
+      )}
+
+      <StatusBar style="auto" />
+    </SafeAreaView>
   );
-}
+};
 
 export default Likes;

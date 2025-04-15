@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { useUser } from "@/contexts/UserContext";
-import { getUsers } from "@/api/dao_users";
+import { getMockUsers } from "@/api/dao_users";
 import { User } from "@/types/responses/User";
 import Container from "@/components/common/Container";
 
@@ -26,7 +26,7 @@ export default function LoginScreen() {
   /** This query key is not in queryKeys.ts because it's just for testing purposes */
   const { data: users = [], isLoading } = useQuery<User[]>({
     queryKey: ["users"],
-    queryFn: getUsers,
+    queryFn: getMockUsers,
   });
 
   const handleLogin = async (user: User) => {
@@ -102,15 +102,17 @@ export default function LoginScreen() {
 
         {Platform.OS === "android" && isAndroidPickerVisible && (
           <VStack className="w-full px-4">
-            {users.map((user) => (
-              <Pressable
-                key={user.id}
-                className="py-3 border-b border-gray-200"
-                onPress={() => selectUserAndroid(user)}
-              >
-                <Text>{user.email}</Text>
-              </Pressable>
-            ))}
+            {users &&
+              users.length > 0 &&
+              users.map((user) => (
+                <Pressable
+                  key={user.id}
+                  className="py-3 border-b border-gray-200"
+                  onPress={() => selectUserAndroid(user)}
+                >
+                  <Text>{user.email}</Text>
+                </Pressable>
+              ))}
             <Button onPress={() => setAndroidPickerVisible(false)}>
               <ButtonText>Cancel</ButtonText>
             </Button>
