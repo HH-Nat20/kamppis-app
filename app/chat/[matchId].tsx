@@ -91,9 +91,8 @@ export default function ChatScreen() {
       if (!token) {
         console.warn("No token found");
         return;
-      } else {
-        setToken(token);
       }
+      setToken(token);
     };
     fetchToken();
 
@@ -138,36 +137,47 @@ export default function ChatScreen() {
 
   useEffect(() => {
     if (!matchId || !you?.email) return;
+    const init = async () => {
+      const storedToken = await AsyncStorage.getItem("jwtToken");
+      if (!storedToken) {
+        console.warn("No token found");
+        return;
+      }
+      console.log("Connecting to WebSocket with token:", storedToken);
 
-    const client = new Stomp.Client({
-      brokerURL: "wss://kamppis.hellmanstudios.fi/ws",
-      forceBinaryWSFrames: true,
-      appendMissingNULLonIncoming: true,
-      onConnect: () => {
-        client.subscribe(
-          `/user/matches/${matchId}/messages`,
-          (message: IMessage) => {
-            const dto: MessageDTO = JSON.parse(message.body);
-            setMessages((prev) =>
-              prev.find((m) => m._id === dto.id)
-                ? prev
-                : [...prev, mapMessageDTOToChatMessage(dto)]
-            );
-          },
-          { email: you.email, Authorization: `Bearer ${token}` }
-        );
-      },
-    });
+      const client = new Stomp.Client({
+        brokerURL: `wss://kamppis.hellmanstudios.fi/ws?token=${storedToken}`, // IMPORTANT: token is ALSO passed in the URL to be fetched before the header can be accessed
+        forceBinaryWSFrames: true,
+        appendMissingNULLonIncoming: true,
+        onConnect: () => {
+          client.subscribe(
+            `/user/matches/${matchId}/messages`,
+            (message: IMessage) => {
+              const dto: MessageDTO = JSON.parse(message.body);
+              setMessages((prev) =>
+                prev.find((m) => m._id === dto.id)
+                  ? prev
+                  : [...prev, mapMessageDTOToChatMessage(dto)]
+              );
+            },
+            { email: you.email, Authorization: `Bearer ${storedToken}` }
+          );
+        },
+      });
 
-    client.activate();
-    setStompClient(client);
+      client.activate();
+      setStompClient(client);
 
-    return () => {
-      client.deactivate();
+      return () => {
+        client.deactivate();
+      };
     };
+    init();
   }, [matchId, you?.email]);
 
   const onSendMessage = (text: string) => {
+    console.log("Sending message with token:", token);
+
     if (stompClient?.connected && text) {
       stompClient.publish({
         destination: `/app/matches/${matchId}/messages`,
@@ -205,7 +215,7 @@ export default function ChatScreen() {
           return [...prevMessages, chatMessage]; // Add new message
         });
       },
-      { email: you?.email || "" } // Add user email to headers
+      { email: you?.email || "", Authorization: `Bearer ${token}` } // Add user email to headers
     );
   };
 
