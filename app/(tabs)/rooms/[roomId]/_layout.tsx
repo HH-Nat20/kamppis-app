@@ -12,6 +12,7 @@ import { getRoomProfileQueryOptions } from "@/api/queries/roomQueries";
 
 import RoomScreen from ".";
 import Photos from "./photos";
+import Likes from "./likes";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -46,7 +47,7 @@ export default function App() {
       >
         <Tab.Screen name="Room Details" component={() => <RoomScreen />} />
         <Tab.Screen name="Photos" component={() => <Photos />} />
-        <Tab.Screen name="Likes" component={() => <View />} />
+        <Tab.Screen name="Likes" component={() => <Likes />} />
       </Tab.Navigator>
     </RoomsDrawerLayout>
   );

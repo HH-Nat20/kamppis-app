@@ -1,25 +1,25 @@
 import React, { useLayoutEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { Button } from "@/components/ui/button";
+import { View, Text } from "react-native";
+import { Button, ButtonText } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 import { Card } from "@/components/ui/card";
 import { useNavigation, router } from "expo-router";
 
-import { useRoomsDrawer } from "@/contexts/RoomsDrawerContext";
 import { useUser } from "@/contexts/UserContext";
 import RoomsDrawerLayout from "@/components/custom/RoomsDrawerLayout";
 
 import Container from "@/components/common/Container";
-import { renderTag } from "@/components/common/TagArea";
+import { renderTag, tagToHumanReadable } from "@/components/common/TagArea";
 import { renderTagBgColor } from "@/assets/styles/colors";
 
 import { getFlatQueryOptions } from "@/api/queries/flatQueries";
 import { useQuery } from "@tanstack/react-query";
 
+import Tooltip from "rn-tooltip";
+
 import styles from "@/assets/styles/styles";
 
 const RoomsScreen: React.FC = () => {
-  const { isOpen, closeDrawer } = useRoomsDrawer();
   const { user } = useUser();
   const navigation = useNavigation();
 
@@ -48,15 +48,20 @@ const RoomsScreen: React.FC = () => {
             <Text className="text-gray-500">{flat?.location}</Text>
             <View style={styles.tagArea}>
               {flat?.flatUtilities?.map((tag) => (
-                <Text
+                <Tooltip
                   key={tag}
-                  style={{
-                    ...styles.tag,
-                    backgroundColor: renderTagBgColor(tag),
-                  }}
+                  actionType="press"
+                  popover={<Text>{tagToHumanReadable(tag)}</Text>}
                 >
-                  {renderTag(tag)}
-                </Text>
+                  <Text
+                    style={{
+                      ...styles.tag,
+                      backgroundColor: renderTagBgColor(tag),
+                    }}
+                  >
+                    {renderTag(tag)}
+                  </Text>
+                </Tooltip>
               ))}
             </View>
             <Text
@@ -77,9 +82,9 @@ const RoomsScreen: React.FC = () => {
                     router.push(`/rooms/${room.id}`);
                   }}
                 >
-                  <Text className="text-white dark:text-white">
+                  <ButtonText className="text-white dark:text-white">
                     {room.name ?? "Room " + (index + 1)}
-                  </Text>
+                  </ButtonText>
                 </Button>
               ))}
             </Card>

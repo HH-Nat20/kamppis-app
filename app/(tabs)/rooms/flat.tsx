@@ -42,8 +42,6 @@ const FlatScreenContent = () => {
           <VStack space="xl">
             <NameSection control={control} errors={errors} />
             <Divider />
-            <DescriptionSection control={control} errors={errors} />
-            <Divider />
             <LocationSection control={control} errors={errors} />
             <Divider />
             <TotalRoommatesSection control={control} errors={errors} />
@@ -51,6 +49,8 @@ const FlatScreenContent = () => {
             <PetHouseholdSection control={control} errors={errors} />
             <Divider />
             <FlatUtilitiesSection control={control} errors={errors} />
+            <Divider />
+            <DescriptionSection control={control} errors={errors} />
           </VStack>
           <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }} />
         </ScrollView>
