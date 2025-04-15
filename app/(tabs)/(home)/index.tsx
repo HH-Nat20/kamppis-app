@@ -19,13 +19,18 @@ import { Heading } from "@/components/ui/heading";
 import * as Linking from "expo-linking";
 import GitHubAuthButton from "@/components/common/GitHubAuthButton";
 
-import { Link, RelativePathString, router, useLocalSearchParams } from "expo-router";
-import TestGitHubCodeButton from "@/components/common/TestGitHubCodeButton";
+import {
+  Link,
+  RelativePathString,
+  router,
+  useLocalSearchParams,
+} from "expo-router";
+import LoginWithGitHubButton from "@/components/common/LoginWithGitHubButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from "react-native-toast-message";
 
 const HomeScreen = () => {
-  const { user } = useUser();
+  const { user, changeUser } = useUser();
 
   const url = Linking.useURL();
 
@@ -76,7 +81,7 @@ const HomeScreen = () => {
     });
   };
 
-const { signupSuccess } = useLocalSearchParams();
+  const { signupSuccess } = useLocalSearchParams();
 
   useEffect(() => {
     if (signupSuccess) {
@@ -129,7 +134,7 @@ const { signupSuccess } = useLocalSearchParams();
           )}
         </VStack>
         <Button onPress={handleOpenLogin} className="mt-6">
-          <ButtonText>Login as different user</ButtonText>
+          <ButtonText>Login as a mock user</ButtonText>
         </Button>
         {/** withAnchor is necessary for the swiper to still work after using this link, */}
         {/** if used before the swiper is loaded */}
@@ -138,7 +143,7 @@ const { signupSuccess } = useLocalSearchParams();
         </Link>
         <TestJWTButton />
         <GitHubAuthButton onCodeReceived={handleCodeReceived} />
-        <TestGitHubCodeButton code={authCode} />
+        <LoginWithGitHubButton code={authCode} changeUser={changeUser}/>
 
         <Button
           onPress={() =>

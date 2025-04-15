@@ -76,9 +76,14 @@ export default function SignUpScreen() {
           responseBody?.error || "Unknown error occurred during signup.";
         throw new Error(errorMessage);
       }
+
+      const token = responseBody.token;
+      AsyncStorage.setItem("jwtToken", token);
+      const userId = responseBody.userId;
+
       router.push({
         pathname: "/",
-        params: { signupSuccess: 1 }, // Pass success message to home screen
+        params: { signupSuccess: 1, userId: userId }, // Pass success message to home screen
       });
     } catch (error: any) {
       console.error("Signup error:", error.message);

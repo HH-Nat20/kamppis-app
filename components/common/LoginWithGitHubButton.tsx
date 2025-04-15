@@ -1,11 +1,14 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import React from "react";
 import { Button } from "react-native";
 import Toast from "react-native-toast-message";
 
-export default function TestGitHubCodeButton({
+export default function LoginWithGitHubButton({
   code,
+  changeUser,
 }: {
   code: string | null;
+  changeUser: (userId: number) => void;
 }) {
   // This button is used to test the GitHub code received from the OAuth flow.
   return (
@@ -36,6 +39,12 @@ export default function TestGitHubCodeButton({
             throw new Error(
               `${response.status}: ${JSON.stringify(response.body)}`
             );
+          const data = await response.json();
+          const token = data.token;
+          AsyncStorage.setItem("jwtToken", token);
+
+          const userId = data.userId;
+          changeUser(userId); // Update the user context with the new user ID
 
           Toast.show({
             type: "success",
