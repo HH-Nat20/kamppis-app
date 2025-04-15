@@ -10,10 +10,9 @@ export default function LoginWithGitHubButton({
   code: string | null;
   changeUser: (userId: number) => void;
 }) {
-  // This button is used to test the GitHub code received from the OAuth flow.
   return (
     <Button
-      title="Test GitHub Code"
+      title="Login with GitHub Code"
       onPress={async () => {
         if (!code) {
           console.warn("No code found");
