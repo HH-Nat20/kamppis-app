@@ -43,7 +43,7 @@ const MatchesScreen = () => {
   const handleOpenChat = (matchId: number, users: User[]) => {
     console.log(
       "Opening chat with users:",
-      users.map((user) => user.id).join(", ")
+      users?.map((user) => user.id).join(", ")
     );
     router.push({
       pathname: "/chat/[matchId]",
@@ -109,7 +109,7 @@ const MatchesScreen = () => {
         )}
         <View style={styles.overlay}>
           <Text style={styles.name}>
-            {item.users.map((user: User) => user.firstName).join(", ")}
+            {item.users?.map((user: User) => user.firstName).join(", ")}
           </Text>
         </View>
       </TouchableOpacity>
