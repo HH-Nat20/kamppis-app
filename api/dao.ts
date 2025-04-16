@@ -7,6 +7,7 @@ import * as dao_images from "./dao_images";
 import * as dao_preferences from "./dao_preferences";
 import * as dao_flats from "./dao_flats";
 import * as dao_rooms from "./dao_rooms";
+import * as dao_misc from "./dao_misc";
 
 const dao = {
   ...dao_users,
@@ -18,6 +19,7 @@ const dao = {
   ...dao_preferences,
   ...dao_flats,
   ...dao_rooms,
+  ...dao_misc,
 };
 
 export default dao;

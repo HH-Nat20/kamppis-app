@@ -24,6 +24,7 @@ import {
   UserCog,
   Settings,
   BriefcaseBusiness,
+  MessageCircleWarning,
   Images,
 } from "lucide-react-native";
 import { useNavigation, router, RelativePathString } from "expo-router";
@@ -60,6 +61,11 @@ const drawerItems: ProfileStackNavItem[] = [
     icon: BriefcaseBusiness,
     label: "Privacy Settings",
     href: "/profile/privacy" as RelativePathString,
+  },
+  {
+    icon: MessageCircleWarning,
+    label: "Feedback",
+    href: "/profile/feedback" as RelativePathString,
   },
 ];
 
