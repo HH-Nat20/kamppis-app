@@ -15,7 +15,7 @@ import Carousel, {
 } from "react-native-reanimated-carousel";
 
 import Swiper from "react-native-deck-swiper";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import styles from "@/assets/styles/styles";
 import colors from "@/assets/styles/colors";
@@ -46,6 +46,8 @@ const width = Dimensions.get("window").width;
 
 export default function DetailsScreen() {
   const navigation = useNavigation();
+
+  const queryClient = useQueryClient();
 
   const { profileId } = useLocalSearchParams();
   const { user } = useUser();
@@ -106,6 +108,9 @@ export default function DetailsScreen() {
           type: "success",
           text1: "New Match!",
           text2: "It's a match! 🎉",
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["matches", user.userProfile.id],
         });
       } else {
         Toast.show({
