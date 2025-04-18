@@ -65,3 +65,38 @@ export const useUpdateRoomProfileMutation = (
     },
   });
 };
+
+export const useDeleteRoomProfileMutation = (
+  roomProfileId: number | undefined
+) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async () => {
+      if (!roomProfileId) {
+        console.error("Room Profile ID is required to delete a room profile.");
+        return Promise.reject(new Error("Missing roomProfileId"));
+      }
+      return dao.removeRoomProfile(roomProfileId);
+    },
+    onSuccess: () => {
+      if (roomProfileId) {
+        queryClient.removeQueries({
+          queryKey: queryKeys.roomProfile(roomProfileId),
+        });
+      }
+
+      queryClient.invalidateQueries({
+        queryKey: ["user"],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ["roomProfile"],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ["flat"],
+      });
+    },
+  });
+};
