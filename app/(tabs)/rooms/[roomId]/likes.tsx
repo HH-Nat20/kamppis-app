@@ -21,7 +21,7 @@ import { bgGradient } from "@/assets/styles/colors";
 
 import { UserProfile } from "@/types/responses/UserProfile";
 import dao from "@/api/dao";
-import { router, useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams, Link } from "expo-router";
 
 import { SwiperResponse } from "@/types/responses/Swiper";
 
@@ -103,11 +103,23 @@ const Likes = () => {
         <ActivityIndicator size="large" color="#fff" />
       ) : isError ? (
         <View style={styles.emptyContainer}>
-          <Heading>Error loading users.</Heading>
+          <Heading>
+            No likes yet.{" "}
+            <Link className="text-info-500" href={{ pathname: "/swiper" }}>
+              Swipe on users
+            </Link>{" "}
+            to get more visibility!
+          </Heading>
         </View>
       ) : flatData.length === 0 ? (
         <View style={styles.emptyContainer}>
-          <Heading>No users found.</Heading>
+          <Heading>
+            No likes yet.{" "}
+            <Link className="text-info-500" href={{ pathname: "/swiper" }}>
+              Swipe on users
+            </Link>{" "}
+            to get more visibility!
+          </Heading>
         </View>
       ) : (
         <FlatList
