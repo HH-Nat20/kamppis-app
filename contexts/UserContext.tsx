@@ -8,11 +8,13 @@ import React, {
 import { useQuery } from "@tanstack/react-query";
 import { User } from "@/types/responses/User";
 import { getUserQueryOptions } from "@/api/queries/userQueries";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type UserContextType = {
   user: User | undefined;
   changeUser: (userId: number) => void;
   refreshUser: () => void;
+  forgetUser: () => void;
 };
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -39,10 +41,17 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     refetch();
   };
 
+  const forgetUser = () => {
+    console.log("Forgetting user", userId);
+    setUserId(0);
+    AsyncStorage.removeItem("jwtToken");
+  };
+
   const contextValue = {
     user,
     changeUser,
     refreshUser,
+    forgetUser,
   };
 
   return (

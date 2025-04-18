@@ -76,7 +76,7 @@ const ProfileDrawerLayout = ({ children }: { children: React.ReactNode }) => {
 const DrawerLayoutContent = ({ children }: { children: React.ReactNode }) => {
   const { isOpen, openDrawer, closeDrawer } = useProfileDrawer();
   const navigation = useNavigation();
-  const { user } = useUser();
+  const { user, forgetUser } = useUser();
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -168,6 +168,11 @@ const DrawerLayoutContent = ({ children }: { children: React.ReactNode }) => {
               variant="outline"
               action="secondary"
               className="w-full gap-2"
+              onPress={() => {
+                closeDrawer();
+                forgetUser();
+                router.push("/login");
+              }}
             >
               <ButtonText>Logout</ButtonText>
               <ButtonIcon as={LogOut} />
