@@ -103,8 +103,13 @@ const RoomsScreen: React.FC = () => {
                   Create a Flat
                 </Text>
               </Button>
-              <Button className="mb-2 bg-info-600">
-                <Text className="text-white dark:text-white">Join Flat</Text>
+              <Button
+                className="mb-2 bg-info-600"
+                onPress={() => {
+                  router.push("/joinModal");
+                }}
+              >
+                <Text className="text-white dark:text-white">Join a Flat</Text>
               </Button>
             </Card>
           </View>

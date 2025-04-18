@@ -61,7 +61,7 @@ export const RoomProfileDetailsCard = ({
         <VStack className="flex-row gap-2 pb-2">
           <Heading size="xs">Rooms Available</Heading>
           <Text size="xs">
-            {profile.totalRoommates - profile.userIds!.length}
+            {profile.flat.totalRoommates - profile.userIds!.length}
           </Text>
         </VStack>
       </Box>

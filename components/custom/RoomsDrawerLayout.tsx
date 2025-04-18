@@ -23,6 +23,7 @@ import {
   BriefcaseBusiness,
   Images,
   BedDouble,
+  HousePlus,
   AlignJustify,
   Home,
   Plus,
@@ -40,9 +41,9 @@ const drawerItems: ProfileStackNavItem[] = [
     href: "/rooms/flat" as RelativePathString,
   },
   {
-    icon: User,
-    label: "Residents",
-    href: "/rooms/residents" as RelativePathString,
+    icon: HousePlus,
+    label: "Join Room",
+    href: "/joinModal" as RelativePathString,
   },
 ];
 

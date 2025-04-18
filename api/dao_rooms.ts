@@ -76,7 +76,10 @@ export const getRoomProfileSwipers = async (
 export const getRoomProfileInvite = async (
   roomProfileId: number
 ): Promise<InviteResponse> => {
-  const response = await get(`/invites/generate-invitetoken/${roomProfileId}`);
+  const response = await create(
+    `invites/generate-invitetoken/${roomProfileId}`,
+    {}
+  );
   const inviteResponse: InviteResponse = await response.json();
   return inviteResponse;
 };
@@ -84,7 +87,7 @@ export const getRoomProfileInvite = async (
 export const joinRoomProfile = async (
   inviteToken: string
 ): Promise<InviteResponse> => {
-  const response = await get(`/invites/join/${inviteToken}`);
+  const response = await update(`invites/join/${inviteToken}`, {});
   const joinResponse: InviteResponse = await response.json();
   return joinResponse;
 };

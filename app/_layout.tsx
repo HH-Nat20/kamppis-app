@@ -64,6 +64,14 @@ export default function RootLayout() {
                       }}
                     />
                     <Stack.Screen
+                      name="joinModal"
+                      options={{
+                        presentation: "transparentModal",
+                        animation: "slide_from_bottom",
+                        headerShown: false,
+                      }}
+                    />
+                    <Stack.Screen
                       name="uploadModal"
                       options={{
                         presentation: "transparentModal",

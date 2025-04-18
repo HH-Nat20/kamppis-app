@@ -13,4 +13,5 @@ export interface RoomProfile extends Profile {
   userIds?: number[];
   users: ShortUser[];
   status?: "ACTIVE" | "INACTIVE";
+  totalRoommates?: number;
 }
