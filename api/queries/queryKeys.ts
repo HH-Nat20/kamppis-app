@@ -8,6 +8,7 @@ export const queryKeys = {
   roommates: (userIds: number[]) => ["roommates", userIds] as const,
   roomProfile: (roomProfileId: number) =>
     ["roomProfile", roomProfileId] as const,
+  invite: (roomProfileId: number) => ["invite", roomProfileId] as const,
   flat: (flatId: number) => ["flat", flatId] as const,
   serverHealth: ["serverHealth"] as const,
   databaseHealth: ["databaseHealth"] as const,

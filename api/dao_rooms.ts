@@ -6,6 +6,8 @@ import { RoomProfileForm } from "@/validation/roomFormSchema";
 
 import { SwiperResponse } from "@/types/responses/Swiper";
 
+import { InviteResponse } from "@/types/responses/Invite";
+
 const ENDPOINT = "room-profiles";
 
 export const getRoomProfiles = async (): Promise<RoomProfile[]> => {
@@ -69,4 +71,20 @@ export const getRoomProfileSwipers = async (
   const last: boolean = data.last;
 
   return { swipers, totalElements, totalPages, last };
+};
+
+export const getRoomProfileInvite = async (
+  roomProfileId: number
+): Promise<InviteResponse> => {
+  const response = await get(`/invites/generate-invitetoken/${roomProfileId}`);
+  const inviteResponse: InviteResponse = await response.json();
+  return inviteResponse;
+};
+
+export const joinRoomProfile = async (
+  inviteToken: string
+): Promise<InviteResponse> => {
+  const response = await get(`/invites/join/${inviteToken}`);
+  const joinResponse: InviteResponse = await response.json();
+  return joinResponse;
 };
