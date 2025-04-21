@@ -30,7 +30,7 @@
 ## Mikä _Kämppis_?
 _Kämppis_ on mobiilisovellus, joka yhdistää kämppiksiä etsivät ihmiset toistensa kanssa.
 
-Tämä repositorio sisältää sovelluksen front-endin. Back-endin repositorion löydät täältä:<br>
+Tämä repositorio sisältää projektin mobiilisovelluksen. Back-endin repositorion löydät täältä:<br>
 [![Back-end repository][back-end-repository-logo]][back-end-repository-url]
 
 Lisätietoa koko projektista löydät täältä: <br>
