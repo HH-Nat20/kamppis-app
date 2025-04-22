@@ -70,6 +70,7 @@ const getImageUrl = (
 };
 
 const formatCity = (city: string) => {
+  if (!city || city.length < 0) return "Unknown City";
   return city.charAt(0).toUpperCase() + city.slice(1).toLowerCase();
 };
 

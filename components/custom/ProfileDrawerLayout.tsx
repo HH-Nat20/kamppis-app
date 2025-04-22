@@ -88,7 +88,9 @@ const DrawerLayoutContent = ({ children }: { children: React.ReactNode }) => {
                 uri: getImageUrl(getProfilePicture(user?.userProfile?.photos)),
               }}
             />
-            <AvatarFallbackText>{user?.firstName.charAt(0)}</AvatarFallbackText>
+            <AvatarFallbackText>
+              {user?.firstName?.charAt(0)}
+            </AvatarFallbackText>
           </Avatar>
         </Pressable>
       ),

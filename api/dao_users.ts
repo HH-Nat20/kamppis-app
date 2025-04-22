@@ -1,7 +1,7 @@
 import { User } from "@/types/responses/User";
 import { UserForm } from "@/validation/userFormSchema";
 
-import { get, create, update, remove } from "./request";
+import { get, getWithoutAuth, create, update, remove } from "./request";
 
 const ENDPOINT = "users";
 
@@ -35,7 +35,7 @@ export const getUsers = async () => {
 };
 
 export const getMockUsers = async () => {
-  const response = await get(`${ENDPOINT}/mock`); // Mock users endpoint for testing
+  const response = await getWithoutAuth(`${ENDPOINT}/mock`); // Mock users endpoint for testing
   const users: User[] = await response.json();
   return users;
 };

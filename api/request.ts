@@ -26,7 +26,8 @@ const getSessionToken = async (): Promise<string | null> => {
 const sendRequest = async (
   url: string,
   method: "GET" | "POST" | "PUT" | "DELETE",
-  body?: object
+  body?: object,
+  noAuth: boolean = false
 ) => {
   const token = await getSessionToken();
 
@@ -41,7 +42,7 @@ const sendRequest = async (
 
   const options: RequestInit = {
     method,
-    headers,
+    headers: noAuth ? {} : headers,
     body: body ? JSON.stringify(body) : undefined,
   };
 
@@ -89,6 +90,9 @@ export const uploadRequest = async (url: string, formData: FormData) => {
 
 // CRUD functions
 export const get = async (url: string) => sendRequest(url, "GET");
+
+export const getWithoutAuth = async (url: string) =>
+  sendRequest(url, "GET", undefined, true);
 
 export const create = async (url: string, newObject: object) =>
   sendRequest(url, "POST", newObject);
