@@ -30,6 +30,9 @@
 ## Mikä _Kämppis_?
 _Kämppis_ on mobiilisovellus, joka yhdistää kämppiksiä etsivät ihmiset toistensa kanssa.
 
+Kaikki projektin front-endin avoimet issuet sekä tunnetut bugit löydät täältä: <br>
+[![Front-end issues][front-end-issues-logo]][front-end-issues-url]
+
 Tämä repositorio sisältää projektin mobiilisovelluksen. Back-endin repositorion löydät täältä:<br>
 [![Back-end repository][back-end-repository-logo]][back-end-repository-url]
 
@@ -133,6 +136,8 @@ Kehittäjien yhteystiedot löydät GitHub-profiileista.
 [back-end-repository-url]: https://github.com/HH-Nat20/kamppis-server
 [project-repository-logo]: https://img.shields.io/badge/Project%20Repository-000000?style=for-the-badge
 [project-repository-url]: https://github.com/HH-Nat20
+[front-end-issues-logo]: https://img.shields.io/badge/FrontEnd%20Issues-000000?style=for-the-badge
+[front-end-issues-url]: https://github.com/HH-Nat20/kamppis-app/issues
 [typescript-logo]: https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white
 [typescript-url]: https://www.typescriptlang.org/
 [react-native-logo]: https://img.shields.io/badge/react_native-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB
