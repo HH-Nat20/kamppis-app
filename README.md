@@ -127,17 +127,23 @@ Sovelluksen ovat toteuttaneet
 Kehittäjien yhteystiedot löydät GitHub-profiileista.
 <p align="right">(<a href="#readme-alku">Takaisin alkuun</a>)</p>
 
-   <!-- LINKIT JA KUVAT -->
+<!-- LINKIT JA KUVAT -->
+
+<!-- CONTRIBUTORS JA ISSUES -->
 [contributors-shield]: https://img.shields.io/github/contributors/HH-Nat20/kamppis-app?style=for-the-badge
-[contributors-url]: https://img.shields.io/github/contributors/HH-Nat20/kamppis-app?style=for-the-badge
-[issues-shield]: https://img.shields.io/github/issues/HH-Nat20/kamppis-server/front-end?style=for-the-badge
-[issues-url]: https://img.shields.io/github/issues/HH-Nat20/kamppis-server/front-end
+[contributors-url]: https://img.shields.io/github/contributors/HH-Nat20/kamppis-app
+[issues-shield]: https://img.shields.io/github/issues/HH-Nat20/kamppis-app?style=for-the-badge
+[issues-url]: https://img.shields.io/github/issues/HH-Nat20/kamppis-app
+
+<!-- PROJEKTI JA REPOSITORIOT -->
 [back-end-repository-logo]: https://img.shields.io/badge/BackEnd%20Repository-000000?style=for-the-badge
 [back-end-repository-url]: https://github.com/HH-Nat20/kamppis-server
 [project-repository-logo]: https://img.shields.io/badge/Project%20Repository-000000?style=for-the-badge
 [project-repository-url]: https://github.com/HH-Nat20
 [front-end-issues-logo]: https://img.shields.io/badge/FrontEnd%20Issues-000000?style=for-the-badge
 [front-end-issues-url]: https://github.com/HH-Nat20/kamppis-app/issues
+
+<!-- TEKNOLOGIAT JA TYÖKALUT-->
 [typescript-logo]: https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white
 [typescript-url]: https://www.typescriptlang.org/
 [react-native-logo]: https://img.shields.io/badge/react_native-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB
