@@ -55,6 +55,38 @@ _Kämppiksen_ mobiilisovellus on rakennettu käyttämällä seuraavia teknologio
 [![Bruno][bruno-logo]][bruno-url]
 [![Visual Studio Code][vs-code-logo]][vs-code-url]
 
+<details>
+<summary>Lisäksi käytetyt NPM-kirjastot ovat (klikkaa)</summary>
+<ul>
+   <li><a href="https://www.npmjs.com/package/jest-expo">jest-expo</a></li>
+   <li><a href="https://www.npmjs.com/package/@codsod/react-native-chat">codsod/react-native-chat</a></li>
+   <li><a href="https://www.npmjs.com/package/@gluestack-style/react">gluestack-style/react</a></li>
+   <li><a href="https://www.npmjs.com/package/@gluestack-ui/themed">gluestack-ui/themed</a></li>
+   <li><a href="https://www.npmjs.com/package/@hookform/resolvers">hookform/resolvers</a></li>
+   <li><a href="https://www.npmjs.com/package/@legendapp/motion">legendap/motion</a></li>
+   <li><a href="https://www.npmjs.com/package/@shopify/flash-list">shopify/flash-list</a></li>
+   <li><a href="https://www.npmjs.com/package/@stomp/stompjs">stomp/stompjs</a></li>
+   <li><a href="https://www.npmjs.com/package/@tanstack/react-query">tanstack/react-query</a></li>
+   <li><a href="https://www.npmjs.com/package/@unitools/image">unitools/image</a></li>
+   <li><a href="https://www.npmjs.com/package/@unitools/router">unitools/router</a></li>
+   <li><a href="https://www.npmjs.com/package/axios">axios</a></li>
+   <li><a href="https://www.npmjs.com/package/babel-plugin-module-resolver">babel-plugin-module-resolver</a></li>
+   <li><a href="https://www.npmjs.com/package/lucide-react-native">lucide-react-native</a></li>
+   <li><a href="https://www.npmjs.com/package/nativewind">nativewind</a></li>
+   <li><a href="https://www.npmjs.com/package/rn-tooltip">rn-tooltip</a></li>
+   <li><a href="https://www.npmjs.com/package/tailwindcss">tailwindcss</a></li>
+   <li><a href="https://www.npmjs.com/package/yup">yup</a></li>
+   <li><a href="https://www.npmjs.com/package/zod">zod</a></li>
+   <li><a href="https://www.npmjs.com/package/expo-clipboard">expo-clipboard</a></li>
+   <li><a href="https://www.npmjs.com/package/@babel/core">babel/core</a></li>
+   <li><a href="https://www.npmjs.com/package/jest">jest</a></li>
+   <li><a href="https://www.npmjs.com/package/jscodeshift">jscodeshift</a></li>
+   <li><a href="https://www.npmjs.com/package/patch-package">patch-package</a></li>
+   <li><a href="https://www.npmjs.com/package/postinstall">postinstall</a></li>
+   <li><a href="https://www.npmjs.com/package/react-test-renderer">react-test-renderer</a></li>
+</ul>
+</details>
+
 <p align="right">(<a href="#readme-alku">Takaisin alkuun</a>)</p>
 
 ## Asennus
