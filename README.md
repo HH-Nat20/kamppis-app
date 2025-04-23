@@ -52,6 +52,7 @@ _Kämppiksen_ mobiilisovellus on rakennettu käyttämällä seuraavia teknologio
 [![GitHub][github-logo]][github-url]
 [![Docker][docker-logo]][docker-url]
 [![Expo Go][expo-logo]][expo-url]
+[![Android Studio][android-studio-logo]][android-studio-url]
 [![Bruno][bruno-logo]][bruno-url]
 [![Visual Studio Code][vs-code-logo]][vs-code-url]
 
@@ -193,6 +194,8 @@ Kehittäjien yhteystiedot löydät GitHub-profiileista.
 [docker-url]: https://www.docker.com/
 [expo-logo]: https://img.shields.io/badge/Expo-000020?style=for-the-badge&logo=expo&logoColor=fff
 [expo-url]: https://expo.dev/go
+[android-studio-logo]: https://img.shields.io/badge/android%20studio-346ac1?style=for-the-badge&logo=android%20studio&logoColor=white
+[android-studio-url]: https://developer.android.com/studio
 [bruno-logo]: https://img.shields.io/badge/Bruno-FF6C37?style=for-the-badge&logo=Bruno&logoColor=white
 [bruno-url]: https://www.usebruno.com/
 [vs-code-logo]: https://custom-icon-badges.demolab.com/badge/Visual%20Studio%20Code-0078d7.svg?logo=vsc&logoColor=white&style=for-the-badge
