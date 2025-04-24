@@ -104,7 +104,7 @@ export default function ProfilePhotosScreen() {
     const profileId = user?.userProfile?.id;
     setShowActionsheet(false);
     router.push({
-      pathname: "/profile/upload",
+      pathname: "/uploadModal",
       params: { mode, profileId },
     });
   };
