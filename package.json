@@ -19,6 +19,7 @@
     "@codsod/react-native-chat": "^1.0.14",
     "@expo/html-elements": "^0.4.2",
     "@expo/ngrok": "^4.1.0",
+    "@expo/react-native-action-sheet": "^4.1.1",
     "@expo/vector-icons": "^14.0.2",
     "@gluestack-style/react": "^1.0.57",
     "@gluestack-ui/accordion": "^1.0.14",
@@ -72,6 +73,7 @@
     "expo-auth-session": "^6.0.3",
     "expo-blur": "~14.0.3",
     "expo-build-properties": "~0.13.2",
+    "expo-clipboard": "~7.0.1",
     "expo-constants": "~17.0.4",
     "expo-dev-client": "~5.0.17",
     "expo-font": "~13.0.3",
@@ -109,8 +111,7 @@
     "rn-tooltip": "^3.0.3",
     "tailwindcss": "^3.4.17",
     "yup": "^1.6.1",
-    "zod": "^3.24.2",
-    "expo-clipboard": "~7.0.1"
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

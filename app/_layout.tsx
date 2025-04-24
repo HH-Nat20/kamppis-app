@@ -16,6 +16,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import "@/global.css";
+import { ActionSheetProvider } from "@expo/react-native-action-sheet";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -43,45 +44,47 @@ export default function RootLayout() {
           <MatchableProfilesProvider>
             <MatchProvider>
               <SafeAreaProvider>
-                <GluestackUIProvider mode={"system"}>
-                  <Stack screenOptions={{ headerShown: false }}>
-                    <Stack.Screen name="(tabs)" />
-                    <Stack.Screen name="(auth)" options={{}} />
-                    <Stack.Screen
-                      name="flatModal"
-                      options={{
-                        presentation: "transparentModal",
-                        animation: "slide_from_bottom",
-                        headerShown: false,
-                      }}
-                    />
-                    <Stack.Screen
-                      name="roomModal"
-                      options={{
-                        presentation: "transparentModal",
-                        animation: "slide_from_left",
-                        headerShown: false,
-                      }}
-                    />
-                    <Stack.Screen
-                      name="joinModal"
-                      options={{
-                        presentation: "transparentModal",
-                        animation: "slide_from_bottom",
-                        headerShown: false,
-                      }}
-                    />
-                    <Stack.Screen
-                      name="uploadModal"
-                      options={{
-                        presentation: "transparentModal",
-                        animation: "slide_from_bottom",
-                        headerShown: false,
-                      }}
-                    />
-                  </Stack>
-                  <Toast />
-                </GluestackUIProvider>
+                <ActionSheetProvider>
+                  <GluestackUIProvider mode={"system"}>
+                    <Stack screenOptions={{ headerShown: false }}>
+                      <Stack.Screen name="(tabs)" />
+                      <Stack.Screen name="(auth)" options={{}} />
+                      <Stack.Screen
+                        name="flatModal"
+                        options={{
+                          presentation: "transparentModal",
+                          animation: "slide_from_bottom",
+                          headerShown: false,
+                        }}
+                      />
+                      <Stack.Screen
+                        name="roomModal"
+                        options={{
+                          presentation: "transparentModal",
+                          animation: "slide_from_left",
+                          headerShown: false,
+                        }}
+                      />
+                      <Stack.Screen
+                        name="joinModal"
+                        options={{
+                          presentation: "transparentModal",
+                          animation: "slide_from_bottom",
+                          headerShown: false,
+                        }}
+                      />
+                      <Stack.Screen
+                        name="uploadModal"
+                        options={{
+                          presentation: "transparentModal",
+                          animation: "slide_from_bottom",
+                          headerShown: false,
+                        }}
+                      />
+                    </Stack>
+                    <Toast />
+                  </GluestackUIProvider>
+                </ActionSheetProvider>
               </SafeAreaProvider>
             </MatchProvider>
           </MatchableProfilesProvider>

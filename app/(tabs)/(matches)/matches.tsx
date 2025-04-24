@@ -29,9 +29,15 @@ import { Heading } from "@/components/ui/heading";
 import { router } from "expo-router";
 import profile from "@/assets/styles/profile";
 
+import { useActionSheet } from "@expo/react-native-action-sheet";
+import { removeUserFromMatch } from "@/api/dao_matches";
+import Toast from "react-native-toast-message";
+
 const MatchesScreen = () => {
   const { matches } = useMatch();
   const { user } = useUser();
+
+  const { refreshMatches } = useMatch();
 
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -51,12 +57,62 @@ const MatchesScreen = () => {
     });
   };
 
+  const handleRemoveMatch = (matchId: number) => {
+    console.log("Removing match:", matchId, "for user:", user?.id);
+    removeUserFromMatch(matchId, user!.id).then((response) => {
+      if (response) {
+        console.log("Match removed successfully:", response);
+        refreshMatches();
+        Toast.show({
+          type: "success",
+          text1: "Match removed successfully!",
+        });
+      } else {
+        console.error("Error removing match:", response);
+        Toast.show({
+          type: "error",
+          text1: "Error removing match.",
+        });
+      }
+    });
+  };
+
   const handleViewProfile = (profileId: number) => {
     console.log("Viewing profile:", profileId);
     router.push({
       pathname: "/[profileId]",
       params: { profileId },
     });
+  };
+
+  const { showActionSheetWithOptions } = useActionSheet();
+
+  const handleLongPress = (matchId: number, id: number) => {
+    console.log("Long Pressed Match ID:", matchId);
+
+    const options = ["View Profile", "Remove Match", "Cancel"];
+    const destructiveButtonIndex = 1;
+    const cancelButtonIndex = 2;
+
+    showActionSheetWithOptions(
+      {
+        options,
+        cancelButtonIndex,
+        destructiveButtonIndex,
+      },
+      (selectedIndex) => {
+        switch (selectedIndex) {
+          case 0:
+            handleViewProfile(id);
+            break;
+          case 1:
+            handleRemoveMatch(matchId);
+            break;
+          case 2:
+          // Cancel
+        }
+      }
+    );
   };
 
   const renderItem = ({ item }: any) => {
@@ -70,7 +126,8 @@ const MatchesScreen = () => {
         style={styles.matchItem}
         onPress={() => handleOpenChat(item.matchId, item.users)}
         onLongPress={() =>
-          handleViewProfile(
+          handleLongPress(
+            item.matchId,
             item.users[0].roomProfiles[0]?.id ?? item.users[0].id
           )
         } // TODO: Fix this to show the user profile or room profile of the match
@@ -135,7 +192,9 @@ const MatchesScreen = () => {
           columnWrapperStyle={styles.columnWrapper}
         />
       )}
-
+      <View style={{ position: "absolute", bottom: 120, left: 10, right: 0 }}>
+        <Text style={styles.info}>Long press on match to see options!</Text>
+      </View>
       <StatusBar style="auto" />
     </SafeAreaView>
   );
