@@ -47,11 +47,11 @@ export default function App() {
           tabBarIndicatorStyle: { backgroundColor: "blue" },
         }}
       >
-        <Tab.Screen name="Room Details" component={() => <RoomScreen />} />
-        <Tab.Screen name="Photos" component={() => <Photos />} />
-        <Tab.Screen name="Likes" component={() => <Likes />} />
-        <Tab.Screen name="Roommates" component={() => <Residents />} />
-        <Tab.Screen name="Delete" component={() => <DeleteRoom />} />
+        <Tab.Screen name="Room Details" component={RoomScreen} />
+        <Tab.Screen name="Photos" component={Photos} />
+        <Tab.Screen name="Likes" component={Likes} />
+        <Tab.Screen name="Roommates" component={Residents} />
+        <Tab.Screen name="Delete" component={DeleteRoom} />
       </Tab.Navigator>
     </RoomsDrawerLayout>
   );

@@ -61,7 +61,7 @@ export const RoomFormProvider = ({
       reset({
         name: room.name,
         userIds: room.userIds,
-        flatId: room.flat.id,
+        flatId: room.flat?.id,
         rent: room.rent,
         isPrivateRoom: room.isPrivateRoom,
         furnished: room.furnished,
