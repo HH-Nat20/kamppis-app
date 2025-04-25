@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Image,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 
 import { Badge, BadgeIcon, BadgeText } from "@/components/ui/badge";
@@ -32,6 +33,7 @@ import profile from "@/assets/styles/profile";
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import { removeUserFromMatch } from "@/api/dao_matches";
 import Toast from "react-native-toast-message";
+import { postFeedback } from "@/api/dao_misc";
 
 const MatchesScreen = () => {
   const { matches } = useMatch();
@@ -85,14 +87,42 @@ const MatchesScreen = () => {
     });
   };
 
+  const handleReportAndRemoveMatch = (matchId: number) => {
+    console.log("Reporting and removing match:", matchId);
+    const reportMessage = `User ${user?.id} reported match ${matchId}`;
+    postFeedback(user!.id, reportMessage).then((response) => {
+      if (response) {
+        console.log("Match reported successfully:", response);
+        handleRemoveMatch(matchId);
+        Toast.show({
+          type: "success",
+          text1: "Match reported successfully!",
+        });
+      } else {
+        console.error("Error reporting match:", response);
+        Toast.show({
+          type: "error",
+          text1: "Error reporting match.",
+        });
+      }
+    });
+  };
+
+  const handleReportMatch = (matchId: number) => {
+    Alert.alert("Report Match", "Are you sure you want to report this match?", [
+      { text: "Cancel", style: "cancel" },
+      { text: "OK", onPress: () => handleReportAndRemoveMatch(matchId) },
+    ]);
+  };
+
   const { showActionSheetWithOptions } = useActionSheet();
 
   const handleLongPress = (matchId: number, id: number) => {
     console.log("Long Pressed Match ID:", matchId);
 
-    const options = ["View Profile", "Remove Match", "Cancel"];
-    const destructiveButtonIndex = 1;
-    const cancelButtonIndex = 2;
+    const options = ["View Profile", "Remove Match", "Report Match", "Cancel"];
+    const destructiveButtonIndex = [1, 2];
+    const cancelButtonIndex = 3;
 
     showActionSheetWithOptions(
       {
@@ -109,6 +139,9 @@ const MatchesScreen = () => {
             handleRemoveMatch(matchId);
             break;
           case 2:
+            handleReportMatch(matchId);
+            break;
+          case 3:
           // Cancel
         }
       }
