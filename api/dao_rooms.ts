@@ -42,10 +42,12 @@ export const updateRoomProfile = async (
   roomProfileId: number,
   updatedRoomProfile: RoomProfileForm
 ) => {
+  console.log("Updating room profile: ", updatedRoomProfile);
   const response = await update(
     `${ENDPOINT}/${roomProfileId}`,
     updatedRoomProfile
   );
+  console.log("Response: ", response);
   const roomProfile: RoomProfile = await response.json();
   return roomProfile;
 };

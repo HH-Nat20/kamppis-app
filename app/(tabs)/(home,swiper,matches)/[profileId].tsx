@@ -49,7 +49,7 @@ export default function DetailsScreen() {
 
   const queryClient = useQueryClient();
 
-  const { profileId } = useLocalSearchParams();
+  const { profileId, roomId } = useLocalSearchParams();
   const { user } = useUser();
 
   const ref = React.useRef<ICarouselInstance>(null);
@@ -84,7 +84,7 @@ export default function DetailsScreen() {
     if (!user || !profile) return;
 
     const swipeRequest = {
-      swipingProfileId: user.userProfile.id,
+      swipingProfileId: roomId ? Number(roomId) : user.userProfile.id,
       swipedProfileId: profile.id,
       isRightSwipe: true,
     };

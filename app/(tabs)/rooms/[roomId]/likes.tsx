@@ -58,7 +58,7 @@ const Likes = () => {
     console.log("Viewing profile:", profileId);
     router.push({
       pathname: "/[profileId]",
-      params: { profileId },
+      params: { profileId, roomId },
     });
   };
 
