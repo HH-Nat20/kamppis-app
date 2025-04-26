@@ -26,9 +26,10 @@ import ProfileDrawerLayout from "@/components/custom/ProfileDrawerLayout";
 import dao from "@/api/dao";
 
 import { router } from "expo-router";
-import * as Linking from "expo-linking";
 
 import Toast from "react-native-toast-message";
+
+import * as Clipboard from "expo-clipboard";
 
 const PrivacySettingsScreen = () => {
   const { user } = useUser();
@@ -48,31 +49,45 @@ const PrivacySettingsScreen = () => {
   const operations: Operation[] = [
     {
       id: 1,
-      name: "Change Password",
-      description: "Change your account password",
-      action: () => {
-        setShowPasswordModal(true);
+      name: "Copy of Data",
+      description: "View the data we have collected about you",
+      action: async () => {
+        if (user?.id) {
+          const userData = await dao.copyUserData(user.id);
+          console.log("User Data: ", userData);
+          if (!userData) {
+            Toast.show({
+              type: "error",
+              text1: "Error",
+              text2: "There was an error copying your data.",
+            });
+            return;
+          } else {
+            Clipboard.setStringAsync(JSON.stringify(userData)).then(() => {
+              Toast.show({
+                type: "success",
+                text1: "Data Copied",
+                text2: "Your data has been copied to the clipboard.",
+              });
+            });
+          }
+        }
       },
     },
+    // {
+    //   id: 2,
+    //   name: "Change Password",
+    //   description: "Change your account password",
+    //   action: () => {
+    //     setShowPasswordModal(true);
+    //   },
+    // },
     {
-      id: 2,
+      id: 3,
       name: "Delete Account",
       description: "Permanently delete your account",
       action: () => {
         setShowDeleteConfirmation(true);
-      },
-    },
-    {
-      id: 3,
-      name: "Copy of Data",
-      description: "View the data we have collected about you",
-      action: () => {
-        if (user?.id) {
-          const url = `https://kamppis.hellmanstudios.fi/api/users/${user.id}/copy`;
-          Linking.openURL(url).catch((err) =>
-            console.error("An error occurred", err)
-          );
-        }
       },
     },
   ];
@@ -113,9 +128,34 @@ const PrivacySettingsScreen = () => {
             keyExtractor={(item: Operation) => item.id.toString()}
             renderItem={({ item }: { item: Operation }) => (
               <Pressable onPress={item.action}>
-                <View className="p-4 border-b border-gray-200">
-                  <Text className="text-lg font-semibold">{item.name}</Text>
-                  <Text className="text-gray-500">{item.description}</Text>
+                <View
+                  className={`p-4 border ${
+                    item.name === "Delete Account"
+                      ? "border-red-200 bg-red-50"
+                      : "border-gray-200"
+                  }`}
+                >
+                  <View className="flex-row items-center space-x-2">
+                    {item.name === "Delete Account" && (
+                      <Text className="text-red-500 text-xl">⚠️</Text>
+                    )}
+                    <Text
+                      className={`text-lg font-semibold ${
+                        item.name === "Delete Account" ? "text-red-600" : ""
+                      }`}
+                    >
+                      {item.name}
+                    </Text>
+                  </View>
+                  <Text
+                    className={`text-sm ${
+                      item.name === "Delete Account"
+                        ? "text-red-400"
+                        : "text-gray-500"
+                    }`}
+                  >
+                    {item.description}
+                  </Text>
                 </View>
               </Pressable>
             )}
@@ -135,7 +175,7 @@ const PrivacySettingsScreen = () => {
         cancelText="Cancel"
       />
 
-      {/* TODO: Move this modal to the router navigation root */}
+      {/* Not currently in use */}
       <Modal
         isOpen={showPasswordModal}
         onClose={() => setShowPasswordModal(false)}

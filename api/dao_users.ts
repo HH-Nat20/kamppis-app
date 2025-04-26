@@ -51,3 +51,9 @@ export const changePassword = async (
   });
   return response.status === 204;
 };
+
+export const copyUserData = async (userId: number) => {
+  const response = await get(`${ENDPOINT}/${userId}/copy`);
+  const data = await response.json();
+  return data;
+};

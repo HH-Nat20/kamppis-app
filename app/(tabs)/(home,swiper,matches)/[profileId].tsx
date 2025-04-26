@@ -5,7 +5,6 @@ import {
   Text,
   ActivityIndicator,
   Dimensions,
-  BackHandler,
   TouchableOpacity,
 } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
@@ -14,7 +13,6 @@ import Carousel, {
   Pagination,
 } from "react-native-reanimated-carousel";
 
-import Swiper from "react-native-deck-swiper";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import styles from "@/assets/styles/styles";
