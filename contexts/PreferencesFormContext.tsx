@@ -38,7 +38,7 @@ export const PreferencesFormProvider = ({
       maxAgePreference: 99,
       genderPreferences: [Gender.NOT_IMPORTANT],
       locationPreferences: [Location.HELSINKI],
-      hasPrivateRoom: true,
+      hasPrivateRoom: null,
       maxRoommates: 1,
     },
   });
@@ -65,7 +65,7 @@ export const PreferencesFormProvider = ({
         locationPreferences: roommatePref?.locationPreferences ?? [
           Location.HELSINKI,
         ],
-        hasPrivateRoom: roomPref?.hasPrivateRoom ?? true,
+        hasPrivateRoom: roomPref?.hasPrivateRoom,
         maxRoommates: roomPref?.maxRoommates ?? 1,
       });
     }

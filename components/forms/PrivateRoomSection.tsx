@@ -10,36 +10,44 @@ import { Pressable } from "@/components/ui/pressable";
 
 export const PrivateRoomSection = ({ control, errors }: any) => (
   <VStack space="md">
-    <Heading size="sm">Must have a Private Room</Heading>
+    <Heading size="sm">Room Privacy Preference</Heading>
     <Controller
       control={control}
       name="hasPrivateRoom"
-      render={({ field: { onChange, value } }) => (
-        <HStack space="sm">
-          {["Yes", "No"].map((label) => {
-            const selected = (label === "Yes") === value;
-            return (
-              <Pressable
-                key={label}
-                onPress={() => onChange(label === "Yes")}
-                className={`px-4 py-2 rounded-full border ${
-                  selected
-                    ? "bg-info-900 dark:bg-info-200 border-primary-500"
-                    : "border-gray-300"
-                }`}
-              >
-                <Text
-                  className={
-                    selected ? "text-white" : "text-black dark:text-white"
-                  }
+      render={({ field: { onChange, value } }) => {
+        const options = [
+          { label: "Private Room", value: true },
+          { label: "Shared Room", value: false },
+          { label: "No Preference", value: null },
+        ];
+
+        return (
+          <HStack space="sm" className="flex-wrap">
+            {options.map((option) => {
+              const selected = value === option.value;
+              return (
+                <Pressable
+                  key={option.label}
+                  onPress={() => onChange(option.value)}
+                  className={`px-4 py-2 rounded-full border ${
+                    selected
+                      ? "bg-info-900 dark:bg-info-200 border-primary-500"
+                      : "border-gray-300"
+                  }`}
                 >
-                  {label}
-                </Text>
-              </Pressable>
-            );
-          })}
-        </HStack>
-      )}
+                  <Text
+                    className={
+                      selected ? "text-white" : "text-black dark:text-white"
+                    }
+                  >
+                    {option.label}
+                  </Text>
+                </Pressable>
+              );
+            })}
+          </HStack>
+        );
+      }}
     />
     {errors.hasPrivateRoom && (
       <Text className="text-error-500">{errors.hasPrivateRoom.message}</Text>

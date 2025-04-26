@@ -4,7 +4,7 @@ import { Location } from "@/types/enums/LocationEnum";
 
 export const preferencesSchema = z.object({
   maxRent: z.number().min(0),
-  hasPrivateRoom: z.boolean(),
+  hasPrivateRoom: z.boolean().nullable(),
   maxRoommates: z.number().min(1).max(10),
   minAgePreference: z.number().min(18),
   maxAgePreference: z.number().max(120),
