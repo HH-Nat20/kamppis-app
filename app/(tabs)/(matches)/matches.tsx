@@ -27,8 +27,7 @@ import { User } from "@/types/responses/User";
 
 import { Heading } from "@/components/ui/heading";
 
-import { router } from "expo-router";
-import profile from "@/assets/styles/profile";
+import { router, Redirect } from "expo-router";
 
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import { removeUserFromMatch } from "@/api/dao_matches";
@@ -47,6 +46,10 @@ const MatchesScreen = () => {
     // Ensure loading is set to false after fetching
     setLoading(false);
   }, [matches]);
+
+  if (!user) {
+    return <Redirect href="/login" />;
+  }
 
   const handleOpenChat = (matchId: number, users: User[]) => {
     console.log(

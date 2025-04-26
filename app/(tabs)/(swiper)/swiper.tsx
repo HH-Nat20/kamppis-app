@@ -15,7 +15,7 @@ import Card from "@/components/custom/Card";
 import styles from "@/assets/styles/styles";
 
 import Container from "@/components/common/Container";
-import { router } from "expo-router";
+import { router, Redirect } from "expo-router";
 
 const SwipeScreen: React.FC = () => {
   const swiperRef = useRef<Swiper<any>>(null);
@@ -25,6 +25,10 @@ const SwipeScreen: React.FC = () => {
   const { cards, loading, refreshMatchableProfiles } = useMatchableProfiles();
 
   const swipeMutation = useSwipeMutation();
+
+  if (!user) {
+    return <Redirect href="/login" />;
+  }
 
   const handleSwipe = async (
     cardIndex: number,

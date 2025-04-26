@@ -1,10 +1,18 @@
 import React from "react";
 
-import { Stack } from "expo-router";
+import { Stack, Redirect } from "expo-router";
 
 import { RoomsDrawerProvider } from "@/contexts/RoomsDrawerContext";
 
+import { useUser } from "@/contexts/UserContext";
+
 const ProfileLayout = ({ children }: { children: React.ReactNode }) => {
+  const { user } = useUser();
+
+  if (!user) {
+    return <Redirect href="/login" />;
+  }
+
   return (
     <RoomsDrawerProvider>
       <Stack>
