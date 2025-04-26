@@ -108,11 +108,29 @@ const MatchesScreen = () => {
     });
   };
 
-  const handleReportMatch = (matchId: number) => {
-    Alert.alert("Report Match", "Are you sure you want to report this match?", [
-      { text: "Cancel", style: "cancel" },
-      { text: "OK", onPress: () => handleReportAndRemoveMatch(matchId) },
-    ]);
+  const confirmRemoveMatch = (matchId: number, report: boolean = false) => {
+    const action = report ? "report and remove" : "remove";
+
+    Alert.alert(
+      `Are you sure you want to ${action} this match?`,
+      `You will no longer be able to enter this chat.`,
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: () => {
+            if (report) {
+              handleReportAndRemoveMatch(matchId);
+            } else {
+              handleRemoveMatch(matchId);
+            }
+          },
+        },
+      ]
+    );
   };
 
   const { showActionSheetWithOptions } = useActionSheet();
@@ -136,10 +154,10 @@ const MatchesScreen = () => {
             handleViewProfile(id);
             break;
           case 1:
-            handleRemoveMatch(matchId);
+            confirmRemoveMatch(matchId, false);
             break;
           case 2:
-            handleReportMatch(matchId);
+            confirmRemoveMatch(matchId, true);
             break;
           case 3:
           // Cancel
