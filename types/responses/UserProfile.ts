@@ -9,5 +9,5 @@ export interface UserProfile extends Profile {
   user: ShortUser;
   cleanliness: Cleanliness;
   lifestyle: Lifestyle[];
-  pets: Pets[];
+  pets: Pets;
 }

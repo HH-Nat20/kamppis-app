@@ -16,6 +16,7 @@ import BioSection from "@/components/forms/BioSection";
 import ProfileDrawerLayout from "@/components/custom/ProfileDrawerLayout";
 
 import { ProfileFormProvider } from "@/contexts/ProfileFormContext";
+import PetsSection from "@/components/forms/PetsSection";
 
 const Bio = () => {
   return (
@@ -45,6 +46,8 @@ const ProfileLifestyleScreen = () => {
             <CleanlinessSection control={control} errors={errors} />
             <Divider />
             <BioSection control={control} errors={errors} />
+            <Divider />
+            <PetsSection control={control} errors={errors} />
           </VStack>
           <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }} />
         </ScrollView>

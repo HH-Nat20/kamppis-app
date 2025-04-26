@@ -143,6 +143,7 @@ export const updateUserProfile = async (
     bio: profileForm.bio,
     cleanliness: profileForm.cleanliness,
     lifestyle: profileForm.lifestyle,
+    pets: profileForm.pets,
   };
 
   const response = await update(`${ENDPOINT}/${profileId}`, body); // TODO: Check URL

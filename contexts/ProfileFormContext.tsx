@@ -10,6 +10,7 @@ import { getUserProfileQueryOptions } from "@/api/queries/profileQueries";
 import { ProfileForm, profileFormSchema } from "@/validation/profileFormSchema";
 import { Cleanliness } from "@/types/enums/CLeanlinessEnum";
 import { Lifestyle } from "@/types/enums/LifestyleEnum";
+import { Pets } from "@/types/enums/PetsEnum";
 
 const ProfileFormContext = createContext<any>(undefined);
 
@@ -33,6 +34,7 @@ export const ProfileFormProvider = ({
       bio: "",
       cleanliness: Cleanliness.TIDY,
       lifestyle: [],
+      pets: Pets.OK_WITH_PETS,
     },
   });
 
@@ -48,6 +50,7 @@ export const ProfileFormProvider = ({
         bio: profile.bio ?? "",
         cleanliness: profile.cleanliness ?? Cleanliness.TIDY,
         lifestyle: profile.lifestyle ?? ([] as Lifestyle[]),
+        pets: profile.pets ?? Pets.OK_WITH_PETS,
       });
     }
   }, [profile]);
