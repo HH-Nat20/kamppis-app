@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Image, View } from "react-native";
 import { useQueries } from "@tanstack/react-query";
 
@@ -52,28 +52,12 @@ const HomeScreen = () => {
     });
   };
 
-  const [authCode, setAuthCode] = useState<string | null>(null);
-
-  // useEffect(() => {
-  //   // Fetch the stored GitHub auth code
-  //   const getAuthCode = async () => {
-  //     const storedCode = await AsyncStorage.getItem("githubAuthCode");
-  //     if (storedCode) {
-  //       console.log("Retrieved GitHub Code:", storedCode);
-  //       setAuthCode(storedCode);
-  //     }
-  //   };
-
-  //   getAuthCode();
-  // }, []);
-
   const handleCodeReceived = (code: string) => {
     // console.log("Received GitHub auth code:", code);
-    setAuthCode(code); // Store the code in state or send it to your backend
     Toast.show({
       type: "success",
-      text1: "Authentication successful",
-      text2: `GitHub Code: ${code}`,
+      text1: "Authentication to GitHub successful",
+      text2: `GitHub Code received!`,
     });
   };
 
