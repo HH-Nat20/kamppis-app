@@ -49,7 +49,7 @@ export default function SignUpScreen() {
 
   const sendUserData = async (data: UserForm) => {
     const code = await AsyncStorage.getItem("githubAuthCode");
-    console.log("Sending user data with code:", code);
+    // console.log("Sending user data with code:", code);
     console.log("User data:", data);
     try {
       const response = await fetch(

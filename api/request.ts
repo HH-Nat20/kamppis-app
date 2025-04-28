@@ -46,8 +46,8 @@ const sendRequest = async (
     body: body ? JSON.stringify(body) : undefined,
   };
 
-  console.log("Sending request to", `${baseUrl}/${url}`);
-  console.log("Options", options);
+  // console.log("Sending request to", `${baseUrl}/${url}`);
+  // console.log("Options", options);
 
   return fetch(`${baseUrl}/${url}`, options);
 };
@@ -65,7 +65,7 @@ export const uploadRequest = async (url: string, formData: FormData) => {
 
   console.log("Sending request to", `${baseUrl}/${url}`);
   console.log("Body:", formData);
-  console.log("Token", token);
+  // console.log("Token", token);
 
   const headers: Record<string, string> = {
     "Content-Type": "multipart/form-data",

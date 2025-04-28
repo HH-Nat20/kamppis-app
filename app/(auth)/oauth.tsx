@@ -30,7 +30,7 @@ export default function OAuthRedirectScreen() {
       return;
     }
 
-    console.log("Github OAuth Code:", route.params.code);
+    // console.log("Github OAuth Code:", route.params.code);
 
     Toast.show({
       type: "success",

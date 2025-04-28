@@ -68,7 +68,7 @@ const HomeScreen = () => {
   // }, []);
 
   const handleCodeReceived = (code: string) => {
-    console.log("Received GitHub auth code:", code);
+    // console.log("Received GitHub auth code:", code);
     setAuthCode(code); // Store the code in state or send it to your backend
     Toast.show({
       type: "success",

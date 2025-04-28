@@ -11,7 +11,7 @@ export default function RedirectScreen() {
     if (code) {
       // Store the code before redirecting
       AsyncStorage.setItem("githubAuthCode", code as string).then(() => {
-        console.log("GitHub Auth Code Saved:", code);
+        // console.log("GitHub Auth Code Saved:", code);
       });
     }
 

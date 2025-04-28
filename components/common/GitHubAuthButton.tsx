@@ -35,7 +35,7 @@ export default function GitHubAuthButton({
     if (response?.type === "success") {
       const { code } = response.params;
       if (code) {
-        console.log("GitHub OAuth Code:", code);
+        // console.log("GitHub OAuth Code:", code);
         onCodeReceived(code); // Pass the code to the parent component
       }
     }

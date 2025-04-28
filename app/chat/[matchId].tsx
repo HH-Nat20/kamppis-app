@@ -162,7 +162,7 @@ export default function ChatScreen() {
         console.warn("No token found");
         return;
       }
-      console.log("Connecting to WebSocket with token:", storedToken);
+      // console.log("Connecting to WebSocket with token:", storedToken);
 
       const client = new Stomp.Client({
         brokerURL: `wss://kamppis.hellmanstudios.fi/ws?token=${storedToken}`, // IMPORTANT: token is ALSO passed in the URL to be fetched before the header can be accessed
@@ -195,7 +195,7 @@ export default function ChatScreen() {
   }, [matchId, you?.email]);
 
   const onSendMessage = (text: string) => {
-    console.log("Sending message with token:", token);
+    // console.log("Sending message with token:", token);
 
     if (stompClient?.connected && text) {
       stompClient.publish({
