@@ -22,6 +22,7 @@ import { StatusBar } from "expo-status-bar";
 import { useUser } from "@/contexts/UserContext";
 
 import { useQueryClient } from "@tanstack/react-query";
+import { queryKeys } from "@/api/queries/queryKeys";
 
 import { useLocalSearchParams, router, Link } from "expo-router";
 
@@ -126,6 +127,12 @@ export default function uploadModal() {
       setUploading(false);
       queryClient.invalidateQueries({
         queryKey: ["user"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.profile(Number(profileId)),
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.roomProfile(Number(profileId)),
       });
       Toast.show({
         type: "success",
