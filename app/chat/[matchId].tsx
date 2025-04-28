@@ -130,10 +130,14 @@ export default function ChatScreen() {
   }, [user]);
 
   useEffect(() => {
-    if (!matches || !user) return;
+    if (!user) return;
     setYou(user);
+  }, [user]);
+
+  useEffect(() => {
+    if (!matchId) return;
     setMessages([]);
-  }, [matches, user]);
+  }, [matchId]);
 
   useEffect(() => {
     if (!matchId || !you?.email) return;
