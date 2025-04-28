@@ -21,12 +21,9 @@ import GitHubAuthButton from "@/components/common/GitHubAuthButton";
 
 import { router, useLocalSearchParams } from "expo-router";
 import LoginWithGitHubButton from "@/components/common/LoginWithGitHubButton";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from "react-native-toast-message";
 import { Space } from "lucide-react-native";
 import { HealthStatus } from "@/components/common/HealthStatus";
-import styles from "@/assets/styles/styles";
-import colors from "@/assets/styles/colors";
 
 const HomeScreen = () => {
   const { user, changeUser } = useUser();
@@ -87,7 +84,7 @@ const HomeScreen = () => {
       Toast.show({
         type: "success",
         text1: "Welcome to Kamppis 🎉",
-        text2: "You can now log in.",
+        text2: "You are now logged in!",
       });
     }
   }, [signupSuccess]);

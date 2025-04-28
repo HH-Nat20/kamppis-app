@@ -24,6 +24,7 @@ import {
 } from "@/components/forms";
 import { Divider } from "@/components/ui/divider";
 import { ButtonText, Button } from "@/components/ui/button";
+import { useUser } from "@/contexts/UserContext";
 
 const formatDate = (date: Date) => date.toISOString().split("T")[0]; // YYYY-MM-DD
 
@@ -43,6 +44,8 @@ export default function SignUpScreen() {
       lookingFor: LookingFor.OTHER_USER_PROFILES, // Default
     },
   });
+
+  const { changeUser } = useUser();
 
   const sendUserData = async (data: UserForm) => {
     const code = await AsyncStorage.getItem("githubAuthCode");
@@ -73,9 +76,11 @@ export default function SignUpScreen() {
       AsyncStorage.setItem("jwtToken", token);
       const userId = responseBody.userId;
 
+      changeUser(userId); // Update the user context with the new user ID
+
       router.push({
         pathname: "/",
-        params: { signupSuccess: 1, userId: userId }, // Pass success message to home screen
+        params: { signupSuccess: 1 }, // Pass success message to home screen
       });
     } catch (error: any) {
       console.error("Signup error:", error.message);
