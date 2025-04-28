@@ -45,7 +45,8 @@ const ProfileTitle: React.FC<ProfileTitleProps> = ({
       />{" "}
       {"users" in profile
         ? profile.flat.name + ", " + formatCity(profile.flat.location)
-        : `${profile.user?.firstName}, ${profile.user?.age}`}
+        : `${profile.user?.firstName}, ${profile.user?.age}`}{" "}
+      {"ℹ️"}
     </Text>
   );
 };

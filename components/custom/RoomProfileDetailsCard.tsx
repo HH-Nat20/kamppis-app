@@ -27,7 +27,7 @@ export const RoomProfileDetailsCard = ({
   );
 
   return (
-    <Card className="p-6 rounded-lg max-w-[360px] m-3">
+    <Card className="p-0 rounded-lg m-auto bg-transparent w-full mt-3">
       <Box className="flex-row mb-4">
         <VStack>
           <Heading size="md" className="mb-1">

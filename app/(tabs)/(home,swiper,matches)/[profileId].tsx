@@ -194,7 +194,15 @@ export default function DetailsScreen() {
         <View
           style={[
             styles.tagArea,
-            { flexDirection: "row", flexWrap: "wrap", gap: 8 },
+            {
+              flexDirection: "row",
+              flexWrap: "wrap",
+              gap: 8,
+              position: "absolute",
+              top: -width,
+              right: 10,
+              zIndex: 1,
+            },
           ]}
         >
           {profile && "cleanliness" in profile! && profile!.cleanliness && (
@@ -227,6 +235,12 @@ export default function DetailsScreen() {
           <TagArea profile={profile!} />
         </View>
 
+        {/* General Info */}
+        {profile && "user" in profile ? (
+          <UserProfileDetailsCard profile={profile} />
+        ) : (
+          <RoomProfileDetailsCard profile={profile!} />
+        )}
         <View className="items-center">
           <TouchableOpacity
             className="bg-pink-500 rounded-full p-4"
@@ -236,13 +250,6 @@ export default function DetailsScreen() {
           </TouchableOpacity>
           <Text className="mt-2 text-pink-500 font-semibold">Send Like</Text>
         </View>
-
-        {/* General Info */}
-        {profile && "user" in profile ? (
-          <UserProfileDetailsCard profile={profile} />
-        ) : (
-          <RoomProfileDetailsCard profile={profile!} />
-        )}
       </View>
       <StatusBar barStyle="light-content" />
     </Container>

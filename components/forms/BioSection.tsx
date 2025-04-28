@@ -17,7 +17,7 @@ export const BioSection = ({ control, errors }: any) => (
           <TextareaInput
             value={value}
             onChangeText={onChange}
-            placeholder="Tell us about yourself"
+            placeholder="Write bio here..."
           />
         </Textarea>
       )}

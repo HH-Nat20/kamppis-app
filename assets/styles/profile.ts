@@ -50,7 +50,7 @@ const profile = StyleSheet.create({
     borderRadius: 8,
   },
   profileInfo: {
-    marginTop: 30,
+    marginTop: 10,
     width: "100%",
     padding: 20,
     backgroundColor: "transparent",

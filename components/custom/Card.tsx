@@ -52,7 +52,7 @@ const Card: React.FC<CardProps> = ({ card }) => {
           style={{ width, height }}
           onLoadEnd={() => setImageLoaded(true)}
         >
-          {!imageLoaded ? (
+          {!imageLoaded || !card ? (
             <View
               style={{
                 width,
