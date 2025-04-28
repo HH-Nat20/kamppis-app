@@ -3,8 +3,8 @@ import { Gender } from "@/types/enums/GenderEnum";
 import { LookingFor } from "@/types/enums/LookingForEnum";
 
 export const userFormSchema = z.object({
-  firstName: z.string().min(1),
-  lastName: z.string().min(1),
+  firstName: z.string().min(1).max(50),
+  lastName: z.string().min(1).max(50),
   email: z.string().email(),
   gender: z.nativeEnum(Gender),
   dateOfBirth: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format"),
