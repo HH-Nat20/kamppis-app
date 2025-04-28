@@ -112,7 +112,6 @@ export default function ProfilePhotosScreen() {
   return (
     <ProfileDrawerLayout>
       <VStack className="px-5 py-4 flex-1 bg-white dark:bg-black" space="xl">
-        <Heading className="mb-2">Your Photos</Heading>
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 50 }}

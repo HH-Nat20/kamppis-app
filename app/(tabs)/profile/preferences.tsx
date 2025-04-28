@@ -46,7 +46,6 @@ const ProfilePreferencesScreen = () => {
   return (
     <ProfileDrawerLayout>
       <VStack className="px-5 py-4 flex-1 dark:bg-black bg-white" space="xl">
-        <Heading className="mb-2">Preferences</Heading>
         <ScrollView showsVerticalScrollIndicator={false}>
           <VStack space="xl">
             <AgeRangeSection control={control} errors={errors} />

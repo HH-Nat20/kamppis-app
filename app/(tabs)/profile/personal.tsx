@@ -41,7 +41,6 @@ const ProfilePersonalScreen = () => {
   return (
     <ProfileDrawerLayout>
       <VStack className="px-5 py-4 flex-1 dark:bg-black bg-white" space="xl">
-        <Heading className="mb-2">Personal Info</Heading>
         <ScrollView showsVerticalScrollIndicator={false}>
           <VStack space="xl">
             <ProfileInputSection control={control} errors={errors} />

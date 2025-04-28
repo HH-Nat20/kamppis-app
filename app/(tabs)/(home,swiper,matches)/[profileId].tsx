@@ -16,7 +16,7 @@ import Carousel, {
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import styles from "@/assets/styles/styles";
-import colors from "@/assets/styles/colors";
+import colors from "tailwindcss/colors";
 
 import Portrait from "@/components/common/Portrait";
 import TagArea from "@/components/common/TagArea";
@@ -65,7 +65,7 @@ export default function DetailsScreen() {
             style={{
               fontSize: 18,
               fontWeight: "bold",
-              color: colors.black,
+              color: colors.teal[500],
             }}
           >
             {profile && "user" in profile && String(profile.user.firstName)}

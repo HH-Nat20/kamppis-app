@@ -38,7 +38,6 @@ const ProfileLifestyleScreen = () => {
   return (
     <ProfileDrawerLayout>
       <VStack className="px-5 py-4 flex-1 dark:bg-black bg-white" space="xl">
-        <Heading className="mb-2">Bio</Heading>
         <ScrollView showsVerticalScrollIndicator={false}>
           <VStack space="xl">
             <LifestyleSection control={control} errors={errors} />

@@ -58,7 +58,6 @@ const FeedbackPage = () => {
     <ProfileDrawerLayout>
       <Container>
         <VStack className="px-5 py-4 flex-1 dark:bg-black bg-white" space="xl">
-          <Heading className="my-4">Feedback</Heading>
           <ScrollView showsVerticalScrollIndicator={false}>
             <VStack space="xl">
               <Textarea
