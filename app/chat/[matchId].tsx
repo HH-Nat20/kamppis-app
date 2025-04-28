@@ -124,6 +124,7 @@ export default function ChatScreen() {
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [stompClient, setStompClient] = useState<Stomp.Client | null>(null);
+  const [systemMessage, setSystemMessage] = useState<string | null>(null);
 
   useEffect(() => {
     setDUMMY_LOGGED_IN_USER(user?.id || 1);
@@ -138,6 +139,20 @@ export default function ChatScreen() {
     if (!matchId) return;
     setMessages([]);
   }, [matchId]);
+
+  useEffect(() => {
+    if (!matches || !matchId) return;
+
+    const stillMatched = matches.some(
+      (match) => String(match.matchId) === String(matchId)
+    );
+
+    if (!stillMatched) {
+      setSystemMessage("The user has unmatched you.");
+    } else {
+      setSystemMessage(null);
+    }
+  }, [matches, matchId]);
 
   useEffect(() => {
     if (!matchId || !you?.email) return;
@@ -233,6 +248,19 @@ export default function ChatScreen() {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      {systemMessage && (
+        <Text
+          style={{
+            fontSize: 16,
+            fontWeight: "bold",
+            color: colors.danger,
+            textAlign: "center",
+            marginVertical: 10,
+          }}
+        >
+          {systemMessage}
+        </Text>
+      )}
       <Chat
         messages={messages.toReversed()}
         setMessages={(val) => onSendMessage(val)}
