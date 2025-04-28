@@ -118,10 +118,8 @@ const PrivacySettingsScreen = () => {
     <>
       <ProfileDrawerLayout>
         <Container>
-          <View className="flex-1 items-center justify-center mt-4">
-            <Text>Privacy Settings Screen</Text>
-            <Text>User ID: {user?.id}</Text>
-            <Text>User Name: {user?.firstName}</Text>
+          <View className="flex-1 items-center justify-center mt-4 mb-4">
+            <Text>User: {`${user?.firstName} ${user?.lastName}`}</Text>
           </View>
           <FlashList
             data={operations}
