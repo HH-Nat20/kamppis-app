@@ -134,6 +134,8 @@ export default function ProfilePhotos({
               width={width * 0.85}
               height={width}
               ref={ref}
+              loop={false}
+              pagingEnabled={true}
               data={photos}
               onProgressChange={progress}
               renderItem={({ item: photo }: { item: Photo }) => (
@@ -161,7 +163,7 @@ export default function ProfilePhotos({
             progress={progress}
             data={photos}
             dotStyle={{
-              backgroundColor: "rgba(0,0,0,0.2)",
+              backgroundColor: "rgba(205,255,255,0.5)",
               borderRadius: 50,
             }}
             containerStyle={{ gap: 5, marginTop: 10 }}
