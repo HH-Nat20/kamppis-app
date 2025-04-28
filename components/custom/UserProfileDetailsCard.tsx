@@ -1,19 +1,11 @@
 import React from "react";
 
-import {
-  Avatar,
-  AvatarFallbackText,
-  AvatarImage,
-} from "@/components/ui/avatar";
 import { Box } from "@/components/ui/box";
 import { Card } from "@/components/ui/card";
-import { Divider } from "@/components/ui/divider";
 import { Heading } from "@/components/ui/heading";
 import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
 import { UserProfile } from "@/types/responses/UserProfile";
-
-import { getProfilePicture, getImageUrl } from "@/helpers/helpers";
 
 export const UserProfileDetailsCard = ({
   profile,
@@ -32,16 +24,18 @@ export const UserProfileDetailsCard = ({
       </Box>
 
       <Box className="my-5 flex-col">
-        <VStack className="items-start pb-2">
-          <Heading size="xs">Gender</Heading>
-          <Text size="xs">{profile.user.gender}</Text>
+        <VStack className="flex-row gap-2 pb-2">
+          <Text className="text-lg text-typography-700">Gender</Text>
+          <Text className="text-lg text-typography-300">
+            {profile.user.gender}
+          </Text>
         </VStack>
-        <Divider orientation="horizontal" className="my-2 bg-background-300" />
-        <VStack className="items-start pb-2">
-          <Heading size="xs">Age</Heading>
-          <Text size="xs">{profile.user.age}</Text>
+        <VStack className="flex-row gap-2 pb-2">
+          <Text className="text-lg text-typography-700">Age</Text>
+          <Text className="text-lg text-typography-300">
+            {profile.user.age}
+          </Text>
         </VStack>
-        <Divider orientation="horizontal" className="my-2 bg-background-300" />
       </Box>
     </Card>
   );

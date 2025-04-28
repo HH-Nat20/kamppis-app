@@ -30,37 +30,41 @@ export const RoomProfileDetailsCard = ({
     <Card className="p-0 rounded-lg m-auto bg-transparent w-full mt-3">
       <Box className="flex-row mb-4">
         <VStack>
-          <Heading size="md" className="mb-1">
+          <Text className="text-lg text-typography-900 mb-1">
             {profile.flat.name}
-          </Heading>
-          <Text size="sm">{profile.bio}</Text>
+          </Text>
+          <Text className="text-md text-typography-700">{profile.bio}</Text>
         </VStack>
       </Box>
 
       <Box className="my-5 flex-col">
         <VStack className="flex-row gap-2 pb-2">
-          <Heading size="xs">Rent</Heading>
-          <Text size="xs">€{profile.rent}</Text>
+          <Text className="text-lg text-typography-700">Rent</Text>
+          <Text className="text-lg text-typography-300">€{profile.rent}</Text>
         </VStack>
         <Divider orientation="horizontal" className="my-2 bg-background-300" />
         <VStack className="flex-row gap-2 pb-2">
-          <Heading size="xs">Private Room</Heading>
-          <Text size="xs">{profile.isPrivateRoom ? "✅" : "❌"}</Text>
+          <Text className="text-lg text-typography-700">Private Room</Text>
+          <Text className="text-lg text-typography-300">
+            {profile.isPrivateRoom ? "✅" : "❌"}
+          </Text>
         </VStack>
         <Divider orientation="horizontal" className="my-2 bg-background-300" />
         <VStack className="flex-row gap-2 pb-2">
-          <Heading size="xs">Furnished</Heading>
-          <Text size="xs">{profile.furnished ? "✅" : "❌"}</Text>
+          <Text className="text-lg text-typography-700">Furnished</Text>
+          <Text className="text-lg text-typography-300">
+            {profile.furnished ? "✅" : "❌"}
+          </Text>
           {profile.furnished && (
-            <Text size="xs" className="text-gray-500">
+            <Text className="text-lg text-typography-300">
               {profile.furnishedInfo}
             </Text>
           )}
         </VStack>
         <Divider orientation="horizontal" className="my-2 bg-background-300" />
         <VStack className="flex-row gap-2 pb-2">
-          <Heading size="xs">Rooms Available</Heading>
-          <Text size="xs">
+          <Text className="text-lg text-typography-700">Rooms Available</Text>
+          <Text className="text-lg text-typography-300">
             {profile.flat.totalRoommates - profile.userIds!.length}
           </Text>
         </VStack>
