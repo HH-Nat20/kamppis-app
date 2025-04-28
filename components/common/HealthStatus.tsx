@@ -2,7 +2,7 @@ import React from "react";
 import { VStack } from "@/components/ui/vstack";
 import { Text } from "@/components/ui/text";
 import { ActivityIndicator } from "react-native";
-import { MotiView } from "moti";
+import { MotiText, MotiView } from "moti";
 import { useEffect, useState } from "react";
 
 export const HealthStatus = ({
@@ -26,7 +26,7 @@ export const HealthStatus = ({
         from={{ opacity: 1 }}
         animate={{ opacity: showStatus ? 1 : 0 }}
         transition={{ type: "timing", duration: 1000 }}
-        style={{ minHeight: 200 }} // Force a minimum space even after fade
+        style={{ minHeight: 100 }} // Force a minimum space even after fade
       >
         {/* Server Status */}
         <VStack className="items-center gap-2">
@@ -34,7 +34,14 @@ export const HealthStatus = ({
           {serverHealth.isLoading ? (
             <ActivityIndicator />
           ) : (
-            <Text
+            <MotiText
+              from={{ opacity: 0 }}
+              animate={{ opacity: [1, 0.5, 1] }}
+              transition={{
+                loop: true,
+                type: "timing",
+                duration: 500,
+              }}
               className={
                 serverHealth.data?.status === "ok"
                   ? "text-success-500"
@@ -42,17 +49,24 @@ export const HealthStatus = ({
               }
             >
               {serverHealth.data?.status === "ok" ? "OK" : "FAILED"}
-            </Text>
+            </MotiText>
           )}
         </VStack>
 
         {/* DB Status */}
-        <VStack className="items-center gap-2 mt-6">
+        <VStack className="items-center gap-2 mt-2">
           <Text>Checking DB status...</Text>
           {dbHealth.isLoading ? (
             <ActivityIndicator />
           ) : (
-            <Text
+            <MotiText
+              from={{ opacity: 0 }}
+              animate={{ opacity: [1, 0.5, 1] }}
+              transition={{
+                loop: true,
+                type: "timing",
+                duration: 500,
+              }}
               className={
                 dbHealth.data?.status === "ok"
                   ? "text-success-500"
@@ -60,7 +74,7 @@ export const HealthStatus = ({
               }
             >
               {dbHealth.data?.status === "ok" ? "OK" : "FAILED"}
-            </Text>
+            </MotiText>
           )}
         </VStack>
       </MotiView>

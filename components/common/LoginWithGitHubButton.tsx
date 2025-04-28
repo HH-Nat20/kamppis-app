@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { router } from "expo-router";
 import React from "react";
-import { Button } from "react-native";
+import { Alert, Button } from "react-native";
 import Toast from "react-native-toast-message";
 
 export default function LoginWithGitHubButton({
@@ -50,16 +51,21 @@ export default function LoginWithGitHubButton({
             text1: "GitHub code exchanged to JWT successfully",
             text2: `Woohooo! 🎉`,
           });
-        } catch (error) {
+
+          setTimeout(() => {
+            router.push("/");
+          }, 2000); // Redirect after 2 seconds
+        } catch (error: any) {
           console.error("Error exchanging the GitHub code into JWT:", error);
-          Toast.show({
-            type: "error",
-            text1: "Error exchanging the GitHub code into JWT",
-            text2:
-              error instanceof Error
-                ? error.message
-                : "An unknown error occurred",
-          });
+
+          Alert.alert("Error", error.message, [
+            {
+              text: "OK",
+              onPress: () => {
+                router.push("/");
+              },
+            },
+          ]);
         }
       }}
     />

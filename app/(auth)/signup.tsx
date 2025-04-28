@@ -1,24 +1,18 @@
 import React, { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { userFormSchema, UserForm } from "@/validation/userFormSchema"; // Adjust path
 import {
-  View,
-  Text,
-  TextInput,
   Alert,
-  Platform,
   Pressable as RNPressable,
   ScrollView,
   KeyboardAvoidingView,
 } from "react-native";
-import { Picker } from "@react-native-picker/picker";
-import DateTimePicker from "@react-native-community/datetimepicker";
+
 import { Gender } from "@/types/enums/GenderEnum";
 import { LookingFor } from "@/types/enums/LookingForEnum";
 import { router } from "expo-router";
 import { VStack } from "@/components/ui/vstack";
-import { Input, InputField } from "@/components/ui/input";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Heading } from "@/components/ui/heading";
 import {
@@ -30,8 +24,6 @@ import {
 } from "@/components/forms";
 import { Divider } from "@/components/ui/divider";
 import { ButtonText, Button } from "@/components/ui/button";
-import { isDirty } from "zod";
-import Toast from "react-native-toast-message";
 
 const formatDate = (date: Date) => date.toISOString().split("T")[0]; // YYYY-MM-DD
 
@@ -87,11 +79,14 @@ export default function SignUpScreen() {
       });
     } catch (error: any) {
       console.error("Signup error:", error.message);
-      Toast.show({
-        type: "error",
-        text1: "Error",
-        text2: error.message,
-      });
+      Alert.alert("Error", error.message, [
+        {
+          text: "OK",
+          onPress: () => {
+            router.push("/");
+          },
+        },
+      ]);
     }
   };
 
