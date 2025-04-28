@@ -21,7 +21,11 @@
         "foregroundImage": "./assets/images/kamppis-app-icon.png",
         "backgroundColor": "#000000"
       },
-      "package": "com.nat20.kamppisapp"
+      "package": "com.nat20.kamppisapp",
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "androidStatusBar": {
       "backgroundColor": "#000000",
@@ -52,7 +56,9 @@
           "cameraPermission": "The app needs access to your camera so you can take a profile picture."
         }
       ],
-      ["expo-build-properties"]
+      [
+        "expo-build-properties"
+      ]
     ],
     "experiments": {
       "typedRoutes": true
@@ -65,6 +71,12 @@
       "eas": {
         "projectId": "7987255a-a681-455b-b17b-4692ce3d55f9"
       }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/7987255a-a681-455b-b17b-4692ce3d55f9"
     }
   }
 }

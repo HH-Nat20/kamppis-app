@@ -20,7 +20,7 @@ import { useUser } from "@/contexts/UserContext";
 import { getImageUrl, getProfilePicture } from "@/helpers/helpers";
 
 import { useNavigation, router } from "expo-router";
-
+import Container from "@/components/common/Container";
 import TagArea from "@/components/common/TagArea";
 
 export default function ProfileScreen() {
@@ -29,7 +29,10 @@ export default function ProfileScreen() {
 
   return (
     <ProfileDrawerLayout>
-      <VStack className="h-full w-full pb-8" space="sm">
+      <VStack
+        className="h-full w-full bg-white dark:bg-gray-900 pb-8"
+        space="sm"
+      >
         <Center className="mt-4 py-4 w-full md:px-10 pb-4 z-10">
           <VStack space="lg" className="items-center mt-4 py-4">
             <Pressable
@@ -58,14 +61,17 @@ export default function ProfileScreen() {
               </Avatar>
             </Pressable>
             <VStack className="gap-1 w-full items-center">
-              <Text size="2xl" className="font-roboto text-dark">
+              <Text
+                size="2xl"
+                className="font-roboto text-dark dark:text-white"
+              >
                 {`${user?.firstName} ${user?.lastName}`}
               </Text>
-              <Text className="font-roboto text-sm text-typograpphy-700">
+              <Text className="font-roboto text-sm text-typography-700">
                 {user?.email}
               </Text>
               <TagArea profile={user?.userProfile!} />
-              <Card className="w-1/2 px-4 py-2 bg-white dark:bg-black">
+              <Card className="w-1/2 px-4 py-2 bg-transparent border-2">
                 <Text className="font-roboto text-sm text-typography-700">
                   {user?.userProfile?.bio}
                 </Text>
@@ -77,7 +83,9 @@ export default function ProfileScreen() {
               onPress={openDrawer}
               className="gap-3"
             >
-              <ButtonText className="text-dark">Edit Profile</ButtonText>
+              <ButtonText className="text-dark dark:text-white">
+                Edit Profile
+              </ButtonText>
               <ButtonIcon as={Edit} />
             </Button>
           </VStack>
