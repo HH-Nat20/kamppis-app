@@ -44,7 +44,7 @@ export default function GitHubAuthButton({
   return (
     <Button
       disabled={!request}
-      title="Authenticate with GitHub"
+      title="Login as a real user"
       onPress={() => {
         promptAsync();
       }}

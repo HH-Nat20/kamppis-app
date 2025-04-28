@@ -5,10 +5,10 @@ import React, { useEffect } from "react";
 import styles from "@/assets/styles/styles";
 
 export default function RedirectScreen() {
-   const { code } = useLocalSearchParams(); // Get ?code= from URL
+  const { code } = useLocalSearchParams(); // Get ?code= from URL
 
   useEffect(() => {
-     if (code) {
+    if (code) {
       // Store the code before redirecting
       AsyncStorage.setItem("githubAuthCode", code as string).then(() => {
         console.log("GitHub Auth Code Saved:", code);
@@ -18,6 +18,9 @@ export default function RedirectScreen() {
     const timeout = setTimeout(() => {
       router.push({
         pathname: "/",
+        params: {
+          code: code as string,
+        },
       });
     }, 1000); // Redirect after 1 second
 

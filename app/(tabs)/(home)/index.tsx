@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator } from "react-native";
+import { Image } from "react-native";
 import { useQueries } from "@tanstack/react-query";
 
 import { useUser } from "@/contexts/UserContext";
@@ -8,7 +8,6 @@ import {
   getDatabaseHealthQuery,
 } from "@/api/queries/healthQueries";
 
-import TestJWTButton from "@/components/common/TestJWTButton";
 import Container from "@/components/common/Container";
 
 import { VStack } from "@/components/ui/vstack";
@@ -19,15 +18,13 @@ import { Heading } from "@/components/ui/heading";
 import * as Linking from "expo-linking";
 import GitHubAuthButton from "@/components/common/GitHubAuthButton";
 
-import {
-  Link,
-  RelativePathString,
-  router,
-  useLocalSearchParams,
-} from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import LoginWithGitHubButton from "@/components/common/LoginWithGitHubButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from "react-native-toast-message";
+import { Space } from "lucide-react-native";
+import { HealthStatus } from "@/components/common/HealthStatus";
+import styles from "@/assets/styles/styles";
 
 const HomeScreen = () => {
   const { user, changeUser } = useUser();
@@ -93,68 +90,47 @@ const HomeScreen = () => {
     }
   }, [signupSuccess]);
 
+  const { code } = useLocalSearchParams();
+
   return (
     <Container>
       {/** Temporary solution for not being able to center vertically */}
       <VStack className="items-center justify-center gap-4 mt-4 py-4"></VStack>
       <VStack className="items-center justify-center gap-4 mt-4 py-4"></VStack>
       <VStack className="items-center justify-center gap-4 mt-4 py-4">
-        <Heading>App started</Heading>
-        <Text>User: {user?.email}</Text>
-        <VStack className="items-center gap-2 mt-4">
-          <Text>Checking server status...</Text>
-          {serverHealth.isLoading ? (
-            <ActivityIndicator />
-          ) : (
-            <Text
-              className={
-                serverHealth.data?.status === "ok"
-                  ? "text-success-500"
-                  : "text-error-500"
-              }
-            >
-              {serverHealth.data?.status === "ok" ? "OK" : "FAILED"}
-            </Text>
-          )}
-        </VStack>
-        <VStack className="items-center gap-2 mt-4">
-          <Text>Checking DB status...</Text>
-          {dbHealth.isLoading ? (
-            <ActivityIndicator />
-          ) : (
-            <Text
-              className={
-                dbHealth.data?.status === "ok"
-                  ? "text-success-500"
-                  : "text-error-500"
-              }
-            >
-              {dbHealth.data?.status === "ok" ? "OK" : "FAILED"}
-            </Text>
-          )}
-        </VStack>
+        <Heading>Welcome to Kämppis!</Heading>
+        <Space className="h-4" />
+        <Text>Logged in as User: </Text>
+        <Text style={styles.selected}>{user?.email}</Text>
         <Button onPress={handleOpenLogin} className="mt-6">
-          <ButtonText>Login as a mock user</ButtonText>
+          <ButtonText>Select test user</ButtonText>
         </Button>
-        {/** withAnchor is necessary for the swiper to still work after using this link, */}
-        {/** if used before the swiper is loaded */}
-        <Link href={`/1`} withAnchor>
-          Test Link to Profile 1
-        </Link>
-        <TestJWTButton />
-        <GitHubAuthButton onCodeReceived={handleCodeReceived} />
-        <LoginWithGitHubButton code={authCode} changeUser={changeUser}/>
+        <Space className="h-4" />
+        <Image
+          source={require("@/assets/images/kamppis-app.png")}
+          className="w-32 h-32 rounded-full"
+        />
+        <HealthStatus serverHealth={serverHealth} dbHealth={dbHealth} />
 
-        <Button
-          onPress={() =>
-            router.push({
-              pathname: "/(auth)/signup",
-            })
-          }
-          className="mt-6"
-        >
-          <ButtonText>Sign up</ButtonText>
-        </Button>
+        {/** This button is only shown if the code is not in the localsearchparams */}
+        {!code && <GitHubAuthButton onCodeReceived={handleCodeReceived} />}
+        {/** These buttons are only shown if the code is in the localsearchparams */}
+        {code && (
+          <>
+            <LoginWithGitHubButton code={authCode} changeUser={changeUser} />
+            <Text className="mt-4">OR</Text>
+            <Button
+              onPress={() =>
+                router.push({
+                  pathname: "/(auth)/signup",
+                })
+              }
+              className="mt-6"
+            >
+              <ButtonText>Create a new account</ButtonText>
+            </Button>
+          </>
+        )}
       </VStack>
     </Container>
   );
