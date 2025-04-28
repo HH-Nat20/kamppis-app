@@ -151,12 +151,12 @@ const DrawerLayoutContent = ({ children }: { children: React.ReactNode }) => {
                   <Icon
                     as={item.icon}
                     size="lg"
-                    className="text-typography-900 dark:text-typography-100"
+                    className="text-typography-500"
                   />
                   <Text
                     className={`text-base ${
                       isActive ? "font-semibold" : ""
-                    } text-typography-900 dark:text-typography-100`}
+                    } text-typography-700`}
                   >
                     {item.label}
                   </Text>

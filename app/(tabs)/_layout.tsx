@@ -4,16 +4,20 @@ import colors from "tailwindcss/colors";
 
 import { Tabs } from "expo-router";
 
+import { useColorScheme } from "react-native";
+
 import { ProfileDrawerProvider } from "@/contexts/ProfileDrawerContext";
 
 const TabsLayout = ({ children }: { children: React.ReactNode }) => {
+  const colorScheme = useColorScheme();
+  const isDarkMode = colorScheme === "dark";
   return (
     <ProfileDrawerProvider>
       <Tabs
         initialRouteName="profile"
         screenOptions={({ route }) => ({
           tabBarStyle: {
-            backgroundColor: "transparent",
+            backgroundColor: isDarkMode ? colors.black : colors.white,
             borderTopWidth: 0,
             elevation: 0,
             shadowOpacity: 0,
@@ -22,7 +26,7 @@ const TabsLayout = ({ children }: { children: React.ReactNode }) => {
             paddingTop: 5,
           },
           headerStyle: {
-            backgroundColor: colors.transparent,
+            backgroundColor: isDarkMode ? colors.black : colors.white,
             elevation: 0,
           },
           headerShadowVisible: false,

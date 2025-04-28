@@ -30,7 +30,7 @@ export default function ProfileScreen() {
   return (
     <ProfileDrawerLayout>
       <VStack
-        className="h-full w-full bg-white dark:bg-gray-900 pb-8"
+        className="h-full w-full bg-white dark:bg-gray-800 pb-8"
         space="sm"
       >
         <Center className="mt-4 py-4 w-full md:px-10 pb-4 z-10">

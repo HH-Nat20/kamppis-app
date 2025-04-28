@@ -60,11 +60,7 @@ const DrawerLayoutContent = ({ children }: { children: React.ReactNode }) => {
     navigation.setOptions({
       headerRight: () => (
         <Pressable onPress={openDrawer} className="mr-4">
-          <Icon
-            as={AlignJustify}
-            size="xl"
-            className="text-typography-900 dark:text-typography-100"
-          />
+          <Icon as={AlignJustify} size="xl" className="text-typography-700" />
         </Pressable>
       ),
     });
@@ -90,19 +86,13 @@ const DrawerLayoutContent = ({ children }: { children: React.ReactNode }) => {
         <DrawerBackdrop />
         <DrawerContent className="w-[270px] md:w-[300px]">
           <DrawerHeader className="justify-center flex-col gap-2">
-            <Icon
-              as={Home}
-              size="xl"
-              className="text-typography-900 dark:text-typography-100"
-            />
+            <Icon as={Home} size="xl" className="text-typography-500" />
             <VStack className="justify-center items-center">
               <Pressable
                 onPress={() => router.push("/rooms")}
                 className="flex-row items-center gap-3 px-4 py-3 rounded-md hover:bg-background-50"
               >
-                <Text className="text-base text-typography-900 dark:text-typography-100">
-                  My Rooms
-                </Text>
+                <Text className="text-base text-typography-500">My Rooms</Text>
               </Pressable>
             </VStack>
           </DrawerHeader>
@@ -123,12 +113,12 @@ const DrawerLayoutContent = ({ children }: { children: React.ReactNode }) => {
                   <Icon
                     as={item.icon}
                     size="lg"
-                    className="text-typography-900 dark:text-typography-100"
+                    className="text-typography-500"
                   />
                   <Text
                     className={`text-base ${
                       isActive ? "font-semibold" : ""
-                    } text-typography-900 dark:text-typography-100`}
+                    } text-typography-700`}
                   >
                     {item.label}
                   </Text>
@@ -149,9 +139,9 @@ const DrawerLayoutContent = ({ children }: { children: React.ReactNode }) => {
                   <Icon
                     as={BedDouble}
                     size="lg"
-                    className="text-typography-900 dark:text-typography-100"
+                    className="text-typography-500"
                   />
-                  <Text className="text-base text-typography-900 dark:text-typography-100">
+                  <Text className="text-base text-typography-500">
                     {room.name ?? "Room " + (index + 1)}
                   </Text>
                 </Pressable>

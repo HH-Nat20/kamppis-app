@@ -10,6 +10,9 @@ import RoomsDrawerLayout from "@/components/custom/RoomsDrawerLayout";
 import { useQuery } from "@tanstack/react-query";
 import { getRoomProfileQueryOptions } from "@/api/queries/roomQueries";
 
+import { useColorScheme } from "react-native";
+import colors from "tailwindcss/colors";
+
 import RoomScreen from ".";
 import Photos from "./photos";
 import Likes from "./likes";
@@ -19,6 +22,8 @@ import DeleteRoom from "./remove";
 const Tab = createMaterialTopTabNavigator();
 
 export default function App() {
+  const colorScheme = useColorScheme();
+  const isDarkMode = colorScheme === "dark";
   const { roomId } = useLocalSearchParams<{ roomId: string }>();
   const navigation = useNavigation();
 
@@ -28,10 +33,20 @@ export default function App() {
     navigation.setOptions({
       headerShown: true,
       headerTitle: () => (
-        <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+        <Text
+          style={{
+            fontSize: 18,
+            fontWeight: "bold",
+            color: isDarkMode ? colors.white : colors.black,
+          }}
+        >
           {room?.name || "Room"}
         </Text>
       ),
+      headerStyle: {
+        backgroundColor: isDarkMode ? colors.gray[800] : colors.white,
+      },
+      headerTintColor: isDarkMode ? colors.white : colors.black,
     });
   }, [navigation, room]);
 
@@ -41,10 +56,17 @@ export default function App() {
         initialRouteName="Room Details"
         screenOptions={{
           lazy: true,
-          tabBarStyle: { backgroundColor: "white" },
-          tabBarLabelStyle: { fontSize: 12 },
+          tabBarStyle: {
+            backgroundColor: isDarkMode ? colors.gray[800] : colors.white,
+          },
+          tabBarLabelStyle: {
+            fontSize: 12,
+            color: isDarkMode ? colors.white : colors.black,
+          },
           tabBarItemStyle: { width: "auto" },
-          tabBarIndicatorStyle: { backgroundColor: "blue" },
+          tabBarIndicatorStyle: {
+            backgroundColor: colors.teal[500],
+          },
         }}
       >
         <Tab.Screen name="Room Details" component={RoomScreen} />

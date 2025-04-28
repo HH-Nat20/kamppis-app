@@ -14,6 +14,7 @@ import { VStack } from "@/components/ui/vstack";
 import { Text } from "@/components/ui/text";
 import { Button, ButtonText } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
+import { StatusBar } from "expo-status-bar";
 
 import * as Linking from "expo-linking";
 import GitHubAuthButton from "@/components/common/GitHubAuthButton";
@@ -161,6 +162,7 @@ const HomeScreen = () => {
           </>
         )}
       </VStack>
+      <StatusBar style="auto" />
     </Container>
   );
 };
