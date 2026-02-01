@@ -56,15 +56,13 @@
           "cameraPermission": "The app needs access to your camera so you can take a profile picture."
         }
       ],
-      [
-        "expo-build-properties"
-      ]
+      ["expo-build-properties"]
     ],
     "experiments": {
       "typedRoutes": true
     },
     "extra": {
-      "BACKEND_URL": "https://kamppis.hellmanstudios.fi",
+      "BACKEND_URL": "https://kamppis.paulcarlson.fi",
       "router": {
         "origin": false
       },

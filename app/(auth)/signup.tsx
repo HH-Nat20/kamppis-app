@@ -53,7 +53,7 @@ export default function SignUpScreen() {
     console.log("User data:", data);
     try {
       const response = await fetch(
-        `https://kamppis.hellmanstudios.fi/api/login/signup?code=${encodeURIComponent(
+        `https://kamppis.paulcarlson.fi/api/login/signup?code=${encodeURIComponent(
           code!
         )}`,
         {

@@ -27,7 +27,7 @@ export default function LoginWithGitHubButton({
 
         try {
           const response = await fetch(
-            `https://kamppis.hellmanstudios.fi/api/login/github?code=${encodeURIComponent(
+            `https://kamppis.paulcarlson.fi/api/login/github?code=${encodeURIComponent(
               code
             )}`,
             {

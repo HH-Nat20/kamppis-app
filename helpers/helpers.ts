@@ -59,7 +59,7 @@ const getImageUrl = (
           ? photo.url // Keep the original filename and extension
           : photo.url.replace(/-original\.\w+$/, `-${returnType}.jpg`); // Change to JPG for resized/thumbnail
 
-      url = `https://hellmanstudios.fi/kamppis-images/${
+      url = `https://paulcarlson.fi/images/${
         photo.profileId ?? overrideProfileId
       }/${modifiedName}`; // TODO: Replace with ENV variable
     }

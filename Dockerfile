@@ -2,7 +2,7 @@
 FROM node:20-bullseye
 
 # Set environment variables
-ENV BACKEND_URL=https://kamppis.hellmanstudios.fi
+ENV BACKEND_URL=https://kamppis.paulcarlson.fi
 
 # Set working directory
 WORKDIR /app

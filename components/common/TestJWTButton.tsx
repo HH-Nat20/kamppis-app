@@ -17,7 +17,7 @@ export default function TestJWTButton() {
 
         try {
           const response = await fetch(
-            `https://kamppis.hellmanstudios.fi/api/login/protected`,
+            `https://kamppis.paulcarlson.fi/api/login/protected`,
             {
               method: "GET",
               headers: {

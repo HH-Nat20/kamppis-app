@@ -165,7 +165,7 @@ export default function ChatScreen() {
       // console.log("Connecting to WebSocket with token:", storedToken);
 
       const client = new Stomp.Client({
-        brokerURL: `wss://kamppis.hellmanstudios.fi/ws?token=${storedToken}`, // IMPORTANT: token is ALSO passed in the URL to be fetched before the header can be accessed
+        brokerURL: `wss://kamppis.paulcarlson.fi/ws?token=${storedToken}`, // IMPORTANT: token is ALSO passed in the URL to be fetched before the header can be accessed
         forceBinaryWSFrames: true,
         appendMissingNULLonIncoming: true,
         onConnect: () => {
