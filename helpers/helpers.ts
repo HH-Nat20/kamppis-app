@@ -26,7 +26,7 @@ const formatDate = (dateTuple?: [number, number, number]) => {
   const [year, month, day] = dateTuple;
   return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(
     2,
-    "0"
+    "0",
   )}`;
 };
 
@@ -36,7 +36,7 @@ const getProfilePicture = (photos?: Photo[]) =>
 const getImageUrl = (
   photo: Photo | undefined,
   returnType: "original" | "thumbnail" | "resized" = "original",
-  overrideProfileId: number = 0
+  overrideProfileId: number = 0,
 ): string => {
   let url =
     "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png";
@@ -59,13 +59,13 @@ const getImageUrl = (
           ? photo.url // Keep the original filename and extension
           : photo.url.replace(/-original\.\w+$/, `-${returnType}.jpg`); // Change to JPG for resized/thumbnail
 
-      url = `https://paulcarlson.fi/images/${
+      url = `https://kamppis.paulcarlson.fi/images/${
         photo.profileId ?? overrideProfileId
       }/${modifiedName}`; // TODO: Replace with ENV variable
     }
   }
 
-  //console.log("Returning IMAGE URL:", url);
+  console.log("Returning IMAGE URL:", url);
   return url;
 };
 

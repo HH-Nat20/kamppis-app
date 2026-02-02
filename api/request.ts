@@ -68,7 +68,6 @@ export const uploadRequest = async (url: string, formData: FormData) => {
   // console.log("Token", token);
 
   const headers: Record<string, string> = {
-    "Content-Type": "multipart/form-data",
     Authorization: `Bearer ${token}`,
   };
 
