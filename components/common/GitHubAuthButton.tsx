@@ -27,8 +27,9 @@ export default function GitHubAuthButton({
         scheme: "kamppis-app",
         path: "redirect",
       }),
+      usePKCE: false,
     },
-    discovery
+    discovery,
   );
 
   useEffect(() => {
